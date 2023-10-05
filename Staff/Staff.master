@@ -1,0 +1,246 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Staff.master.cs" Inherits="Staff_Staff" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>PrintGSTSoft</title>
+     <meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+<!-- Tell the browser to be responsive to screen width -->
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
+
+<!-- v4.0.0 -->
+<link rel="stylesheet" href="../dist/bootstrap/css/bootstrap.min.css">
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="16x16" href="../dist/img/favicon-16x16.png">
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+
+<!-- Theme style -->
+<link rel="stylesheet" href="../dist/css/style.css">
+<link rel="stylesheet" href="../dist/css/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../dist/css/et-line-font/et-line-font.css">
+<link rel="stylesheet" href="../dist/css/themify-icons/themify-icons.css">
+<link rel="stylesheet" href="../dist/css/simple-lineicon/simple-line-icons.css">
+
+<!-- DataTables -->
+<link rel="stylesheet" href="../dist/plugins/datatables/css/dataTables.bootstrap.min.css">
+    <asp:ContentPlaceHolder id="head" runat="server">
+        
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+     <div class="wrapper boxed-wrapper">
+   <header class="main-header"> 
+    <!-- Logo --> 
+    <a href="../Default.aspx" class="logo blue-bg"> 
+    <!-- mini logo for sidebar mini 50x50 pixels --> 
+    <span class="logo-mini"><img src="../dist/img/logo.png" alt="logo"/></span> 
+    <!-- logo for regular state and mobile devices --> 
+    <span class="logo-lg"><img src="../dist/img/logo.png" width="200" alt="logo"/></span> </a> 
+    <!-- Header Navbar -->
+    <nav class="navbar blue-bg navbar-static-top"> 
+      <!-- Sidebar toggle button-->
+      <ul class="nav navbar-nav pull-left">
+        <li><a class="sidebar-toggle" data-toggle="push-menu" href="#"></a> </li>
+      </ul>
+      
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+         
+          <!-- User Account  -->
+           <li class="dropdown user user-menu p-ph-res"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <asp:Image ID="Image2" runat="server" class="user-image" alt="User Image" /> <span class="hidden-xs"><asp:Label ID="lbl_name1" runat="server" Text=""></asp:Label></span> </a>
+            <ul class="dropdown-menu">
+              <li class="user-header">
+                <div class="pull-left user-img"><asp:Image ID="Image1" class="img-responsive img-circle" alt="User"  runat="server" /></div>
+                <p class="text-left"><asp:Label ID="lbl_name2" runat="server" Text=""></asp:Label> <small><asp:Label ID="lbl_email" runat="server" Text=""></asp:Label></small> </p>
+              </li>
+              <li><a href="../Company/company_details.aspx"><i class="icon-profile-male"></i> Company Details</a></li>
+              <%--<li><a href="../Company/my_balance.aspx"><i class="icon-wallet"></i> My Balance</a></li>--%>
+             
+              <li role="separator" class="divider"></li>
+              <%--<li><a href="#"><i class="icon-gears"></i> Account Setting</a></li>--%>
+              <li role="separator" class="divider"></li>
+              <li><a href="../logout.aspx"><i class="fa fa-power-off"></i> Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  </div>
+        <aside class="main-sidebar"> 
+    <!-- sidebar -->
+     <section class="sidebar"> 
+      <!-- Sidebar user panel -->
+     
+      
+      <!-- sidebar menu -->
+       <ul class="sidebar-menu" data-widget="tree">
+        <li><a href="../Default.aspx"><i class="fa fa-pie-chart" aria-hidden="true"></i>DASHBOARD</a></li>
+
+        
+
+
+        <li class="treeview"> <a href="#"><i class="fa fa-key" aria-hidden="true"></i><span>Master</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+          <ul class="treeview-menu">
+            <li><a href="../Master/add_customer.aspx"><i class="fa fa-angle-right"></i> Add Customer</a></li>
+            <li><a href="../Master/list_of_customer.aspx"><i class="fa fa-angle-right"></i> List of Customer</a></li>
+            <li><a href="../Master/add_vendor.aspx"><i class="fa fa-angle-right"></i> Add Vendor</a></li>
+            <li><a href="../Master/list_of_vendor.aspx"><i class="fa fa-angle-right"></i> List of Vendor</a></li>
+            <li><a href="../Master/add_product.aspx"><i class="fa fa-angle-right"></i> Add Product</a></li>
+            <li><a href="../Master/list_of_product.aspx"><i class="fa fa-angle-right"></i> List of Product</a></li>
+          </ul>
+        </li>
+
+                  <li class="treeview "> <a href="#"><i class="fa fa-money" aria-hidden="true"></i><span>Customer Rate</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+          <ul class="treeview-menu">
+            <li><a href="../CustomerRate/Create_rate.aspx"><i class="fa fa-angle-right"></i> Add Customer Rate</a></li>
+            <li><a href="../CustomerRate/List_of_Rate.aspx"><i class="fa fa-angle-right"></i> List of Customer Rate</a></li>
+       
+          </ul>
+        </li>
+
+            <li class="treeview"> <a href="#"><i class="fa fa-address-book" aria-hidden="true"></i><span>Cash Order</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+          <ul class="treeview-menu">
+            <li><a href="../Daily Cash Order/Create_Order.aspx"><i class="fa fa-angle-right"></i> Create Order</a></li>
+            <li><a href="../Daily Cash Order/List_Of_Orders.aspx"><i class="fa fa-angle-right"></i> List of Order</a></li>
+       
+          </ul>
+        </li>
+
+              <li class="treeview"> <a href="#"> <i class="fa fa-cubes" aria-hidden="true"></i> <span>Stock</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+          <ul class="treeview-menu">
+            <li><a href="../Stock/Available_Stock.aspx"><i class="fa fa-angle-right"></i>Available Stock</a></li>
+            <li><a href="../Stock/Used_stock.aspx"><i class="fa fa-angle-right"></i> Used Stock</a></li>
+               
+          </ul>
+        </li>
+
+        <li class="treeview"> <a href="#"> <i class="fa fa-tag" aria-hidden="true"></i> <span>Sale</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+          <ul class="treeview-menu">
+            <li><a href="../Sale/sale_invoice.aspx"><i class="fa fa-angle-right"></i> Sale Order</a></li>
+            <li><a href="../Sale/invoice_report.aspx"><i class="fa fa-angle-right"></i> List of Invoices</a></li>
+            <%--<li><a href="../Sale/customer_payment.aspx"><i class="fa fa-angle-right"></i> Customer Payment</a></li>
+            <li><a href="../Sale/challan.aspx"><i class="fa fa-angle-right"></i> Challan</a></li>--%>
+            <li><a href="../Sale/estimate.aspx"><i class="fa fa-angle-right"></i> Estimate</a></li>
+            <li><a href="../Sale/estimate_report.aspx"><i class="fa fa-angle-right"></i> List of Estimate</a></li>
+            
+          </ul>
+        </li>
+        <li class="treeview"> <a href="#"> <i class="fa fa-shopping-cart" aria-hidden="true"></i> <span>Purchase</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+           <ul class="treeview-menu">
+            <li><a href="../Purchase/purchase_invoice.aspx"><i class="fa fa-angle-right"></i> Purchase Invoice</a></li>         
+          <li><a href="../Purchase/list_of_purchase.aspx"><i class="fa fa-angle-right"></i> List of Invoices</a></li>
+                <%--<li><a href="../Purchase/vendor_payment.aspx"><i class="fa fa-angle-right"></i> Vendor Payment</a></li>--%>
+            
+          </ul>
+        </li>
+
+            <li class="treeview"> <a href="#"> <i class="fa fa-shopping-bag" aria-hidden="true"></i> <span>Roll Purchase</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+           <ul class="treeview-menu">      
+              <li><a href="../Roll Purchase/roll_purchase.aspx"><i class="fa fa-angle-right"></i> Roll Purchase</a></li>
+          <li><a href="../Roll Purchase/list_of_roll_purchase.aspx"><i class="fa fa-angle-right"></i> List of Invoices</a></li>
+                <%--<li><a href="Purchase/vendor_payment.aspx"><i class="fa fa-angle-right"></i> Vendor Payment</a></li>--%>
+            
+          </ul>
+        </li>
+      
+         <li> <a href="../Expense/expense.aspx"> <i class="fa fa-money" aria-hidden="true"></i> <span>Expense</span> <span class="pull-right-container"></span> </a>
+           
+        </li>
+          <li class="treeview"> <a href="#"> <i class="fa fa-clipboard" aria-hidden="true"></i> <span>Quotation</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+          <ul class="treeview-menu">
+            <li><a href="../Quotation/gst_quotation.aspx" class="active"><i class="fa fa-angle-right"></i> GST Quotation</a></li>
+         <%--   <li><a href="../Quotation/without_gst_quotation.aspx" class="active"><i class="fa fa-angle-right"></i> Without GST Quotation</a></li>--%>
+              <li><a href="../Quotation/report.aspx" class="active"><i class="fa fa-angle-right"></i> List of Quotations</a></li>
+          </ul>
+        </li>
+          <li class="treeview active"> <a href="#"> <i class="fa fa-users" aria-hidden="true"></i> <span>Staff</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+          <ul class="treeview-menu">
+            <li><a href="../Staff/add_staff.aspx" class="active"><i class="fa fa-angle-right"></i> Add Staff</a></li>
+              <li><a href="../Staff/list_of_staff.aspx" class="active"><i class="fa fa-angle-right"></i> List of Staff</a></li>
+          <%--  <li><a href="../Staff/salary.aspx" class="active"><i class="fa fa-angle-right"></i> Salary</a></li>
+            <li><a href="../Staff/salary_report.aspx" class="active"><i class="fa fa-angle-right"></i> Salary Report</a></li>--%>
+          </ul>
+        </li>
+       
+            <li class="treeview"> <a href="#"> <i class="fa fa-university" aria-hidden="true"></i> <span>Bank</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+          <ul class="treeview-menu">
+            <li><a href="../Bank/add_bank.aspx" class="active"><i class="fa fa-angle-right"></i> Add Bank</a></li>
+            <li><a href="../Bank/list_of_bank.aspx" class="active"><i class="fa fa-angle-right"></i> List of Bank</a></li>
+            <li><a href="../Bank/bank_operations.aspx" class="active"><i class="fa fa-angle-right"></i> Bank Operations</a></li>
+            
+          </ul>
+        </li>
+
+          <li class="treeview"> <a href="#"> <i class="fa fa-list-alt" aria-hidden="true"></i> <span>GST</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+         <ul class="treeview-menu">
+            <li><a href="../GST/gstr_3b_1.aspx" class="active"><i class="fa fa-angle-right"></i> GSTR 3B</a></li>
+            <li><a href="../GST/gstr_1.aspx" class="active"><i class="fa fa-angle-right"></i> GSTR 1</a></li>
+           
+            <li><a href="https://www.gst.gov.in/download/returns" class="active"><i class="fa fa-angle-right"></i> GSTR Offline Tool</a></li>
+          </ul>
+        </li>
+         
+        <li> <a href="../Admin/change_password.aspx"> <i class="fa fa-user-secret" aria-hidden="true"></i> <span>Admin</span> <span class="pull-right-container"></span> </a>
+         
+        </li>
+         <li> <a href="../Reports/reports.aspx"> <i class="fa fa-clipboard" aria-hidden="true"></i> <span>Reports</span> <span class="pull-right-container">  </span> </a>
+          
+        </li>
+        <li class="treeview"> <a href="#"> <i class="fa fa-cogs" aria-hidden="true"></i> <span>Settings</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+          <ul class="treeview-menu">
+            <li><a href="../Settings/general_settings.aspx" class="active"><i class="fa fa-angle-right"></i> General Settings</a></li>
+            <li><a href="../Settings/offer_messages.aspx" class="active"><i class="fa fa-angle-right"></i> Offer Messages</a></li>
+            <%--<li><a href="../Settings/emails.aspx" class="active"><i class="fa fa-angle-right"></i> Emails</a></li>--%>
+            <%--<li><a href="../Settings/clear_database.aspx" class="active"><i class="fa fa-angle-right"></i> Clear All Database</a></li>--%>
+          </ul>
+        </li>
+        
+      </ul>
+    </section>
+    <!-- /.sidebar --> 
+  </aside>
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+        <!-- jQuery 3 --> 
+<script src="../dist/js/jquery.min.js"></script>
+ 
+<script src="../dist/plugins/popper/popper.min.js"></script>
+
+<!-- v4.0.0-alpha.6 -->
+<script src="../dist/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- template --> 
+<script src="../dist/js/adminkit.js"></script>
+
+<!-- DataTable --> 
+<script src="../dist/plugins/datatables/jquery.dataTables.min.js"></script> 
+<script src="../dist/plugins/datatables/dataTables.bootstrap.min.js"></script> 
+<script>
+  $(function () {
+      $('#example1').DataTable({
+          'ordering': false
+      })
+      $('#example2').DataTable({
+          'ordering': false
+      })
+  })
+</script>
+
+<script src="../dist/plugins/table-expo/filesaver.min.js"></script>
+<script src="../dist/plugins/table-expo/xls.core.min.js"></script>
+<script src="../dist/plugins/table-expo/tableexport.js"></script>
+<script>
+//$("table").tableExport({formats: ["xlsx","xls", "csv", "txt"],    });
+</script>
+    </form>
+</body>
+</html>
