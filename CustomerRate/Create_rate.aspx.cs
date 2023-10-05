@@ -86,6 +86,7 @@ public partial class CustomerRate_Create_rate : System.Web.UI.Page
             SqlDataAdapter adapt = new SqlDataAdapter(cmd2);
             DataTable dt2 = new DataTable();
 
+
             adapt.Fill(dt2);
             if (dt2.Rows.Count > 0)
             {
