@@ -406,6 +406,7 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
             Txt_description.Text = desc;
 
             lbl_product_hsn.Value = hsn;
+
             lbl_unit.Value = unit;
         }
     }
