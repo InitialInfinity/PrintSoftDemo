@@ -523,8 +523,8 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
 
     protected void clear()
     {
-        Dd_enter_product.SelectedIndex = 0;
-        Dd_material.SelectedIndex = 0;
+        //Dd_enter_product.SelectedIndex = 0;
+        //Dd_material.SelectedIndex = 0;
         Txt_description.Text = "";
         txt_width.Text = "";
         txt_height.Text = "";

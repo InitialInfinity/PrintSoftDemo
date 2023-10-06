@@ -125,14 +125,14 @@ public partial class Staff_list_of_staff : System.Web.UI.Page
                 Txt_name.Text = dt.Rows[0]["st_staff_name"].ToString();
                 Txt_address.Text = dt.Rows[0]["st_address"].ToString();
                 Txt_contact.Text = dt.Rows[0]["st_contact"].ToString();
-                Txt_dob.Text = Convert.ToDateTime(dt.Rows[0]["st_dob"]).ToString("MM/dd/yyyy");
+                Txt_dob.Text = Convert.ToDateTime(dt.Rows[0]["st_dob"]).ToString("yyyy/MM/dd");
                 Dd_gender.SelectedItem.Text = dt.Rows[0]["st_gender"].ToString();
-               
+             
                 Txt_designation.Text = dt.Rows[0]["st_designation"].ToString();
                 Txt_salary.Text = dt.Rows[0]["st_salary"].ToString();
                 Txt_balance.Text = dt.Rows[0]["st_balance"].ToString();
-                Txt_joining_date.Text = Convert.ToDateTime(dt.Rows[0]["st_joining_date"]).ToString("MM/dd/yyyy");
-                Txt_left_date.Text = Convert.ToDateTime(dt.Rows[0]["st_left_date"]).ToString("MM/dd/yyyy");
+                Txt_joining_date.Text = Convert.ToDateTime(dt.Rows[0]["st_joining_date"]).ToString("yyyy/MM/dd");
+                Txt_left_date.Text = Convert.ToDateTime(dt.Rows[0]["st_left_date"]).ToString("yyyy/MM/dd");
             }
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Modal", "ShowModel2();", true);
         }

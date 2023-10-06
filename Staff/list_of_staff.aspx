@@ -210,7 +210,7 @@
     </tr>
        <tr>
       <th scope="col">DOB<span style="color:red;">*</span></th>
-      <td><asp:TextBox ID="Txt_dob" class="form-control" runat="server" TextMode="SingleLine"></asp:TextBox></td>
+      <td><asp:TextBox ID="Txt_dob" class="form-control" runat="server" TextMode="Date"></asp:TextBox></td>
      
     </tr>
        <tr>
@@ -239,12 +239,12 @@
     </tr>
       <tr>
       <th scope="col">Joining Date<span style="color:red;">*</span></th>
-      <td><asp:TextBox ID="Txt_joining_date" class="form-control" runat="server" TextMode="SingleLine"></asp:TextBox></td>
+      <td><asp:TextBox ID="Txt_joining_date" class="form-control" runat="server" TextMode="Date"></asp:TextBox></td>
      
     </tr>
       <tr>
       <th scope="col">Left Date</th>
-      <td><asp:TextBox ID="Txt_left_date" class="form-control" runat="server" TextMode="SingleLine"></asp:TextBox></td>
+      <td><asp:TextBox ID="Txt_left_date" class="form-control" runat="server" TextMode="Date"></asp:TextBox></td>
      
     </tr>
       

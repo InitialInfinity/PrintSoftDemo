@@ -28,7 +28,7 @@ public partial class Sale_invoice_report : System.Web.UI.Page
             if (Page.IsPostBack) return;
             try
             {
-                insert = Request.QueryString["insert"].ToString();
+                insert = (Request.QueryString["insert"]??"").ToString();
                 if (insert == "success")
                 {
                     Panel2.Visible = true;
@@ -132,7 +132,7 @@ public partial class Sale_invoice_report : System.Web.UI.Page
         {
         String invoiceno = ((sender as LinkButton).NamingContainer.FindControl("lbl_invoice") as Label).Text;
 
-        using (SqlCommand cmd2 = new SqlCommand("select * from tbl_sale inner join tbl_customer on tbl_sale.c_id=tbl_customer.c_id where sl_invoice_no='" + invoiceno + "'", conn))
+        using (SqlCommand cmd2 = new SqlCommand("select s_product_name,* from tbl_sale inner join tbl_customer on tbl_sale.c_id=tbl_customer.c_id inner join tbl_sale_invoice on  tbl_sale_invoice.s_invoice_no = tbl_sale.sl_invoice_no where sl_invoice_no='" + invoiceno + "'", conn))
         {
             SqlDataAdapter adapt2 = new SqlDataAdapter(cmd2);
             DataTable dt2 = new DataTable();
@@ -142,7 +142,7 @@ public partial class Sale_invoice_report : System.Web.UI.Page
                 bal = Convert.ToDecimal(dt2.Rows[0]["sl_balance"]);
                 c_id = Convert.ToInt32(dt2.Rows[0]["c_id"]);
                 qty = Convert.ToDecimal(dt2.Rows[0]["sl_total_quantity"]);
-                product_name = Convert.ToString(dt2.Rows[0]["sl_product_name"]);
+                product_name = Convert.ToString(dt2.Rows[0]["s_product_name"]);
              }
         }
         using (SqlCommand cmd3 = new SqlCommand("update tbl_customer set c_opening_balance=c_opening_balance- '"+bal+"' where c_id='" + c_id + "'", conn))

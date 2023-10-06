@@ -238,7 +238,7 @@
                                     <!-- accepted payments column -->
                                     <div class="col-lg-6">
                                         <p class="lead" style="display:none;">Total Qty: <asp:Label ID="lbl_totalqty" runat="server" Text=""></asp:Label></p>
-                                        <p class="lead" >Total Remaining Balance: ₹ <asp:Label ID="lbl_total_remaining"  style="font-size:20px; color:#ed0505;" runat="server" Text=""></asp:Label></p>
+                                       <%-- <p class="lead" >Total Remaining Balance: ₹ <asp:Label ID="lbl_total_remaining"  style="font-size:20px; color:#ed0505;" runat="server" Text=""></asp:Label></p>--%>
                                        
                                          <asp:HiddenField ID="lbl_cutomer_contact" runat="server" />
                                          <asp:HiddenField ID="lbl_cutomer_email" runat="server" />
@@ -821,7 +821,15 @@ function JSFunctionValidate()
 alert("Please Enter Shipping Charges !!!");
 return false;
     }--%>
-  
+
+    if (document.getElementById('<%=txt_height.ClientID%>').value == "0") {
+                alert("Height Should NOT BE 0  !!!");
+                return false;
+            }
+    if (document.getElementById('<%=txt_width.ClientID%>').value == "0") {
+        alert("Width Height Should NOT BE 0 !!!");
+        return false;
+    }
     if(document.getElementById('<%=Txt_discount.ClientID%>').value.length==0)
 {
 alert("Please Enter Discount !!!");
@@ -837,7 +845,7 @@ return true;
   
 return true;
 }
-        </script>
+     </script>
 
       <script type="text/javascript">
 	

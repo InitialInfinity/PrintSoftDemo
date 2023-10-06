@@ -23,7 +23,7 @@ public partial class Expense_expense : System.Web.UI.Page
             {
                 try
                 {
-                    insert = Request.QueryString["insert"].ToString();
+                    insert = (Request.QueryString["insert"]??"").ToString();
                     if (insert == "success")
                     {
                         Panel2.Visible = true;
@@ -34,7 +34,7 @@ public partial class Expense_expense : System.Web.UI.Page
                 { Panel2.Visible = false; }
                 try
                 {
-                    insert_cat = Request.QueryString["insert_cat"].ToString();
+                    insert_cat = (Request.QueryString["insert_cat"]??"").ToString();
                     if (insert_cat == "success")
                     {
                         Panel3.Visible = true;
@@ -45,7 +45,7 @@ public partial class Expense_expense : System.Web.UI.Page
                 { Panel3.Visible = false; }
                 try
                 {
-                    insert_user = Request.QueryString["insert_user"].ToString();
+                    insert_user = (Request.QueryString["insert_user"]??"").ToString();
                     if (insert_user == "success")
                     {
                         Panel4.Visible = true;
