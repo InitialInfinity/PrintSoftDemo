@@ -347,6 +347,7 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
         SqlDataAdapter adapt = new SqlDataAdapter(cmd);
         DataTable dt = new DataTable();
 
+
         adapt.Fill(dt);
         if (dt.Rows.Count > 0)
         {
@@ -369,12 +370,14 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
                 Panel1.Visible = false;
                 Panel2.Visible = true;
                 txt_rate2.Text = rate;
+               
             }
             else if (unit == "Ltr")
             {
                 Panel1.Visible = false;
                 Panel2.Visible = true;
                 txt_rate2.Text = rate;
+               
             }
             //packet
             else if (unit == "Packet")
@@ -382,6 +385,7 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
                 Panel1.Visible = false;
                 Panel2.Visible = true;
                 txt_rate2.Text = rate;
+                
             }
             //copy
             else if (unit == "Copy")
@@ -389,6 +393,9 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
                 Panel1.Visible = false;
                 Panel2.Visible = true;
                 txt_rate2.Text = rate;
+                txt_width2.Text = "0";
+
+                txt_height2.Text = "0";
             }
 
 
@@ -397,6 +404,8 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
                 Panel1.Visible = true;
                 Panel2.Visible = false;
                 txt_rate.Text = rate;
+                txt_width.Text = "0";
+                txt_height.Text = "0";
             }
             //Dd_enter_cgst.Text = cgst;
             //Dd_enter_igst.Text = igst;
@@ -408,6 +417,10 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
             lbl_product_hsn.Value = hsn;
 
             lbl_unit.Value = unit;
+            
+            
+           
+
         }
     }
     public void invoiceid()
