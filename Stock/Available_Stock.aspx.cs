@@ -35,6 +35,7 @@ public partial class Stock_Available_Stock : System.Web.UI.Page
             { Panel2.Visible = false; }
             try
             {
+
                 pro_update = (Request.QueryString["pro_update"]??"").ToString();
                 if (pro_update == "success")
                 {
