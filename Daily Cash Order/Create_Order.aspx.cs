@@ -120,6 +120,11 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
         //string final = txt_final_amt.Text;
         string desc = Txt_description.Text;
 
+        //Txt_advance.Text = "0";
+        //Txt_discount.Text = "0";
+
+
+
 
         if (str9 == "Pcs")
         {
@@ -370,14 +375,17 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
                 Panel1.Visible = false;
                 Panel2.Visible = true;
                 txt_rate2.Text = rate;
-               
+                txt_quantity2.Text = "0";
+                txt_sqrft2.Text = "0";
+
             }
             else if (unit == "Ltr")
             {
                 Panel1.Visible = false;
                 Panel2.Visible = true;
                 txt_rate2.Text = rate;
-               
+                txt_quantity2.Text = "0";
+                txt_sqrft2.Text = "0";
             }
             //packet
             else if (unit == "Packet")
@@ -385,7 +393,8 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
                 Panel1.Visible = false;
                 Panel2.Visible = true;
                 txt_rate2.Text = rate;
-                
+                txt_quantity2.Text = "0";
+                txt_sqrft2.Text = "0";
             }
             //copy
             else if (unit == "Copy")
@@ -396,6 +405,8 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
                 txt_width2.Text = "0";
 
                 txt_height2.Text = "0";
+                txt_quantity2.Text = "0";
+                txt_sqrft2.Text = "0";
             }
 
 
@@ -406,6 +417,8 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
                 txt_rate.Text = rate;
                 txt_width.Text = "0";
                 txt_height.Text = "0";
+                txt_quantity.Text = "0";
+                txt_sqrft.Text = "0";
             }
             //Dd_enter_cgst.Text = cgst;
             //Dd_enter_igst.Text = igst;
