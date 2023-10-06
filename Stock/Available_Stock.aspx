@@ -317,7 +317,7 @@
   <tbody>
        <tr>
       <th scope="col">Product Name</th>
-      <td><asp:TextBox ID="Txt_name" class="form-control" runat="server"></asp:TextBox></td>
+      <td><asp:TextBox ID="Txt_name" class="form-control" runat="server"  disabled="true"></asp:TextBox></td>
      
     </tr>
     <tr>
@@ -391,7 +391,7 @@
     </tr>--%>
    <tr>
       <th scope="col">Description</th>
-      <td><asp:TextBox ID="Txt_description" class="form-control" runat="server" TextMode="MultiLine"></asp:TextBox></td>
+      <td><asp:TextBox ID="Txt_description" class="form-control" runat="server" TextMode="MultiLine"  disabled="true"></asp:TextBox></td>
      
     </tr>
   </tbody>
