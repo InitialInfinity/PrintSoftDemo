@@ -20,6 +20,7 @@
   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
   <strong>Success!</strong> New Product successfully added!
 </div>     
+
         </asp:Panel>
          <asp:Panel ID="Panel3" runat="server">
               <div class="alert alert-success" role="alert">

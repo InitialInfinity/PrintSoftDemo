@@ -24,7 +24,7 @@ public partial class Stock_Available_Stock : System.Web.UI.Page
 
             try
             {
-                insert_pro = Request.QueryString["insert_pro"].ToString();
+                insert_pro = (Request.QueryString["insert_pro"]??"").ToString();
                 if (insert_pro == "success")
                 {
                     Panel2.Visible = true;
@@ -35,7 +35,8 @@ public partial class Stock_Available_Stock : System.Web.UI.Page
             { Panel2.Visible = false; }
             try
             {
-                pro_update = Request.QueryString["pro_update"].ToString();
+
+                pro_update = (Request.QueryString["pro_update"]??"").ToString();
                 if (pro_update == "success")
                 {
                     Panel3.Visible = true;

@@ -24,7 +24,7 @@ public partial class Stock_Used_stock : System.Web.UI.Page
 
             try
             {
-                insert_pro = Request.QueryString["insert_pro"].ToString();
+                insert_pro = (Request.QueryString["insert_pro"]??"").ToString();
                 if (insert_pro == "success")
                 {
                     Panel2.Visible = true;
@@ -35,7 +35,8 @@ public partial class Stock_Used_stock : System.Web.UI.Page
             { Panel2.Visible = false; }
             try
             {
-                pro_update = Request.QueryString["pro_update"].ToString();
+
+                pro_update = (Request.QueryString["pro_update"]??"").ToString();
                 if (pro_update == "success")
                 {
                     Panel3.Visible = true;
@@ -155,7 +156,16 @@ public partial class Stock_Used_stock : System.Web.UI.Page
             {
                 //Txt_id.Value = dt.Rows[0]["u_id"].ToString();
                 lbl_name.Text = dt.Rows[0]["p_name"].ToString();
-                lbl_date.Text = dt.Rows[0]["date"].ToString();
+
+				DateTime dateTimeValue = (DateTime)dt.Rows[0]["date"];
+
+				string formattedDate = dateTimeValue.ToString("yyyy-MM-dd"); // Change the format as needed
+
+				// Set the formatted date to the label
+				lbl_date.Text = formattedDate;
+
+
+				//lbl_date.Text = dt.Rows[0]["date"].ToString();
                 lbl_sqrft.Text = dt.Rows[0]["sqrft"].ToString();
                 lbl_stock1.Text = dt.Rows[0]["quanity"].ToString();
                 //lbl_name.Text = dt.Rows[0]["p_name"].ToString();
@@ -193,11 +203,22 @@ public partial class Stock_Used_stock : System.Web.UI.Page
                 {
                     Txt_id.Value = dt.Rows[0]["u_id"].ToString();
                     Txt_name.Text = dt.Rows[0]["p_name"].ToString();
-                    //Dd_unit.SelectedItem.Text = dt.Rows[0]["date"].ToString();
-                    //Dd_cgst.SelectedValue = dt.Rows[0]["p_cgst"].ToString();
-                    //Dd_sgst.SelectedValue = dt.Rows[0]["p_sgst"].ToString();
-                    //Dd_igst.SelectedValue = dt.Rows[0]["p_igst"].ToString();
-                    Txt_hsn.Text = dt.Rows[0]["date"].ToString();
+					//Dd_unit.SelectedItem.Text = dt.Rows[0]["date"].ToString();
+					//Dd_cgst.SelectedValue = dt.Rows[0]["p_cgst"].ToString();
+					//Dd_sgst.SelectedValue = dt.Rows[0]["p_sgst"].ToString();
+					//Dd_igst.SelectedValue = dt.Rows[0]["p_igst"].ToString();
+					DateTime dateTimeValue = (DateTime)dt.Rows[0]["date"];
+
+					string formattedDate = dateTimeValue.ToString("yyyy-MM-dd"); // Change the format as needed
+
+					// Set the formatted date to the label
+					Txt_hsn.Text = formattedDate;
+
+
+
+
+
+					//Txt_hsn.Text = dt.Rows[0]["date"].ToString();
                     Txt_rate.Text = dt.Rows[0]["sqrft"].ToString();
                     Txt_stock.Text = dt.Rows[0]["quanity"].ToString();
                     //Txt_description.Text = dt.Rows[0]["p_desc"].ToString();
