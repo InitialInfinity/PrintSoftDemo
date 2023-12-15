@@ -30,11 +30,23 @@ public partial class Daily_Cash_Order_cash_payment : System.Web.UI.Page
             //customer();
             fill();
             FillRepeater();
-
+            Txt_pay.Text = "0";
+            Txt_discount.Text = "0";
         }
         else
         {
             Response.Redirect("../login.aspx");
+        }
+        if (Dd_payment_mode.SelectedValue != "Cheque")
+        {
+           // Txt_date.Text = DateTime.Today.ToString("yyyy-MM-dd");
+            Txt_date.ReadOnly = true;
+        }
+        else
+        {
+           // Txt_date.Text = DateTime.Today.ToString("yyyy-MM-dd");
+            Txt_date.ReadOnly = false;
+
         }
     }
 
@@ -562,10 +574,12 @@ public partial class Daily_Cash_Order_cash_payment : System.Web.UI.Page
     {
         if (Dd_payment_mode.SelectedValue == "Cheque")
         {
+            Txt_date.ReadOnly = false;
             Panel3.Visible = true;
         }
         else
         {
+            Txt_date.ReadOnly = true;
             Panel3.Visible = false;
         }
     }

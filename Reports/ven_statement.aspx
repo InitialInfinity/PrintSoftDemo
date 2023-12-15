@@ -50,9 +50,14 @@
         </div>
 
            <div class="col-md-3">
-               <asp:DropDownList ID="Dd_customer" class="form-control" runat="server" AutoPostBack="True" OnSelectedIndexChanged="Dd_customer_SelectedIndexChanged"></asp:DropDownList>
+               <asp:DropDownList ID="Dd_customer" class="form-control" runat="server" ></asp:DropDownList>
+               <%--AutoPostBack="True" OnSelectedIndexChanged="Dd_customer_SelectedIndexChanged"--%>
         </div>
           
+           <div class="col-md-2" >
+          <asp:Button ID="Btn_search" class="btn btn-success" runat="server" Text="Search" onclick="Btn_search_Click"/>
+          </div>
+
        </div>
                     
             <asp:Panel ID="Panel1" runat="server">

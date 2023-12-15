@@ -19,6 +19,9 @@ public partial class Expense_expense : System.Web.UI.Page
         Dd_category.Focus();
         if (Session["a_email"] != null)
         {
+            Panel2.Visible = false;
+            Panel3.Visible = false;
+            Panel4.Visible = false;
             if (!IsPostBack)
             {
                 try
@@ -37,6 +40,7 @@ public partial class Expense_expense : System.Web.UI.Page
                     insert_cat = (Request.QueryString["insert_cat"]??"").ToString();
                     if (insert_cat == "success")
                     {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "toggle", "showcat();", true);
                         Panel3.Visible = true;
                     }
 
@@ -49,6 +53,7 @@ public partial class Expense_expense : System.Web.UI.Page
                     if (insert_user == "success")
                     {
                         Panel4.Visible = true;
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "toggle", "showusr();", true);
                     }
 
                 }
@@ -167,29 +172,64 @@ public partial class Expense_expense : System.Web.UI.Page
     }
     protected void Btn_submit_Click(object sender, EventArgs e)
     {
-        SqlCommand cmd = new SqlCommand("insert into tbl_expense_user values(@u_user_name,@u_contact,@u_desc)", conn);
-        cmd.Parameters.AddWithValue("@u_user_name", Txt_user_name.Text);
-        cmd.Parameters.AddWithValue("@u_contact", Txt_contact.Text);
-        cmd.Parameters.AddWithValue("@u_desc", Txt_desc.Text);
-        conn.Open();
-        cmd.ExecuteNonQuery();
-    
-        conn.Close();
-        Response.Redirect("expense.aspx?insert_user=success");
+        SqlCommand cmd1 = new SqlCommand("select * from tbl_expense_user where u_contact=@u_contact", conn);
+        cmd1.Parameters.AddWithValue("@u_contact", Txt_contact.Text);
+        SqlDataAdapter adapt5 = new SqlDataAdapter(cmd1);
+        DataTable dt5 = new DataTable();
+        adapt5.Fill(dt5);
+        if (dt5.Rows.Count > 0)
+        {
+            Lbl_message.Text = "user already exist";
+
+        }
+        else
+        {
+
+            SqlCommand cmd = new SqlCommand("insert into tbl_expense_user values(@u_user_name,@u_contact,@u_desc)", conn);
+            cmd.Parameters.AddWithValue("@u_user_name", Txt_user_name.Text);
+            cmd.Parameters.AddWithValue("@u_contact", Txt_contact.Text);
+            cmd.Parameters.AddWithValue("@u_desc", Txt_desc.Text);
+            conn.Open();
+            cmd.ExecuteNonQuery();
+
+            conn.Close();
+            Response.Redirect("expense.aspx?insert_user=success");
+        }
    
     }
 
     protected void Button1_Click(object sender, EventArgs e)
     {
-        SqlCommand cmd = new SqlCommand("insert into tbl_expense_category values(@cat_category_name,@cat_date)", conn);
-        cmd.Parameters.AddWithValue("@cat_category_name", Txt_category_name.Text);
-        cmd.Parameters.AddWithValue("@cat_date", Txt_date.Text);
+        SqlCommand cmd1 = new SqlCommand ("select * from tbl_expense_category where cat_category_name=@cat_category_name",conn);
+        cmd1.Parameters.AddWithValue("@cat_category_name", Txt_category_name.Text);
+        SqlDataAdapter adapt5 = new SqlDataAdapter(cmd1);
+        DataTable dt5 = new DataTable();
+        adapt5.Fill(dt5);
+        if (dt5.Rows.Count > 0)
+        {
+            Lbl_message2.Text = "Category already exist";
+            // Response.Redirect("expense.aspx?insert_cat=success");
 
-        conn.Open();
-        cmd.ExecuteNonQuery();
-        
-        conn.Close();
-        Response.Redirect("expense.aspx?insert_cat=success");
+            //Session["CategoryCreated"] = true;
+            string script = "<script type='text/javascript'>SwitchToTab('profile2');</script>";
+            ClientScript.RegisterStartupScript(this.GetType(), "SwitchToTabScript", script);
+            //Txt_category_name.Focus();
+        }
+        else
+        {
+            SqlCommand cmd = new SqlCommand("insert into tbl_expense_category values(@cat_category_name,@cat_date)", conn);
+            cmd.Parameters.AddWithValue("@cat_category_name", Txt_category_name.Text);
+            cmd.Parameters.AddWithValue("@cat_date", Txt_date.Text);
+
+            conn.Open();
+            cmd.ExecuteNonQuery();
+
+            conn.Close();
+            Response.Redirect("expense.aspx?insert_cat=success");
+        }
+
+          
+
       
     }
     protected void DeleteSale(object sender, EventArgs e)
@@ -298,7 +338,28 @@ public partial class Expense_expense : System.Web.UI.Page
 
     }
 
-  
+
+
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void Button4_Click(object sender, EventArgs e)
+    {
+        category();
+        user();
+        Txt_amount.Text = "";
+        DateTime serverTime = DateTime.Now; // gives you current Time in server timeZone
+        DateTime utcTime = serverTime.ToUniversalTime(); // convert it to Utc using timezone setting of server computer
+
+        TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+        DateTime localTime = TimeZoneInfo.ConvertTimeFromUtc(utcTime, tzi); // convert from utc to local
+
+        Txt_date.Text = DateTime.Today.ToString("yyyy-MM-dd");
+        Txt_ex_desc.Text = "";
+
+    }
 }
 
  

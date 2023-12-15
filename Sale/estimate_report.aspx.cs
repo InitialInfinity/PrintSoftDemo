@@ -16,18 +16,27 @@ using iTextSharp.tool.xml;
 public partial class Sale_estimate_report : System.Web.UI.Page
 {
     SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["String"].ConnectionString);
-    decimal balance, bal;
-    int del_inv,c_id;
+    decimal balance, bal, qty;
+    int del_inv,c_id, materialId;
     string insert;
-    string admin_email;
+    string admin_email, product_name;
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Session["a_email"] != null)
         {
             if (Page.IsPostBack) return;
+            DateTime serverTime = DateTime.Now; // gives you current Time in server timeZone
+            DateTime utcTime = serverTime.ToUniversalTime(); // convert it to Utc using timezone setting of server computer
+
+            TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+            DateTime localTime = TimeZoneInfo.ConvertTimeFromUtc(utcTime, tzi); // convert from utc to local
+
+            txtdate.Text = localTime.ToString("yyyy-MM-dd");
+            
             try
             {
-                insert = Request.QueryString["insert"].ToString();
+                
+                insert = (Request.QueryString["insert"]??"").ToString();
                 if (insert == "success")
                 {
                     Panel2.Visible = true;
@@ -96,6 +105,7 @@ public partial class Sale_estimate_report : System.Web.UI.Page
 
     protected void DeleteSale(object sender, EventArgs e)
     {
+       
         SqlCommand cmd = new SqlCommand("select * from tbl_admin_login", conn);
         SqlDataAdapter adapt = new SqlDataAdapter(cmd);
         DataTable dt = new DataTable();
@@ -108,19 +118,77 @@ public partial class Sale_estimate_report : System.Web.UI.Page
         {
             String invoiceno = ((sender as LinkButton).NamingContainer.FindControl("lbl_invoice") as Label).Text;
      
-        using (SqlCommand cmd2 = new SqlCommand("select * from tbl_estimate where est_invoice_no='" + invoiceno + "'", conn))
-        {
+        //using (SqlCommand cmd2 = new SqlCommand("select * from tbl_estimate where est_invoice_no='" + invoiceno + "'", conn))
+        //{
 
-            SqlDataAdapter adapt2 = new SqlDataAdapter(cmd2);
-            DataTable dt2 = new DataTable();
-            adapt2.Fill(dt2);
-            if (dt2.Rows.Count > 0)
+        //    SqlDataAdapter adapt2 = new SqlDataAdapter(cmd2);
+        //    DataTable dt2 = new DataTable();
+        //    adapt2.Fill(dt2);
+        //    if (dt2.Rows.Count > 0)
+        //    {
+        //        bal =Convert.ToDecimal(dt2.Rows[0]["est_balance"]);
+        //        c_id = Convert.ToInt32(dt2.Rows[0]["c_id"]);
+
+        //    }
+        //}
+
+
+
+
+            using (SqlCommand cmd2 = new SqlCommand("select * from tbl_estimate_details where es_invoice_no='" + invoiceno + "'", conn))
             {
-                bal =Convert.ToDecimal(dt2.Rows[0]["est_balance"]);
-                c_id = Convert.ToInt32(dt2.Rows[0]["c_id"]);
+                SqlDataAdapter adapt2 = new SqlDataAdapter(cmd2);
+                DataTable dt2 = new DataTable();
+                adapt2.Fill(dt2);
+                if (dt2.Rows.Count > 0)
+                {
 
+                    foreach (DataRow row in dt2.Rows)
+                    {
+
+                        bal = Convert.ToDecimal(row["es_balance"]);
+                        c_id = Convert.ToInt32(row["c_id"]);
+                        qty = Convert.ToDecimal(row["es_quantity"]);
+                        product_name = Convert.ToString(row["es_product_name"]);
+                        materialId = Convert.ToInt32(row["es_material"]);
+
+
+
+                        SqlCommand cmd33 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock = p_stock + @Quantity WHERE p_id = @materialId AND p_id = (SELECT TOP 1 p_id FROM tbl_purchase_product WHERE p_id = @materialId)", conn);
+                        cmd33.Parameters.AddWithValue("@Quantity", qty);
+                        cmd33.Parameters.AddWithValue("@ProductName", Convert.ToString(product_name));
+                        cmd33.Parameters.AddWithValue("@materialId", Convert.ToString(materialId));
+
+
+                        conn.Open();
+                        cmd33.ExecuteNonQuery();
+                        conn.Close();
+
+                        decimal QuantityUsedStock = -qty;
+                        //SqlCommand cmd34 = new SqlCommand("UPDATE tbl_used_stock SET quanity=quanity+('" + qty + "') WHERE p_name='" + Convert.ToString(product_name) + "'", conn);
+
+                        //conn.Open();
+                        //cmd34.ExecuteNonQuery();
+                        //conn.Close();
+                        SqlCommand cmd44 = new SqlCommand("insert into tbl_used_stock values(@p_name,@date,@sqrft,@quantity)", conn);
+                        cmd44.Parameters.AddWithValue("@p_name", Convert.ToString(product_name));
+                        cmd44.Parameters.AddWithValue("@date", Convert.ToDateTime(txtdate.Text).ToString("MM/dd/yyyy"));
+                        cmd44.Parameters.AddWithValue("@sqrft", qty);
+                        cmd44.Parameters.AddWithValue("@quantity", QuantityUsedStock);
+
+                        conn.Open();
+                        cmd44.ExecuteNonQuery();
+                        conn.Close();
+
+                    }
+
+
+                }
             }
-        }
+
+
+
+
             using (SqlCommand cmd3 = new SqlCommand("update tbl_customer set c_opening_balance=c_opening_balance- '" + bal + "' where c_id='" + c_id + "'", conn))
             {
                 conn.Open();
@@ -269,17 +337,20 @@ public partial class Sale_estimate_report : System.Web.UI.Page
             {
                 tr.Text = "Paid";
                 tr.Attributes.Add("class", "label label-success");
-            }
+				e.Item.FindControl("LinkButton2").Visible = false;
+			}
             else if (balance == total)
             {
                 tr.Text = "UnPaid";
                 tr.Attributes.Add("class", "label label-danger");
-            }
+				e.Item.FindControl("LinkButton2").Visible = true;
+			}
             else
             {
                 tr.Text = "Partially";
                 tr.Attributes.Add("class", "label label-warning");
-            }
+				e.Item.FindControl("LinkButton2").Visible = false;
+			}
 
         }
 

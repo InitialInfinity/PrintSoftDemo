@@ -37,7 +37,7 @@
            <a href="../Quotation/without_gst_quotation.aspx"><button type="button" id="btn_mail"  title="Create New Invoice" class="btn btnsqr btn-primary4 btngap"> <i class="fa fa-plus"></i>Add Quote</button></a>
           <button type="button" id="btn_excel" title="Export to Excel" runat="server" class="btn btnsqr btn-primary3 btngap" onserverclick="excel_export"> <i class="fa fa-file-excel-o"></i> Excel</button>
            
-        <button type="button" id="btn_print" title="Print" onclick="printdiv('dropHere');" class="btn btnsqr btn-primary"> <i class="fa fa-print"></i> Print</button>
+        <button type="button" id="btn_print" title="Print" onclick="checkDataAndPrint();" class="btn btnsqr btn-primary"> <i class="fa fa-print"></i> Print</button>
      <button type="button" id="btn_pdf" title="Export to PDF" runat="server"  class="btn btnsqr btn-primary2" onserverclick="pdf_export"> <i class="fa fa-file-pdf-o"></i> PDF</button>
        
         
@@ -79,9 +79,9 @@
                   <asp:Panel ID="Panel1" runat="server">
                      
                         <td class="no-print" id="tbltextbox" runat="server">
-                  <asp:LinkButton ID="LinkButton1" runat="server" OnClientClick="return confirm('Do you want to delete this Without GST Quotation?');" OnClick="DeleteSale"><i  class="fa fa-trash-o"></i></asp:LinkButton>
+                  <asp:LinkButton ID="LinkButton1" runat="server" style="display:none" OnClientClick="return confirm('Do you want to delete this Without GST Quotation?');" OnClick="DeleteSale"><i  class="fa fa-trash-o"></i></asp:LinkButton>
                  <a href="../Quotation/wgst_bill.aspx?invoice=<%# Eval("quw_invoice_no") %>"><i style="padding-left:10px" class="fa fa-eye"></i></i></a>
-                 <a href=""> <i style="padding-left:10px" class="fa fa-edit"></i></a>
+                 <a href="" style="display:none"> <i style="padding-left:10px" class="fa fa-edit"></i></a>
                      
                   </td>
                       </asp:Panel>
@@ -161,5 +161,18 @@ function printdiv(dropHere) {
     @page { margin: 0; }
   }
     </style>
+    <script type="text/javascript">
+        function checkDataAndPrint() {
+            // Get the grid element
+            var table = document.getElementById('example1');
+
+            // Check if there are any rows in the table (excluding the header row)
+            if (table.rows.length > 3) {
+                printdiv('dropHere');
+            } else {
+                alert("No data to print");
+            }
+        }
+    </script>
 </asp:Content>
 

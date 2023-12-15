@@ -7,7 +7,35 @@
             display:none;
         }
 </style>
+     <script type="text/javascript">
 
+         var isSubmitted = false;
+
+         function preventMultipleSubmissions() {
+
+             if (!isSubmitted) {
+
+                 $('#<%=Btn_generate_pdf.ClientID %>').val('Submitting.. Plz Wait..');
+
+                 isSubmitted = true;
+
+                 return true;
+
+             }
+
+             else {
+
+                 return false;
+
+             }
+
+         }
+
+
+
+
+
+     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
         <!-- Content Wrapper. Contains page content -->
@@ -65,11 +93,11 @@
                                 </div>
                                 <div class="form-group row">
                                     <label class="control-label text-right col-md-3">Invoice Date</label>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <asp:TextBox ID="Txt_invoice_date" class="form-control" runat="server" TextMode="SingleLine"></asp:TextBox>
                                     </div>
-                                    <label class="control-label text-right col-md-3">Due Date</label>
-                                    <div class="col-md-3">
+                                    <label class="control-label text-right col-md-2">Due Date</label>
+                                    <div class="col-md-2">
                                         <asp:TextBox ID="Txt_due_date" class="form-control" runat="server" TextMode="SingleLine"></asp:TextBox>
                                     </div>
                                 </div>
@@ -110,16 +138,16 @@
                                 </div>
 
                                 <table class="table">
-                                    <asp:Panel ID="Panel1" runat="server">
+                                    <%--<asp:Panel ID="Panel1" runat="server">
                                     <thead>
                                         <tr>
 
-                                            <th scope="col">Height</th>
-                                            <th scope="col">Width</th>
+                                            <th scope="col">Height<span style="color:red;">*</span></th>
+                                            <th scope="col">Length<span style="color:red;">*</span></th>
                                             <th scope="col">Size</th>
                                             <th scope="col">Rate</th>
                                             <th scope="col">Amount</th>
-                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Quantity<span style="color:red;">*</span></th>
                                             <th scope="col">Total</th>
                                         </tr>
                                     </thead>
@@ -148,12 +176,12 @@
                                     <thead>
                                         <tr>
 
-                                            <th scope="col">Height</th>
-                                            <th scope="col">Width</th>
+                                            <th scope="col">Height<span style="color:red;">*</span></th>
+                                            <th scope="col">Length<span style="color:red;">*</span></th>
                                             <th scope="col">Size</th>
                                             <th scope="col">Rate</th>
                                             <th scope="col">Amount</th>
-                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Quantity<span style="color:red;">*</span></th>
                                             <th scope="col">Total</th>
                                         </tr>
                                     </thead>
@@ -177,7 +205,84 @@
                                         </tr>
 
                                     </tbody>
+                                    </asp:Panel>--%>
+                                     <asp:Panel ID="Panel1" runat="server">
+                                    <thead>
+                                            <tr>
+
+                                                 <th scope="col"  style="display:none">Height</th>
+                                            <th scope="col"  style="display:none">Width</th>
+                                            <th scope="col"  style="display:none">Size</th>
+                                                <th scope="col">Rate</th>
+                                                <th scope="col"  style="display:none">Amount</th>
+                                                <th scope="col">Quantity<span style="color:red;">*</span></th>
+                                                <th scope="col">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+
+                                                  <td style="display:none">
+                                                <asp:TextBox ID="txt_height" OnkeyUp="sqrft(); rate();quan_amount(); gst();" onchange="sqrft(); rate();quan_amount(); gst();" class="form-control" runat="server" TextMode="Number"   min="0" TabIndex="6"></asp:TextBox></td>   
+                                            <td  style="display:none">
+                                                <asp:TextBox ID="txt_width" OnkeyUp="sqrft(); rate();quan_amount(); gst();" onchange="sqrft(); rate();quan_amount(); gst();" class="form-control" runat="server" TextMode="Number"  min="0" TabIndex="7"></asp:TextBox></td>
+                                            <td  style="display:none">
+                                                <asp:TextBox ID="txt_sqrft" onkeydown="javascript:return false" OnkeyUp="sqrft(); rate();quan_amount(); gst();" onchange="sqrft(); rate();quan_amount(); gst();" class="form-control" runat="server" TextMode="Number" TabIndex="8"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_rate" Onkeyup="sqrft(); rate();quan_amount(); gst();" onchange="sqrft(); rate();quan_amount(); gst();" class="form-control" runat="server" TabIndex="9"></asp:TextBox></td>
+                                                 <td  style="display:none">
+                                                <asp:TextBox ID="txt_amount" class="form-control" runat="server" TextMode="Number" TabIndex="10"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_quantity"    OnkeyUp="sqrft(); rate();quan_amount(); gst();" onchange="sqrft(); rate();quan_amount(); gst();"  min="0" class="form-control" runat="server" TextMode="Number" TabIndex="11"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_total_amt" onkeydown="javascript:return false" onkeyup="gst();" onchange="gst();" class="form-control" runat="server"  TabIndex="11"></asp:TextBox></td>
+                                            </tr>
+
+                                        </tbody>
                                     </asp:Panel>
+                                    <asp:Panel ID="Panel2" runat="server">
+                                     <thead>
+                                            <tr>
+
+                                                <th scope="col"  style="display:none">Height</th>
+                                                <th scope="col"  style="display:none">Width</th>
+                                                <th scope="col" style="display:none">Size</th>
+                                                <th scope="col">Rate</th>
+                                                <th scope="col" style="display:none">Amount</th>
+                                                <th scope="col">Quantity<span style="color:red;">*</span></th>
+                                                <th scope="col">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                  <td>
+                                                    <asp:TextBox ID="txt_rate2" Onkeyup="quan_amount2(); gst();" onchange="quan_amount2(); gst();" class="form-control" runat="server" ></asp:TextBox>
+
+                                                  </td>
+                                                 <td>
+                                                    <asp:TextBox ID="txt_quantity2"   OnkeyUp="quan_amount2(); gst();" onchange="quan_amount2(); gst();" class="form-control" runat="server" TextMode="Number"  min="0"></asp:TextBox>
+
+                                                 </td>
+                                                 <td>
+                                                    <asp:TextBox ID="txt_total_amt2" onkeydown="javascript:return false" onkeyup="gst();" onchange="gst();" class="form-control" runat="server" ></asp:TextBox>
+
+                                                 </td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_height2" style="display:none" class="form-control" runat="server" TextMode="Number"  min="0"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_width2" style="display:none" class="form-control" runat="server" TextMode="Number"  min="0"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_sqrft2" onkeydown="javascript:return false" style="display:none" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                              
+                                                <td>
+                                                    <asp:TextBox ID="txt_amount2" onkeydown="javascript:return false" style="display:none" class="form-control" runat="server" ></asp:TextBox></td>
+                                               
+                                               
+                                            </tr>
+
+                                        </tbody>
+                                    </asp:Panel>
+
                                 </table>
                                 
                                 <table class="table">
@@ -196,14 +301,14 @@
                                         <tr>
 
                                             <td>
-                                                <asp:TextBox ID="txt_cgst" class="form-control" OnkeyUp="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " onchange="quan_amount2(); sqrft(); rate(); quan_amount(); gst();" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_cgst" class="form-control" OnkeyUp="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " onchange="quan_amount2(); sqrft(); rate(); quan_amount(); gst();" runat="server" TextMode="Number"  min="0"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_sgst" class="form-control" OnkeyUp="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " onchange="quan_amount2(); sqrft(); rate(); quan_amount(); gst();" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_sgst" class="form-control" OnkeyUp="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " onchange="quan_amount2(); sqrft(); rate(); quan_amount(); gst();" runat="server" TextMode="Number"  min="0"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_igst" class="form-control" OnkeyUp="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " onchange="quan_amount2(); sqrft(); rate(); quan_amount(); gst();" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_igst" class="form-control" OnkeyUp="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " onchange="quan_amount2(); sqrft(); rate(); quan_amount(); gst();" runat="server" TextMode="Number"  min="0"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_final_amt" class="form-control" runat="server"></asp:TextBox></td>
-                                            <td><asp:Button ID="Btn_cart" class="btn btn-primary pull-right" Style="margin-right: 5px;" runat="server" Text="Add to Cart" OnClick="Btn_cart_Click" /></td>
+                                                <asp:TextBox ID="txt_final_amt"  onkeydown="javascript:return false" class="form-control" runat="server"></asp:TextBox></td>
+                                            <td><asp:Button ID="Btn_cart" class="btn btn-primary pull-right" Style="margin-right: 5px;" runat="server" OnClientClick="return JSFunctionValidate4();" Text="Add to Cart" OnClick="Btn_cart_Click" /></td>
                                            
                                         </tr>
 
@@ -285,17 +390,17 @@
                                                     <tr>
                                                         <th>Shipping:</th>
                                                         <td>
-                                                            <asp:TextBox ID="Txt_shipping" onkeyup="final_total();" onchange="final_total();" class="form-control" runat="server"  TextMode="Number"></asp:TextBox></td>
+                                                            <asp:TextBox ID="Txt_shipping" onkeyup="final_total();" onchange="final_total();" class="form-control" runat="server"  TextMode="Number"  min="0"></asp:TextBox></td>
                                                     </tr>
                                                     <tr>
                                                         <th>Adjustment:</th>
                                                         <td>
-                                                            <asp:TextBox ID="Txt_adjustment" onkeyup="final_total();" onchange="final_total();"  class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                            <asp:TextBox ID="Txt_adjustment" onkeyup="final_total();" onchange="final_total();"  class="form-control" runat="server" TextMode="Number"  min="0"></asp:TextBox></td>
                                                     </tr>
                                                     <tr>
                                                         <th>Discount:</th>
                                                         <td>
-                                                            <asp:TextBox ID="Txt_discount" onkeyup="final_total();" onchange="final_total();"  class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                            <asp:TextBox ID="Txt_discount" onkeyup="final_total();" onchange="final_total();"  class="form-control" runat="server" TextMode="Number"  min="0"></asp:TextBox></td>
                                                     </tr>
                                                     <tr>
                                                         <th>Total:</th>
@@ -319,10 +424,10 @@
 
                                 <!-- this row will not appear when printing -->
                                 <div class="row no-print">
-                                    <div class="col-lg-12">
+                                    <div class="col-lg-10 py-2 ml-5">
                                         <asp:Label ID="Lbl_message"  runat="server" Text=""></asp:Label>
                                         
-                                        <asp:Button ID="Btn_generate_pdf" class="btn btn-primary pull-right" Style="margin-right: 5px;" runat="server" Text="Update Invoice" OnClick="Btn_generate_pdf_Click" />
+                                        <asp:Button ID="Btn_generate_pdf" OnClientClick="return JSFunctionValidate();" class="btn btn-primary pull-right" Style="margin-right: 5px;" runat="server" Text="Update Invoice" OnClick="Btn_generate_pdf_Click" />
                                         
 
                                     </div>
@@ -384,11 +489,15 @@
          
 
         function quan_amount() {
-            var amt = document.getElementById('<%=txt_amount.ClientID %>');
+            //var amt = document.getElementById('<%=txt_amount.ClientID %>');
+            var rate = document.getElementById('<%=txt_rate.ClientID %>');
             var quantity = document.getElementById('<%=txt_quantity.ClientID %>');
            var total = document.getElementById('<%=txt_total_amt.ClientID %>');
-            if (amt == null) {
-                amt = 0;
+            //if (amt == null) {
+            //    amt = 0;
+            //}
+            if (rate == null) {
+                rate = 0;
             }
             if (quantity == null) {
                 quantity = 0;
@@ -396,7 +505,7 @@
             if (total == null) {
                 total = 0;
             }
-            var total_amount = (parseFloat(amt.value) * parseFloat(quantity.value))
+            var total_amount = (parseFloat(rate.value) * parseFloat(quantity.value))
 
             total.value = total_amount;
 
@@ -496,16 +605,129 @@
             var ship = document.getElementById('<%=Txt_shipping.ClientID %>');
             var adjustment = document.getElementById('<%=Txt_adjustment.ClientID %>');
             var discount = document.getElementById('<%=Txt_discount.ClientID %>');
-           
+
+            var hideamount = (parseFloat(subtotal.value) + parseFloat(ship.value));
          
-            var total_amount = ((parseFloat(subtotal.value) + parseFloat(ship.value) + parseFloat(adjustment.value)) - parseFloat(discount.value));
+            var total_amount = ((parseFloat(subtotal.value) + parseFloat(ship.value) - parseFloat(adjustment.value)) - parseFloat(discount.value));
 
            
             document.getElementById('<%=lbl_total.ClientID %>').innerHTML = total_amount;
-         document.getElementById('<%=hide_total.ClientID %>').value = total_amount;
+            document.getElementById('<%=hide_total.ClientID %>').value = hideamount;
         }
 
-    </script>
+     </script>
+     <script>
+         function JSFunctionValidate() {
+
+
+             if (document.getElementById('<%=Dd_customer.ClientID%>').selectedIndex == 0) {
+        alert("Please Select  Vendor !!!");
+        return false;
+    }
+    if (document.getElementById('<%=Txt_order_no.ClientID%>').value.length == 0) {
+        alert("Please Enter Order no. !!!");
+        return false;
+    }
+    if (document.getElementById('<%=Txt_invoice_date.ClientID%>').value.length == 0) {
+        alert("Please Select Invoice Date !!!");
+        return false;
+    }
+    if (document.getElementById('<%=Txt_due_date.ClientID%>').value.length==0)
+{
+alert("Please Select Due Date !!!");
+return false;
+    }
+
+  
+    if(document.getElementById('<%=Txt_shipping.ClientID%>').value.length==0)
+{
+alert("Please Enter Shipping Charges !!!");
+return false;
+    }
+    if(document.getElementById('<%=Txt_adjustment.ClientID%>').value.length==0)
+{
+alert("Please Enter Adjustment !!!");
+return false;
+    }
+    if(document.getElementById('<%=Txt_discount.ClientID%>').value.length == 0) {
+                 alert("Please Enter Discount !!!");
+                 return false;
+             }
+
+
+             preventMultipleSubmissions();
+
+             return true;
+         }
+
+         function JSFunctionValidate4() {
+
+             var quant2 = document.getElementById('<%=txt_quantity2.ClientID %>');
+              var quant = document.getElementById('<%=txt_quantity.ClientID %>');
+
+              var height2 = document.getElementById('<%=txt_height2.ClientID %>');
+
+              var width2 = document.getElementById('<%=txt_width2.ClientID %>');
+            <%--if (document.getElementById('<%=txt_height.ClientID%>').value == "0") {
+                alert("Height should not be 0  !!!");
+                return false;
+            }
+            if (document.getElementById('<%=txt_width.ClientID%>').value == "0") {
+                alert("Length should  not be 0 !!!");
+                return false;
+            }
+            if (document.getElementById('<%=txt_height2.ClientID%>').value == "0") {
+                alert("Height should not be 0  !!!");
+                return false;
+            }
+            if (document.getElementById('<%=txt_width2.ClientID%>').value == "0") {
+                alert("Length should  not be 0 !!!");
+                return false;
+            }--%>
+
+
+
+            //if (height2 != null) {
+            //    if (height2.value == "0") {
+            //        alert("Height Should NOT BE 0 !!!");
+            //        return false;
+            //    }
+            //}
+
+            //if (width2 != null) {
+            //    if (height2.value == "0") {
+            //        alert("Length should  not be 0 !!!");
+            //        return false;
+            //    }
+            //}
+            if (document.getElementById('<%=Dd_customer.ClientID%>').value == "--Select--") {
+                alert("Please Select Vendor !!!");
+                return false;
+            }
+              if (document.getElementById('<%=Dd_enter_product.ClientID%>').value == "--Select--") {
+                  alert("Please Select Product !!!");
+                  return false;
+              }
+
+              if (quant2 != null) {
+                  if (quant2.value == "0") {
+                      alert("Please Enter Quantity !!!");
+                      return false;
+                  }
+              }
+              if (quant != null) {
+                  if (quant.value == "0") {
+                      alert("Please Enter Quantity !!!");
+                      return false;
+                  }
+              }
+
+
+
+              return true;
+          }
+     </script>
+
 
 </asp:Content>
 

@@ -45,34 +45,62 @@ public partial class Staff_add_staff : System.Web.UI.Page
 
     protected void Btn_submit_Click(object sender, EventArgs e)
     {
-        SqlCommand cmd1 = new SqlCommand("Select * from tbl_staff where st_staff_name='" + Txt_staff_name.Text.Trim() + "'", conn);
+        SqlCommand cmd1 = new SqlCommand("Select * from tbl_staff where st_contact='" + Txt_contact.Text.Trim() + "'", conn);
 
         SqlDataAdapter adapt1 = new SqlDataAdapter(cmd1);
         DataTable dt1 = new DataTable();
         adapt1.Fill(dt1);
-        
+
         if (dt1.Rows.Count > 0)
         {
-            Lbl_message.Text = "Staff Member Already Exist!!!";
+            //Lbl_message.Text = "Staff Member Already Exist!!!";
+            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Staff Already Exist !!!');", true);
         }
         else
         {
-            SqlCommand cmd = new SqlCommand("insert into tbl_staff values(@st_staff_name,@st_address,@st_contact,@st_dob,@st_gender,@st_designation,@st_salary,@st_balance,@st_joining_date,@st_left_date)", conn);
-            cmd.Parameters.AddWithValue("@st_staff_name", Txt_staff_name.Text);
-            cmd.Parameters.AddWithValue("@st_address", Txt_address.Text);
-            cmd.Parameters.AddWithValue("@st_contact", Txt_contact.Text);
-            cmd.Parameters.AddWithValue("@st_dob", Txt_dob.Text);
-            cmd.Parameters.AddWithValue("@st_gender", Dd_gender.Text);
-            
-            cmd.Parameters.AddWithValue("@st_designation", Txt_designation.Text);
-            cmd.Parameters.AddWithValue("@st_salary", Txt_salary.Text);
-            cmd.Parameters.AddWithValue("@st_balance", Txt_balance.Text);
-            cmd.Parameters.AddWithValue("@st_joining_date", Txt_joining_date.Text);
-            cmd.Parameters.AddWithValue("@st_left_date", Txt_left_date.Text);
-            conn.Open();
-            cmd.ExecuteNonQuery();
-            conn.Close();
-            Response.Redirect("list_of_staff.aspx?insert=success");
+            if (Txt_left_date.Text == "")
+            {
+                Txt_left_date.Text = null;
+
+
+                SqlCommand cmd = new SqlCommand("insert into tbl_staff values(@st_staff_name,@st_address,@st_contact,@st_dob,@st_gender,@st_designation,@st_salary,@st_balance,@st_joining_date,@st_left_date)", conn);
+                cmd.Parameters.AddWithValue("@st_staff_name", Txt_staff_name.Text);
+                cmd.Parameters.AddWithValue("@st_address", Txt_address.Text);
+                cmd.Parameters.AddWithValue("@st_contact", Txt_contact.Text);
+                cmd.Parameters.AddWithValue("@st_dob", Txt_dob.Text);
+                cmd.Parameters.AddWithValue("@st_gender", Dd_gender.Text);
+
+                cmd.Parameters.AddWithValue("@st_designation", Txt_designation.Text);
+                cmd.Parameters.AddWithValue("@st_salary", Txt_salary.Text);
+                cmd.Parameters.AddWithValue("@st_balance", Txt_balance.Text);
+                cmd.Parameters.AddWithValue("@st_joining_date", Txt_joining_date.Text);
+                //cmd.Parameters.AddWithValue("@st_left_date", Txt_left_date.Text);
+                cmd.Parameters.AddWithValue("@st_left_date", DBNull.Value);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                Response.Redirect("list_of_staff.aspx?insert=success");
+            }
+            else
+            {
+				SqlCommand cmd = new SqlCommand("insert into tbl_staff values(@st_staff_name,@st_address,@st_contact,@st_dob,@st_gender,@st_designation,@st_salary,@st_balance,@st_joining_date,@st_left_date)", conn);
+				cmd.Parameters.AddWithValue("@st_staff_name", Txt_staff_name.Text);
+				cmd.Parameters.AddWithValue("@st_address", Txt_address.Text);
+				cmd.Parameters.AddWithValue("@st_contact", Txt_contact.Text);
+				cmd.Parameters.AddWithValue("@st_dob", Txt_dob.Text);
+				cmd.Parameters.AddWithValue("@st_gender", Dd_gender.Text);
+
+				cmd.Parameters.AddWithValue("@st_designation", Txt_designation.Text);
+				cmd.Parameters.AddWithValue("@st_salary", Txt_salary.Text);
+				cmd.Parameters.AddWithValue("@st_balance", Txt_balance.Text);
+				cmd.Parameters.AddWithValue("@st_joining_date", Txt_joining_date.Text);
+				cmd.Parameters.AddWithValue("@st_left_date", Txt_left_date.Text);
+				
+				conn.Open();
+				cmd.ExecuteNonQuery();
+				conn.Close();
+				Response.Redirect("list_of_staff.aspx?insert=success");
+			}
         }
     }
   

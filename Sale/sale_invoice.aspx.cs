@@ -17,9 +17,9 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
 {
     SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["String"].ConnectionString);
     decimal total_amount = 0, final_total = 0;
-    decimal totalvalue = 0, totalcgst = 0, totalsgst = 0, totaligst = 0, totalgst = 0, totalqty, totaltaxable = 0,finaltotal;
-    string key, country, senderid, route,email,password,port,subject,smtp, com_email;
-    int sms,mail2;
+    decimal totalvalue = 0, totalcgst = 0, totalsgst = 0, totaligst = 0, totalgst = 0, totalqty, totaltaxable = 0, finaltotal, design, advanced, discount, pasting, fitting, transport, framing, installation;
+    string key, country, senderid, route, email, password, port, subject, smtp, com_email;
+    int sms, mail2;
     protected void Page_Load(object sender, EventArgs e)
     {
         Dd_customer.Focus();
@@ -77,6 +77,14 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
 
                     ViewState["Details"] = dataTable;
                 }
+                Txt_Pasting.Text = "0";
+                Txt_TransportCharges.Text = "0";
+                Txt_Dtp_charges.Text = "0";
+                Txt_Fitting.Text = "0";
+                Txt_Framing.Text = "0";
+                Txt_install.Text = "0";
+                Txt_discount.Text = "0";
+                Txt_advance.Text = "0";
             }
         }
         else
@@ -84,8 +92,8 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
             Response.Redirect("../login.aspx");
         }
     }
-  
-   
+
+
     public void customer()
     {
         string query = "select * from tbl_customer Order By c_name asc";
@@ -105,7 +113,7 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
         }
 
     }
-    
+
     public void product()
     {
         string query = "select * from tbl_product Order By p_name asc";
@@ -117,7 +125,7 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
             Dd_enter_product.DataSource = dt;
             Dd_enter_product.DataBind();
             Dd_enter_product.DataTextField = "p_name";
-            
+
             Dd_enter_product.DataValueField = "p_id";
             Dd_enter_product.DataBind();
             Dd_enter_product.Items.Insert(0, new ListItem("--Select--", "--Select--"));
@@ -128,7 +136,7 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
     }
     public void order()
     {
-        SqlCommand cmd = new SqlCommand("select count(sl_invoice_no) from tbl_sale where sl_invoice_date='" +DateTime.Now.ToShortDateString()+"'", conn);
+        SqlCommand cmd = new SqlCommand("select count(sl_invoice_no) from tbl_sale where sl_invoice_date='" + DateTime.Now.ToShortDateString() + "'", conn);
         SqlDataAdapter adapt = new SqlDataAdapter(cmd);
         DataTable dt = new DataTable();
         adapt.Fill(dt);
@@ -200,39 +208,39 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
             DataTable dt = new DataTable();
 
             adapt.Fill(dt);
-      
-                if (dt.Rows.Count > 0)
-                {
+
+            if (dt.Rows.Count > 0)
+            {
                 inv = dt.Rows[0]["sl_invoice_no"].ToString();
-                
-                }
-                else
-                {
+
+            }
+            else
+            {
                 inv = "0";
-                }
-                
-                string letters = string.Empty;
-                string numbers = string.Empty;
+            }
 
-                foreach (char c in inv)
-                {
-                    if (Char.IsNumber(c))
-                    {
-                        numbers += c;
-                    }
-                }
-                i = Convert.ToInt32(numbers);
-                if (i > 0)
-                {
-                    int j = i + 1;
-                    Txt_invoice.Text = "INV-" + j.ToString();
+            string letters = string.Empty;
+            string numbers = string.Empty;
 
-                }
-
-                else
+            foreach (char c in inv)
+            {
+                if (Char.IsNumber(c))
                 {
-                    Txt_invoice.Text = "INV-1";
+                    numbers += c;
                 }
+            }
+            i = Convert.ToInt32(numbers);
+            if (i > 0)
+            {
+                int j = i + 1;
+                Txt_invoice.Text = "INV-" + j.ToString();
+
+            }
+
+            else
+            {
+                Txt_invoice.Text = "INV-1";
+            }
         }
 
         catch (Exception ex)
@@ -244,14 +252,15 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
             conn.Close();
         }
     }
-    
+
     protected void Btn_cart_Click(object sender, EventArgs e)
     {
+        GridView1.Visible = true;
         string str = Dd_enter_product.SelectedItem.Text;
-        
+
         string str2 = txt_quantity.Text.Trim();
         string str3 = txt_rate.Text.Trim();
-       
+
         string str4 = txt_cgst.Text.Trim();
         string str8 = txt_total_amt.Text.Trim();
         string str5 = txt_sgst.Text.Trim();
@@ -302,7 +311,7 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
         // pcs wise data 
         if (str9 == "Pcs")
         {
-            
+
             decimal cgstamount = Convert.ToDecimal(total2) * Convert.ToDecimal(cgst) / 100;
             decimal sgstamount = Convert.ToDecimal(total2) * Convert.ToDecimal(sgst) / 100;
             decimal igstamount = Convert.ToDecimal(total2) * Convert.ToDecimal(igst) / 100;
@@ -333,7 +342,13 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
 
 
             GridView1.DataBind();
-            
+
+            //BoundField newColumn = new BoundField();
+
+            //newColumn.DataField = "Product";
+            //newColumn.HeaderText = "Action";
+
+            //GridView1.Columns.Add(newColumn);
             decimal a = 0, b = 0, c = 0;
 
             for (int i = 0; i < (GridView1.Rows.Count); i++)
@@ -478,7 +493,7 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
         }
         else
         {
-            
+
             decimal cgstamount = Convert.ToDecimal(total) * Convert.ToDecimal(cgst) / 100;
             decimal sgstamount = Convert.ToDecimal(total) * Convert.ToDecimal(sgst) / 100;
             decimal igstamount = Convert.ToDecimal(total) * Convert.ToDecimal(igst) / 100;
@@ -508,7 +523,7 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
             GridView1.EmptyDataText = "Material";
 
             GridView1.DataBind();
-            
+
 
             decimal a = 0, b = 0, c = 0;
 
@@ -519,6 +534,50 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
             }
             this.clear();
         }
+
+        //Txt_description.Text = "";
+        //txt_height.Text = "0";
+        //txt_height2.Text = "0";
+        //txt_width.Text = "0";
+        //txt_width2.Text = "0";
+        //txt_sqrft.Text = "0";
+        //txt_sqrft2.Text = "0";  
+        //txt_quantity.Text = "0";
+        //txt_quantity2.Text = "0";
+        //txt_cgst.Text = "0";
+        //txt_igst.Text = "0";
+        //txt_sgst.Text = "0";
+        //txt_amount.Text = "0";
+        //txt_amount2.Text = "0";
+
+
+
+
+        product();
+        material1();
+        txt_height.Text = "0";
+        txt_width.Text = "0";
+        txt_sqrft.Text = "0";
+        txt_rate.Text = "0";
+        txt_rate2.Text = "0";
+        txt_height2.Text = "0";
+        txt_width2.Text = "0";
+        txt_sqrft2.Text = "0";
+
+        txt_amount.Text = "0";
+        txt_amount2.Text = "0";
+        txt_quantity.Text = "0";
+        txt_quantity2.Text = "0";
+        txt_total_amt.Text = "0";
+        txt_total_amt2.Text = "0";
+
+        txt_cgst.Text = "0";
+        txt_igst.Text = "0";
+        txt_sgst.Text = "0";
+        txt_final_amt.Text = "0";
+        lbl_available.Text = "";
+        GridView1.Visible = true;
+        // lbl_available.Text = "";
     }
 
     protected void clear()
@@ -529,7 +588,7 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
         txt_width.Text = "";
         txt_height.Text = "";
         txt_sqrft.Text = "";
-        txt_rate.Text = "";
+
         txt_amount.Text = "";
         txt_width.Text = "";
         txt_quantity.Text = "";
@@ -537,7 +596,7 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
         txt_height2.Text = "";
         txt_width2.Text = "";
         txt_sqrft2.Text = "";
-        txt_rate2.Text = "";
+
         txt_amount2.Text = "";
         txt_quantity2.Text = "";
         txt_total_amt2.Text = "";
@@ -549,23 +608,24 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
 
     protected void GridView1_DataBound(object sender, EventArgs e)
     {
-     
+
     }
-    int total = 0, indexofcolumn=1;
+    int total = 0, indexofcolumn = 1;
     protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         TableCell cell = e.Row.Cells[0];
         e.Row.Cells.RemoveAt(0);
-        e.Row.Cells.Add(cell);  
+        e.Row.Cells.Add(cell);
         if (e.Row.Cells.Count > indexofcolumn)
         {
-            e.Row.Cells[2].Visible = false;
-            e.Row.Cells[3].Visible = false;
-            e.Row.Cells[13].Visible = false;
-            e.Row.Cells[14].Visible = false;
-            e.Row.Cells[15].Visible = false;
-            e.Row.Cells[16].Visible = false;
-            e.Row.Cells[17].Visible = false;
+            //e.Row.Cells[2].Visible = false;
+            //e.Row.Cells[3].Visible = false;
+            //e.Row.Cells[13].Visible = false;
+            //e.Row.Cells[14].Visible = false;
+            //e.Row.Cells[15].Visible = false;
+            //e.Row.Cells[16].Visible = false;
+            //e.Row.Cells[17].Visible = false;
+            //e.Row.Cells[18].Visible = false;
 
         }
         //Check if the current row is datarow or not
@@ -582,12 +642,52 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
         }
         if (e.Row.RowType == DataControlRowType.Footer)
         {
-            totalgst = totalcgst + totalsgst + totaligst; 
+            totalgst = totalcgst + totalsgst + totaligst;
             //Find the control label in footer 
             Label lblamount = (Label)e.Row.FindControl("lbl_subtotal");
             //Assign the total value to footer label control
             lbl_subtotal.Text = totaltaxable.ToString();
             lbl_subtotal2.Value = totaltaxable.ToString();
+
+
+            if (Txt_advance.Text != "" && Txt_Pasting.Text != "" && Txt_Fitting.Text != "" && Txt_TransportCharges.Text != "" && Txt_Dtp_charges.Text != "" && Txt_Framing.Text != "" && Txt_install.Text != "")
+            {
+
+                pasting = Convert.ToDecimal(Txt_Pasting.Text);
+                transport = Convert.ToDecimal(Txt_TransportCharges.Text);
+                design = Convert.ToDecimal(Txt_Dtp_charges.Text);
+                fitting = Convert.ToDecimal(Txt_Fitting.Text);
+                framing = Convert.ToDecimal(Txt_Framing.Text);
+                installation = Convert.ToDecimal(Txt_install.Text);
+
+                discount = Convert.ToDecimal(Txt_discount.Text);
+                advanced = Convert.ToDecimal(Txt_advance.Text);
+
+                decimal total1 = (totalvalue + pasting + transport + design + fitting + framing + installation - discount - advanced);
+                decimal final = (totalvalue + pasting + transport + design + fitting + framing + installation);
+                lbl_final.Text = final.ToString();
+                lbl_total.Text = total1.ToString();
+                hide_total.Text = final.ToString();
+            }
+            else
+            {
+                fitting = 0;
+                discount = 0;
+                advanced = 0;
+                pasting = 0;
+                transport = 0;
+                design = 0;
+                framing = 0;
+                installation = 0;
+                decimal total1 = (totalvalue + pasting + transport + design + fitting + framing + installation - discount - advanced);
+                decimal final = (totalvalue + pasting + transport + design + fitting + framing + installation);
+                lbl_final.Text = final.ToString();
+                lbl_total.Text = total1.ToString();
+                hide_total.Text = final.ToString();
+            }
+
+
+
 
             //Assign the total value to footer label control
             lbl_gst.Text = totalgst.ToString();
@@ -598,14 +698,14 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
             lbl_total_igst.Value = totaligst.ToString();
             lbl_total_taxable.Value = totaltaxable.ToString();
         }
-        
+
     }
 
     protected void Dd_enter_product_SelectedIndexChanged(object sender, EventArgs e)
     {
-        
-        string rate, cgst, igst, sgst,hsn,unit,desc;
-        SqlCommand cmd = new SqlCommand("select * from tbl_product where p_id ='"+Dd_enter_product.SelectedValue+"'", conn);
+
+        string rate, cgst, igst, sgst, hsn, unit, desc;
+        SqlCommand cmd = new SqlCommand("select * from tbl_product where p_id ='" + Dd_enter_product.SelectedValue + "'", conn);
         SqlDataAdapter adapt = new SqlDataAdapter(cmd);
         DataTable dt = new DataTable();
 
@@ -613,7 +713,7 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
         if (dt.Rows.Count > 0)
         {
             //customer wise rate system code here 
-            SqlCommand cmd3 = new SqlCommand("select * from tbl_rate where p_name='"+Dd_enter_product.SelectedItem.Text+"' AND cust_name='"+Dd_customer.SelectedItem.Text+"'",conn);
+            SqlCommand cmd3 = new SqlCommand("select * from tbl_rate where p_name='" + Dd_enter_product.SelectedItem.Text + "' AND cust_name='" + Dd_customer.SelectedItem.Text + "'", conn);
             SqlDataAdapter adapt3 = new SqlDataAdapter(cmd3);
             DataTable dt3 = new DataTable();
 
@@ -641,20 +741,35 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
                 Panel1.Visible = false;
                 Panel2.Visible = true;
                 txt_rate2.Text = rate;
+                txt_quantity2.Text = "0";
+                txt_sqrft2.Text = "0";
+                txt_width2.Text = "0";
+
+                txt_height2.Text = "0";
+
             }
-           else if (unit == "Ltr")
+            else if (unit == "Ltr")
             {
                 Panel1.Visible = false;
                 Panel2.Visible = true;
                 txt_rate2.Text = rate;
-            }
+                txt_quantity2.Text = "0";
+                txt_sqrft2.Text = "0";
+                txt_width2.Text = "0";
 
-            //packet 
+                txt_height2.Text = "0";
+            }
+            //packet
             else if (unit == "Packet")
             {
                 Panel1.Visible = false;
                 Panel2.Visible = true;
                 txt_rate2.Text = rate;
+                txt_quantity2.Text = "0";
+                txt_sqrft2.Text = "0";
+                txt_width2.Text = "0";
+
+                txt_height2.Text = "0";
             }
             //copy
             else if (unit == "Copy")
@@ -662,26 +777,37 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
                 Panel1.Visible = false;
                 Panel2.Visible = true;
                 txt_rate2.Text = rate;
+                txt_width2.Text = "0";
+
+                txt_height2.Text = "0";
+                txt_quantity2.Text = "0";
+                txt_sqrft2.Text = "0";
             }
+
+
             else
             {
                 Panel1.Visible = true;
                 Panel2.Visible = false;
                 txt_rate.Text = rate;
+                txt_width.Text = "0";
+                txt_height.Text = "0";
+                txt_quantity.Text = "0";
+                txt_sqrft.Text = "0";
             }
-            
+
             txt_cgst.Text = cgst;
             txt_sgst.Text = sgst;
             txt_igst.Text = igst;
-            
+
             Txt_description.Text = desc;
 
             lbl_product_hsn.Value = hsn;
             lbl_unit.Value = unit;
 
-         
+
         }
-       
+
 
     }
 
@@ -705,7 +831,26 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
         }
 
     }
+    public void material1()
+    {
+        string query = "select * from tbl_purchase_product Order By p_name asc";
+        SqlDataAdapter adapt5 = new SqlDataAdapter(query, conn);
+        DataTable dt6 = new DataTable();
+        adapt5.Fill(dt6);
+        if (dt6.Rows.Count > 0)
+        {
+            Dd_material.DataSource = dt6;
+            Dd_material.DataBind();
+            Dd_material.DataTextField = "p_name";
 
+            Dd_material.DataValueField = "p_id";
+            Dd_material.DataBind();
+            Dd_material.Items.Insert(0, new ListItem("--Select--", "--Select--"));
+            Dd_material.SelectedItem.Selected = false;
+            Dd_material.Items.FindByText("--Select--").Selected = true;
+        }
+
+    }
     protected void Dd_material_SelectedIndexChanged(object sender, EventArgs e)
     {
 
@@ -726,690 +871,766 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
 
     private bool dataEntry()
     {
-        
-        bool isTrue=true;
+       
+        bool isTrue = true;
         try
         {
-            
-        decimal new_balance;
-        finaltotal = Math.Round(Convert.ToDecimal(hide_total.Text));
-        new_balance = finaltotal - Convert.ToDecimal(Txt_advance.Text) - Convert.ToDecimal(Txt_discount.Text);
-        if (GridView1.Rows.Count == 0)
-        {
-            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Please Add Products First !!!');", true);
-        }
-        else
-        {
-            
-                int rowscount = GridView1.Rows.Count;
 
-                for (int i = 0; i < rowscount; i++)
+            decimal new_balance;
+            finaltotal = Math.Round(Convert.ToDecimal(hide_total.Text));
+            new_balance = finaltotal - Convert.ToDecimal(Txt_advance.Text) - Convert.ToDecimal(Txt_discount.Text);
+            if (GridView1.Rows.Count == 0)
+            {
+                System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Please Add Products First !!!');", true);
+            }
+            else
+            {
+
+                SqlCommand cmd22 = new SqlCommand("Select * from tbl_sale where sl_invoice_no=@sl_invoice_no", conn);
+                cmd22.Parameters.AddWithValue("@sl_invoice_no", Convert.ToString(Txt_invoice.Text));
+                SqlDataAdapter adapt22 = new SqlDataAdapter(cmd22);
+                DataTable dt22 = new DataTable();
+                adapt22.Fill(dt22);
+
+                if (dt22.Rows.Count == 0)
                 {
-                    if (GridView1.Rows[i].Cells[2].Text == "&nbsp;")
+                    int rowscount = GridView1.Rows.Count;
+
+                    for (int i = 0; i < rowscount; i++)
                     {
-                        SqlCommand cmd = new SqlCommand("insert into tbl_sale_invoice values(@s_invoice_no,@s_date,@c_id,@s_order_no,@s_invoice_date,@s_due_date,@s_product_name,@s_quantity,@s_total_quantity,@s_rate,@s_discount,@s_cgstp,@s_cgsta,@s_sgstp,@s_sgsta,@s_igstp,@s_igsta,@s_amount,@s_sub_total,@s_total_gst,@s_shipping_charges,@s_adjustment,@s_total,@s_stotal,@s_hsn,@s_unit,@s_desc,@s_height,@s_width,@s_size,@s_samount,@s_total_cgst,@s_total_sgst,@s_total_igst,@s_total_taxable,@s_balance,@s_dtp_charges,@s_fitting_charges,@s_payment_method,@drp_designer,@s_transaction_type,@s_cess,@s_material,@s_pasting_charges,@s_framing_charges,@s_installation_charges,@s_upichqno)", conn);
-                        cmd.Parameters.AddWithValue("@s_invoice_no", Convert.ToString(Txt_invoice.Text));
-                        cmd.Parameters.AddWithValue("@s_date", Convert.ToDateTime(DateTime.Now.ToShortDateString()).ToString("MM/dd/yyyy"));
-                        cmd.Parameters.AddWithValue("@c_id", Convert.ToString(Dd_customer.SelectedValue));
-                        cmd.Parameters.AddWithValue("@s_order_no", Convert.ToString(Txt_order_no.Text));
-                        cmd.Parameters.AddWithValue("@s_invoice_date", Convert.ToDateTime(Txt_invoice_date.Text).ToString("MM/dd/yyyy"));
-                        cmd.Parameters.AddWithValue("@s_due_date", Convert.ToDateTime(Txt_due_date.Text).ToString("MM/dd/yyyy"));
-                        cmd.Parameters.AddWithValue("@s_product_name", Convert.ToString(GridView1.Rows[i].Cells[0].Text));
-                        cmd.Parameters.AddWithValue("@s_quantity", Convert.ToDecimal(GridView1.Rows[i].Cells[7].Text));
-                        cmd.Parameters.AddWithValue("@s_unit", Convert.ToString(GridView1.Rows[i].Cells[17].Text));
-                        cmd.Parameters.AddWithValue("@s_total_quantity", Convert.ToDecimal(lbl_totalqty.Text));
-                        cmd.Parameters.AddWithValue("@s_rate", Convert.ToDecimal(GridView1.Rows[i].Cells[5].Text));
-                        cmd.Parameters.AddWithValue("@s_discount", Convert.ToDecimal(Txt_discount.Text));
-                        cmd.Parameters.AddWithValue("@s_cgstp", Convert.ToDecimal(GridView1.Rows[i].Cells[13].Text));
-                        cmd.Parameters.AddWithValue("@s_cgsta", Convert.ToDecimal(GridView1.Rows[i].Cells[9].Text));
-                        cmd.Parameters.AddWithValue("@s_sgstp", Convert.ToDecimal(GridView1.Rows[i].Cells[14].Text));
-                        cmd.Parameters.AddWithValue("@s_sgsta", Convert.ToDecimal(GridView1.Rows[i].Cells[10].Text));
-                        cmd.Parameters.AddWithValue("@s_igstp", Convert.ToDecimal(GridView1.Rows[i].Cells[15].Text));
-                        cmd.Parameters.AddWithValue("@s_igsta", Convert.ToDecimal(GridView1.Rows[i].Cells[11].Text));
-                        cmd.Parameters.AddWithValue("@s_amount", Convert.ToDecimal(GridView1.Rows[i].Cells[12].Text));
-                        cmd.Parameters.AddWithValue("@s_sub_total", Convert.ToDecimal(lbl_subtotal.Text));
-                        cmd.Parameters.AddWithValue("@s_total_gst", Convert.ToDecimal(lbl_gst.Text));
+                        if (GridView1.Rows[i].Cells[2].Text == "&nbsp;")
+                        {
+                            SqlCommand cmd = new SqlCommand("insert into tbl_sale_invoice values(@s_invoice_no,@s_date,@c_id,@s_order_no,@s_invoice_date,@s_due_date,@s_product_name,@s_quantity,@s_total_quantity,@s_rate,@s_discount,@s_cgstp,@s_cgsta,@s_sgstp,@s_sgsta,@s_igstp,@s_igsta,@s_amount,@s_sub_total,@s_total_gst,@s_shipping_charges,@s_adjustment,@s_total,@s_stotal,@s_hsn,@s_unit,@s_desc,@s_height,@s_width,@s_size,@s_samount,@s_total_cgst,@s_total_sgst,@s_total_igst,@s_total_taxable,@s_balance,@s_dtp_charges,@s_fitting_charges,@s_payment_method,@drp_designer,@s_transaction_type,@s_cess,@s_material,@s_pasting_charges,@s_framing_charges,@s_installation_charges,@s_upichqno)", conn);
+                            cmd.Parameters.AddWithValue("@s_invoice_no", Convert.ToString(Txt_invoice.Text));
+                            cmd.Parameters.AddWithValue("@s_date", Convert.ToDateTime(DateTime.Now.ToShortDateString()).ToString("MM/dd/yyyy"));
+                            cmd.Parameters.AddWithValue("@c_id", Convert.ToString(Dd_customer.SelectedValue));
+                            cmd.Parameters.AddWithValue("@s_order_no", Convert.ToString(Txt_order_no.Text));
+                            cmd.Parameters.AddWithValue("@s_invoice_date", Convert.ToDateTime(Txt_invoice_date.Text).ToString("MM/dd/yyyy"));
+                            cmd.Parameters.AddWithValue("@s_due_date", Convert.ToDateTime(Txt_due_date.Text).ToString("MM/dd/yyyy"));
+                            cmd.Parameters.AddWithValue("@s_product_name", Convert.ToString(GridView1.Rows[i].Cells[0].Text));
+                            cmd.Parameters.AddWithValue("@s_quantity", Convert.ToDecimal(GridView1.Rows[i].Cells[7].Text));
+                            cmd.Parameters.AddWithValue("@s_unit", Convert.ToString(GridView1.Rows[i].Cells[17].Text));
+                            cmd.Parameters.AddWithValue("@s_total_quantity", Convert.ToDecimal(lbl_totalqty.Text));
+                            cmd.Parameters.AddWithValue("@s_rate", Convert.ToDecimal(GridView1.Rows[i].Cells[5].Text));
+                            cmd.Parameters.AddWithValue("@s_discount", Convert.ToDecimal(Txt_discount.Text));
+                            cmd.Parameters.AddWithValue("@s_cgstp", Convert.ToDecimal(GridView1.Rows[i].Cells[13].Text));
+                            cmd.Parameters.AddWithValue("@s_cgsta", Convert.ToDecimal(GridView1.Rows[i].Cells[9].Text));
+                            cmd.Parameters.AddWithValue("@s_sgstp", Convert.ToDecimal(GridView1.Rows[i].Cells[14].Text));
+                            cmd.Parameters.AddWithValue("@s_sgsta", Convert.ToDecimal(GridView1.Rows[i].Cells[10].Text));
+                            cmd.Parameters.AddWithValue("@s_igstp", Convert.ToDecimal(GridView1.Rows[i].Cells[15].Text));
+                            cmd.Parameters.AddWithValue("@s_igsta", Convert.ToDecimal(GridView1.Rows[i].Cells[11].Text));
+                            cmd.Parameters.AddWithValue("@s_amount", Convert.ToDecimal(GridView1.Rows[i].Cells[12].Text));
+                            cmd.Parameters.AddWithValue("@s_sub_total", Convert.ToDecimal(lbl_subtotal.Text));
+                            cmd.Parameters.AddWithValue("@s_total_gst", Convert.ToDecimal(lbl_gst.Text));
 
-                        if (Txt_TransportCharges.Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@s_shipping_charges", "0");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@s_shipping_charges", Convert.ToDecimal(Txt_TransportCharges.Text));
-                        }
+                            if (Txt_TransportCharges.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@s_shipping_charges", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@s_shipping_charges", Convert.ToDecimal(Txt_TransportCharges.Text));
+                            }
 
-                       
-                        cmd.Parameters.AddWithValue("@s_adjustment", Convert.ToDecimal(Txt_advance.Text));
-                        cmd.Parameters.AddWithValue("@s_total", Convert.ToDecimal(hide_total.Text));
-                        cmd.Parameters.AddWithValue("@s_stotal", Convert.ToDecimal(GridView1.Rows[i].Cells[8].Text));
-                        cmd.Parameters.AddWithValue("@s_hsn", Convert.ToString(GridView1.Rows[i].Cells[1].Text));
-                        cmd.Parameters.AddWithValue("@s_desc", Convert.ToString(GridView1.Rows[i].Cells[16].Text));
-                        cmd.Parameters.AddWithValue("@s_height", "");
-                        cmd.Parameters.AddWithValue("@s_width", "");
-                        cmd.Parameters.AddWithValue("@s_size", "");
-                        cmd.Parameters.AddWithValue("@s_samount", "");
-                        cmd.Parameters.AddWithValue("@s_total_cgst", Convert.ToDecimal(lbl_total_cgst.Value));
-                        cmd.Parameters.AddWithValue("@s_total_sgst", Convert.ToDecimal(lbl_total_sgst.Value));
-                        cmd.Parameters.AddWithValue("@s_total_igst", Convert.ToDecimal(lbl_total_igst.Value));
-                        cmd.Parameters.AddWithValue("@s_total_taxable", Convert.ToDecimal(lbl_total_taxable.Value));
-                        cmd.Parameters.AddWithValue("@s_balance", Convert.ToDecimal(new_balance));
 
-                        if (Txt_Dtp_charges.Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@s_dtp_charges", "0");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@s_dtp_charges", Convert.ToDecimal(Txt_Dtp_charges.Text));
-                        }
+                            cmd.Parameters.AddWithValue("@s_adjustment", Convert.ToDecimal(Txt_advance.Text));
+                            cmd.Parameters.AddWithValue("@s_total", Convert.ToDecimal(hide_total.Text));
+                            cmd.Parameters.AddWithValue("@s_stotal", Convert.ToDecimal(GridView1.Rows[i].Cells[8].Text));
+                            cmd.Parameters.AddWithValue("@s_hsn", Convert.ToString(GridView1.Rows[i].Cells[1].Text));
+                            cmd.Parameters.AddWithValue("@s_desc", Convert.ToString(GridView1.Rows[i].Cells[16].Text));
+                            cmd.Parameters.AddWithValue("@s_height", "");
+                            cmd.Parameters.AddWithValue("@s_width", "");
+                            cmd.Parameters.AddWithValue("@s_size", "");
+                            cmd.Parameters.AddWithValue("@s_samount", "");
+                            cmd.Parameters.AddWithValue("@s_total_cgst", Convert.ToDecimal(lbl_total_cgst.Value));
+                            cmd.Parameters.AddWithValue("@s_total_sgst", Convert.ToDecimal(lbl_total_sgst.Value));
+                            cmd.Parameters.AddWithValue("@s_total_igst", Convert.ToDecimal(lbl_total_igst.Value));
+                            cmd.Parameters.AddWithValue("@s_total_taxable", Convert.ToDecimal(lbl_total_taxable.Value));
+                            cmd.Parameters.AddWithValue("@s_balance", Convert.ToDecimal(new_balance));
 
-                        if (Txt_Fitting.Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@s_fitting_charges", "0");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@s_fitting_charges", Convert.ToDecimal(Txt_Fitting.Text));
-                        }
-                     
-                        cmd.Parameters.AddWithValue("@s_payment_method", Convert.ToString(drp_payment.SelectedItem.Text));
-                        cmd.Parameters.AddWithValue("@drp_designer", Convert.ToString(drp_designer.SelectedItem.Text));
-                        cmd.Parameters.AddWithValue("@s_transaction_type", "Sale");
-                        cmd.Parameters.AddWithValue("@s_cess", "0");
+                            if (Txt_Dtp_charges.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@s_dtp_charges", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@s_dtp_charges", Convert.ToDecimal(Txt_Dtp_charges.Text));
+                            }
 
-                        if (GridView1.Rows[i].Cells[18].Text == "--Select--" || GridView1.Rows[i].Cells[18].Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@s_material", "0");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@s_material", Convert.ToDecimal(GridView1.Rows[i].Cells[18].Text));
-                        }
-                        if (Txt_Pasting.Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@s_pasting_charges", "0");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@s_pasting_charges", Convert.ToDecimal(Txt_Pasting.Text));
-                        }
+                            if (Txt_Fitting.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@s_fitting_charges", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@s_fitting_charges", Convert.ToDecimal(Txt_Fitting.Text));
+                            }
 
-                        if (Txt_Framing.Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@s_framing_charges", "0");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@s_framing_charges", Convert.ToDecimal(Txt_Framing.Text));
-                        }
+                            cmd.Parameters.AddWithValue("@s_payment_method", Convert.ToString(drp_payment.SelectedItem.Text));
+                            cmd.Parameters.AddWithValue("@drp_designer", Convert.ToString(drp_designer.SelectedItem.Text));
+                            cmd.Parameters.AddWithValue("@s_transaction_type", "Sale");
+                            cmd.Parameters.AddWithValue("@s_cess", "0");
 
-                        if (Txt_install.Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@s_installation_charges", "0");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@s_installation_charges", Convert.ToDecimal(Txt_install.Text));
-                        }
-                        if (txt_UPIno.Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@s_upichqno", "");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@s_upichqno", txt_UPIno.Text);
-                        }
-                        conn.Open();
-                        cmd.ExecuteNonQuery();
-                        conn.Close();
+                            if (GridView1.Rows[i].Cells[18].Text == "--Select--" || GridView1.Rows[i].Cells[18].Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@s_material", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@s_material", Convert.ToDecimal(GridView1.Rows[i].Cells[18].Text));
+                            }
+                            if (Txt_Pasting.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@s_pasting_charges", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@s_pasting_charges", Convert.ToDecimal(Txt_Pasting.Text));
+                            }
 
-                        //material stock
-                        //string sqrft = Convert.ToString(GridView1.Rows[i].Cells[4].Text);
+                            if (Txt_Framing.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@s_framing_charges", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@s_framing_charges", Convert.ToDecimal(Txt_Framing.Text));
+                            }
 
-                        //if ((sqrft) == string.Empty || sqrft == "&nbsp;")
-                        //{
+                            if (Txt_install.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@s_installation_charges", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@s_installation_charges", Convert.ToDecimal(Txt_install.Text));
+                            }
+                            if (txt_UPIno.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@s_upichqno", "");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@s_upichqno", txt_UPIno.Text);
+                            }
+                            conn.Open();
+                            cmd.ExecuteNonQuery();
+                            conn.Close();
 
-                        //}
+                            //material stock
+                            //string sqrft = Convert.ToString(GridView1.Rows[i].Cells[4].Text);
 
-                        decimal Qty_total = Convert.ToDecimal(GridView1.Rows[i].Cells[7].Text);
+                            //if ((sqrft) == string.Empty || sqrft == "&nbsp;")
+                            //{
 
-                        SqlCommand cmd33 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock=p_stock-('" + Qty_total + "') WHERE p_id='" + Convert.ToString(GridView1.Rows[i].Cells[18].Text) + "'", conn);
+                            //}
 
-                        conn.Open();
-                        cmd33.ExecuteNonQuery();
-                        conn.Close();
+                            //decimal Qty_total = Convert.ToDecimal(GridView1.Rows[i].Cells[7].Text);
 
-                        //customer rate
-                        string ProductName, CustomerName;
-                        decimal ProductRate;
-                        ProductName = Convert.ToString(GridView1.Rows[i].Cells[0].Text);
-                        CustomerName = Convert.ToString(Dd_customer.SelectedItem.Text);
-                        ProductRate = Convert.ToDecimal(GridView1.Rows[i].Cells[5].Text);
+                            //SqlCommand cmd33 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock=p_stock-('" + Qty_total + "') WHERE p_id='" + Convert.ToString(GridView1.Rows[i].Cells[18].Text) + "'", conn);
 
-                        SqlCommand cmd8 = new SqlCommand("select * from tbl_rate where p_name='" + ProductName + "' and cust_name='" + CustomerName + "'", conn);
-                        SqlDataAdapter adapt8 = new SqlDataAdapter(cmd8);
-                        DataTable dt8 = new DataTable();
-                        adapt8.Fill(dt8);
-                        if (dt8.Rows.Count > 0)
-                        {
+                            //conn.Open();
+                            //cmd33.ExecuteNonQuery();
+                            //conn.Close();
 
-                        }
+                            decimal Qty_total = Convert.ToDecimal(GridView1.Rows[i].Cells[7].Text);
 
-                        else
-                        {
-                            SqlCommand cmd9 = new SqlCommand("insert into tbl_rate values(@cust_name,@p_name,@r_rate,@c_id)", conn);
-                            cmd9.Parameters.AddWithValue("@cust_name", Convert.ToString(Dd_customer.SelectedItem.Text));
-                            cmd9.Parameters.AddWithValue("@p_name", Convert.ToString(GridView1.Rows[i].Cells[0].Text));
-                            cmd9.Parameters.AddWithValue("@r_rate", Convert.ToDecimal(GridView1.Rows[i].Cells[5].Text));
-                            cmd9.Parameters.AddWithValue("@c_id", Convert.ToString(Dd_customer.SelectedValue));
+                            SqlCommand cmd33 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock=p_stock-('" + Qty_total + "') WHERE p_id='" + Convert.ToString(GridView1.Rows[i].Cells[18].Text) + "'", conn);
 
                             conn.Open();
-                            cmd9.ExecuteNonQuery();
+                            cmd33.ExecuteNonQuery();
                             conn.Close();
+
+
+
+                            //used stock material
+
+                            SqlCommand cmd44 = new SqlCommand("insert into tbl_used_stock values(@p_name,@date,@sqrft,@quantity)", conn);
+                            cmd44.Parameters.AddWithValue("@p_name", Convert.ToString(GridView1.Rows[i].Cells[0].Text));
+                            cmd44.Parameters.AddWithValue("@date", Convert.ToDateTime(Txt_invoice_date.Text).ToString("MM/dd/yyyy"));
+                            cmd44.Parameters.AddWithValue("@sqrft", Qty_total);
+                            cmd44.Parameters.AddWithValue("@quantity", Convert.ToDecimal(GridView1.Rows[i].Cells[7].Text));
+
+                            conn.Open();
+                            cmd44.ExecuteNonQuery();
+                            conn.Close();
+
+
+                            //customer rate
+                            string ProductName, CustomerName;
+                            decimal ProductRate;
+                            ProductName = Convert.ToString(GridView1.Rows[i].Cells[0].Text);
+                            CustomerName = Convert.ToString(Dd_customer.SelectedItem.Text);
+                            ProductRate = Convert.ToDecimal(GridView1.Rows[i].Cells[5].Text);
+
+                            SqlCommand cmd8 = new SqlCommand("select * from tbl_rate where p_name='" + ProductName + "' and cust_name='" + CustomerName + "'", conn);
+                            SqlDataAdapter adapt8 = new SqlDataAdapter(cmd8);
+                            DataTable dt8 = new DataTable();
+                            adapt8.Fill(dt8);
+                            if (dt8.Rows.Count > 0)
+                            {
+
+                            }
+
+                            else
+                            {
+                                SqlCommand cmd9 = new SqlCommand("insert into tbl_rate values(@cust_name,@p_name,@r_rate,@c_id)", conn);
+                                cmd9.Parameters.AddWithValue("@cust_name", Convert.ToString(Dd_customer.SelectedItem.Text));
+                                cmd9.Parameters.AddWithValue("@p_name", Convert.ToString(GridView1.Rows[i].Cells[0].Text));
+                                cmd9.Parameters.AddWithValue("@r_rate", Convert.ToDecimal(GridView1.Rows[i].Cells[5].Text));
+                                cmd9.Parameters.AddWithValue("@c_id", Convert.ToString(Dd_customer.SelectedValue));
+
+                                conn.Open();
+                                cmd9.ExecuteNonQuery();
+                                conn.Close();
+                            }
                         }
+                        else
+                        {
+                            SqlCommand cmd = new SqlCommand("insert into tbl_sale_invoice values(@s_invoice_no,@s_date,@c_id,@s_order_no,@s_invoice_date,@s_due_date,@s_product_name,@s_quantity,@s_total_quantity,@s_rate,@s_discount,@s_cgstp,@s_cgsta,@s_sgstp,@s_sgsta,@s_igstp,@s_igsta,@s_amount,@s_sub_total,@s_total_gst,@s_shipping_charges,@s_adjustment,@s_total,@s_stotal,@s_hsn,@s_unit,@s_desc,@s_height,@s_width,@s_size,@s_samount,@s_total_cgst,@s_total_sgst,@s_total_igst,@s_total_taxable,@s_balance,@s_dtp_charges,@s_fitting_charges,@s_payment_method,@drp_designer,@s_transaction_type,@s_cess,@s_material,@s_pasting_charges,@s_framing_charges,@s_installation_charges,@s_upichqno)", conn);
+                            cmd.Parameters.AddWithValue("@s_invoice_no", Convert.ToString(Txt_invoice.Text));
+                            cmd.Parameters.AddWithValue("@s_date", Convert.ToDateTime(DateTime.Now.ToShortDateString()).ToString("MM/dd/yyyy"));
+                            cmd.Parameters.AddWithValue("@c_id", Convert.ToString(Dd_customer.SelectedValue));
+                            cmd.Parameters.AddWithValue("@s_order_no", Convert.ToString(Txt_order_no.Text));
+                            cmd.Parameters.AddWithValue("@s_invoice_date", Convert.ToDateTime(Txt_invoice_date.Text).ToString("MM/dd/yyyy"));
+                            cmd.Parameters.AddWithValue("@s_due_date", Convert.ToDateTime(Txt_due_date.Text).ToString("MM/dd/yyyy"));
+                            cmd.Parameters.AddWithValue("@s_product_name", Convert.ToString(GridView1.Rows[i].Cells[0].Text));
+                            cmd.Parameters.AddWithValue("@s_quantity", Convert.ToDecimal(GridView1.Rows[i].Cells[7].Text));
+                            cmd.Parameters.AddWithValue("@s_unit", Convert.ToString(GridView1.Rows[i].Cells[17].Text));
+                            cmd.Parameters.AddWithValue("@s_total_quantity", Convert.ToDecimal(lbl_totalqty.Text));
+                            cmd.Parameters.AddWithValue("@s_rate", Convert.ToDecimal(GridView1.Rows[i].Cells[5].Text));
+                            cmd.Parameters.AddWithValue("@s_discount", Convert.ToDecimal(Txt_discount.Text));
+                            cmd.Parameters.AddWithValue("@s_cgstp", Convert.ToDecimal(GridView1.Rows[i].Cells[13].Text));
+                            cmd.Parameters.AddWithValue("@s_cgsta", Convert.ToDecimal(GridView1.Rows[i].Cells[9].Text));
+                            cmd.Parameters.AddWithValue("@s_sgstp", Convert.ToDecimal(GridView1.Rows[i].Cells[14].Text));
+                            cmd.Parameters.AddWithValue("@s_sgsta", Convert.ToDecimal(GridView1.Rows[i].Cells[10].Text));
+                            cmd.Parameters.AddWithValue("@s_igstp", Convert.ToDecimal(GridView1.Rows[i].Cells[15].Text));
+                            cmd.Parameters.AddWithValue("@s_igsta", Convert.ToDecimal(GridView1.Rows[i].Cells[11].Text));
+                            cmd.Parameters.AddWithValue("@s_amount", Convert.ToDecimal(GridView1.Rows[i].Cells[12].Text));
+                            cmd.Parameters.AddWithValue("@s_sub_total", Convert.ToDecimal(lbl_subtotal.Text));
+                            cmd.Parameters.AddWithValue("@s_total_gst", Convert.ToDecimal(lbl_gst.Text));
+
+                            if (Txt_TransportCharges.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@s_shipping_charges", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@s_shipping_charges", Convert.ToDecimal(Txt_TransportCharges.Text));
+                            }
+
+                            cmd.Parameters.AddWithValue("@s_adjustment", Convert.ToDecimal(Txt_advance.Text));
+                            cmd.Parameters.AddWithValue("@s_total", Convert.ToDecimal(hide_total.Text));
+                            cmd.Parameters.AddWithValue("@s_stotal", Convert.ToDecimal(GridView1.Rows[i].Cells[8].Text));
+                            cmd.Parameters.AddWithValue("@s_hsn", Convert.ToString(GridView1.Rows[i].Cells[1].Text));
+                            cmd.Parameters.AddWithValue("@s_desc", Convert.ToString(GridView1.Rows[i].Cells[16].Text));
+                            cmd.Parameters.AddWithValue("@s_height", Convert.ToDecimal(GridView1.Rows[i].Cells[2].Text));
+                            cmd.Parameters.AddWithValue("@s_width", Convert.ToDecimal(GridView1.Rows[i].Cells[3].Text));
+                            cmd.Parameters.AddWithValue("@s_size", Convert.ToDecimal(GridView1.Rows[i].Cells[4].Text));
+
+
+
+
+                            if (GridView1.Rows[i].Cells[6].Text == "&nbsp;")
+                            {
+                                cmd.Parameters.AddWithValue("@s_samount", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@s_samount", Convert.ToDecimal(GridView1.Rows[i].Cells[6].Text));
+                            }
+                            // cmd.Parameters.AddWithValue("@s_samount", Convert.ToDecimal(GridView1.Rows[i].Cells[6].Text));
+                            cmd.Parameters.AddWithValue("@s_total_cgst", Convert.ToDecimal(lbl_total_cgst.Value));
+                            cmd.Parameters.AddWithValue("@s_total_sgst", Convert.ToDecimal(lbl_total_sgst.Value));
+                            cmd.Parameters.AddWithValue("@s_total_igst", Convert.ToDecimal(lbl_total_igst.Value));
+                            cmd.Parameters.AddWithValue("@s_total_taxable", Convert.ToDecimal(lbl_total_taxable.Value));
+                            cmd.Parameters.AddWithValue("@s_balance", Convert.ToDecimal(new_balance));
+
+                            if (Txt_Dtp_charges.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@s_dtp_charges", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@s_dtp_charges", Convert.ToDecimal(Txt_Dtp_charges.Text));
+                            }
+
+                            if (Txt_Fitting.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@s_fitting_charges", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@s_fitting_charges", Convert.ToDecimal(Txt_Fitting.Text));
+                            }
+
+                            cmd.Parameters.AddWithValue("@s_payment_method", Convert.ToString(drp_payment.SelectedItem.Text));
+                            cmd.Parameters.AddWithValue("@drp_designer", Convert.ToString(drp_designer.SelectedItem.Text));
+                            cmd.Parameters.AddWithValue("@s_transaction_type", "Sale");
+                            cmd.Parameters.AddWithValue("@s_cess", "0");
+
+                            if (GridView1.Rows[i].Cells[18].Text == "--Select--" || GridView1.Rows[i].Cells[18].Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@s_material", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@s_material", Convert.ToDecimal(GridView1.Rows[i].Cells[18].Text));
+                            }
+
+                            if (Txt_Pasting.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@s_pasting_charges", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@s_pasting_charges", Convert.ToDecimal(Txt_Pasting.Text));
+                            }
+
+                            if (Txt_Framing.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@s_framing_charges", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@s_framing_charges", Convert.ToDecimal(Txt_Framing.Text));
+                            }
+
+                            if (Txt_install.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@s_installation_charges", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@s_installation_charges", Convert.ToDecimal(Txt_install.Text));
+                            }
+
+                            if (txt_UPIno.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@s_upichqno", "");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@s_upichqno", txt_UPIno.Text);
+                            }
+
+                            conn.Open();
+                            cmd.ExecuteNonQuery();
+                            conn.Close();
+
+                            //material stock
+                            string sqrft = Convert.ToString(GridView1.Rows[i].Cells[4].Text);
+
+                            if ((sqrft) == string.Empty || sqrft == "&nbsp;")
+                            {
+
+                            }
+
+                            if (GridView1.Rows[i].Cells[18].Text == "--Select--" || GridView1.Rows[i].Cells[18].Text == "")
+                            {
+                                GridView1.Rows[i].Cells[18].Text = "0";
+                            }
+                            else
+                            {
+
+                            }
+
+                            decimal Sqrft_total = Convert.ToDecimal(GridView1.Rows[i].Cells[4].Text) * Convert.ToDecimal(GridView1.Rows[i].Cells[7].Text);
+                            decimal quantity1 = Convert.ToDecimal(GridView1.Rows[i].Cells[7].Text);
+
+                            SqlCommand cmd33 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock=p_stock-('" + quantity1 + "') WHERE p_id='" + Convert.ToString(GridView1.Rows[i].Cells[18].Text) + "'", conn);
+
+                            conn.Open();
+                            cmd33.ExecuteNonQuery();
+                            conn.Close();
+
+                            //used stock material
+
+                            SqlCommand cmd44 = new SqlCommand("insert into tbl_used_stock values(@p_name,@date,@sqrft,@quantity)", conn);
+                            cmd44.Parameters.AddWithValue("@p_name", Convert.ToString(GridView1.Rows[i].Cells[0].Text));
+                            cmd44.Parameters.AddWithValue("@date", Convert.ToDateTime(Txt_invoice_date.Text).ToString("MM/dd/yyyy"));
+                            cmd44.Parameters.AddWithValue("@sqrft", Sqrft_total);
+                            cmd44.Parameters.AddWithValue("@quantity", Convert.ToDecimal(GridView1.Rows[i].Cells[7].Text));
+
+                            conn.Open();
+                            cmd44.ExecuteNonQuery();
+                            conn.Close();
+
+                            //customer rate
+                            string ProductName, CustomerName;
+                            decimal ProductRate;
+                            ProductName = Convert.ToString(GridView1.Rows[i].Cells[0].Text);
+                            CustomerName = Convert.ToString(Dd_customer.SelectedItem.Text);
+                            ProductRate = Convert.ToDecimal(GridView1.Rows[i].Cells[5].Text);
+
+                            SqlCommand cmd8 = new SqlCommand("select * from tbl_rate where p_name='" + ProductName + "' and cust_name='" + CustomerName + "'", conn);
+                            SqlDataAdapter adapt8 = new SqlDataAdapter(cmd8);
+                            DataTable dt8 = new DataTable();
+                            adapt8.Fill(dt8);
+                            if (dt8.Rows.Count > 0)
+                            {
+
+                            }
+
+                            else
+                            {
+                                SqlCommand cmd9 = new SqlCommand("insert into tbl_rate values(@cust_name,@p_name,@r_rate,@c_id)", conn);
+                                cmd9.Parameters.AddWithValue("@cust_name", Convert.ToString(Dd_customer.SelectedItem.Text));
+                                cmd9.Parameters.AddWithValue("@p_name", Convert.ToString(GridView1.Rows[i].Cells[0].Text));
+                                cmd9.Parameters.AddWithValue("@r_rate", Convert.ToDecimal(GridView1.Rows[i].Cells[5].Text));
+                                cmd9.Parameters.AddWithValue("@c_id", Convert.ToString(Dd_customer.SelectedValue));
+
+                                conn.Open();
+                                cmd9.ExecuteNonQuery();
+                                conn.Close();
+                            }
+                        }
+                    }
+                    SqlCommand cmd2 = new SqlCommand("insert into tbl_sale values(@sl_invoice_no,@sl_date,@c_id,@sl_order_no,@sl_invoice_date,@sl_due_date,@sl_total_quantity,@sl_discount,@sl_sub_total,@sl_total_gst,@sl_shipping_charges,@sl_adjustment,@sl_total,@sl_total_cgst,@sl_total_sgst,@sl_total_igst,@sl_total_taxable,@sl_balance,@sl_dtp_charges,@sl_fitting_charges,@sl_payment_method,@drp_designer,@sl_transaction_type,@sl_cess,@sl_pasting_charges,@sl_framing_charges,@sl_installation_charges,@sl_upichqno)", conn);
+                    cmd2.Parameters.AddWithValue("@sl_invoice_no", Convert.ToString(Txt_invoice.Text));
+                    cmd2.Parameters.AddWithValue("@sl_date", Convert.ToDateTime(DateTime.Now.ToShortDateString()).ToString("MM/dd/yyyy"));
+                    cmd2.Parameters.AddWithValue("@c_id", Convert.ToString(Dd_customer.SelectedValue));
+                    cmd2.Parameters.AddWithValue("@sl_order_no", Convert.ToString(Txt_order_no.Text));
+                    cmd2.Parameters.AddWithValue("@sl_invoice_date", Convert.ToDateTime(Txt_invoice_date.Text).ToString("MM/dd/yyyy"));
+                    cmd2.Parameters.AddWithValue("@sl_due_date", Convert.ToDateTime(Txt_due_date.Text).ToString("MM/dd/yyyy"));
+
+                    cmd2.Parameters.AddWithValue("@sl_total_quantity", Convert.ToDecimal(lbl_totalqty.Text));
+
+                    cmd2.Parameters.AddWithValue("@sl_discount", Convert.ToDecimal(Txt_discount.Text));
+
+
+                    cmd2.Parameters.AddWithValue("@sl_sub_total", Convert.ToDecimal(lbl_subtotal.Text));
+                    cmd2.Parameters.AddWithValue("@sl_total_gst", Convert.ToDecimal(lbl_gst.Text));
+
+                    if (Txt_TransportCharges.Text == "")
+                    {
+                        cmd2.Parameters.AddWithValue("@sl_shipping_charges", "0");
                     }
                     else
                     {
-                        SqlCommand cmd = new SqlCommand("insert into tbl_sale_invoice values(@s_invoice_no,@s_date,@c_id,@s_order_no,@s_invoice_date,@s_due_date,@s_product_name,@s_quantity,@s_total_quantity,@s_rate,@s_discount,@s_cgstp,@s_cgsta,@s_sgstp,@s_sgsta,@s_igstp,@s_igsta,@s_amount,@s_sub_total,@s_total_gst,@s_shipping_charges,@s_adjustment,@s_total,@s_stotal,@s_hsn,@s_unit,@s_desc,@s_height,@s_width,@s_size,@s_samount,@s_total_cgst,@s_total_sgst,@s_total_igst,@s_total_taxable,@s_balance,@s_dtp_charges,@s_fitting_charges,@s_payment_method,@drp_designer,@s_transaction_type,@s_cess,@s_material,@s_pasting_charges,@s_framing_charges,@s_installation_charges,@s_upichqno)", conn);
-                        cmd.Parameters.AddWithValue("@s_invoice_no", Convert.ToString(Txt_invoice.Text));
-                        cmd.Parameters.AddWithValue("@s_date", Convert.ToDateTime(DateTime.Now.ToShortDateString()).ToString("MM/dd/yyyy"));
-                        cmd.Parameters.AddWithValue("@c_id", Convert.ToString(Dd_customer.SelectedValue));
-                        cmd.Parameters.AddWithValue("@s_order_no", Convert.ToString(Txt_order_no.Text));
-                        cmd.Parameters.AddWithValue("@s_invoice_date", Convert.ToDateTime(Txt_invoice_date.Text).ToString("MM/dd/yyyy"));
-                        cmd.Parameters.AddWithValue("@s_due_date", Convert.ToDateTime(Txt_due_date.Text).ToString("MM/dd/yyyy"));
-                        cmd.Parameters.AddWithValue("@s_product_name", Convert.ToString(GridView1.Rows[i].Cells[0].Text));
-                        cmd.Parameters.AddWithValue("@s_quantity", Convert.ToDecimal(GridView1.Rows[i].Cells[7].Text));
-                        cmd.Parameters.AddWithValue("@s_unit", Convert.ToString(GridView1.Rows[i].Cells[17].Text));
-                        cmd.Parameters.AddWithValue("@s_total_quantity", Convert.ToDecimal(lbl_totalqty.Text));
-                        cmd.Parameters.AddWithValue("@s_rate", Convert.ToDecimal(GridView1.Rows[i].Cells[5].Text));
-                        cmd.Parameters.AddWithValue("@s_discount", Convert.ToDecimal(Txt_discount.Text));
-                        cmd.Parameters.AddWithValue("@s_cgstp", Convert.ToDecimal(GridView1.Rows[i].Cells[13].Text));
-                        cmd.Parameters.AddWithValue("@s_cgsta", Convert.ToDecimal(GridView1.Rows[i].Cells[9].Text));
-                        cmd.Parameters.AddWithValue("@s_sgstp", Convert.ToDecimal(GridView1.Rows[i].Cells[14].Text));
-                        cmd.Parameters.AddWithValue("@s_sgsta", Convert.ToDecimal(GridView1.Rows[i].Cells[10].Text));
-                        cmd.Parameters.AddWithValue("@s_igstp", Convert.ToDecimal(GridView1.Rows[i].Cells[15].Text));
-                        cmd.Parameters.AddWithValue("@s_igsta", Convert.ToDecimal(GridView1.Rows[i].Cells[11].Text));
-                        cmd.Parameters.AddWithValue("@s_amount", Convert.ToDecimal(GridView1.Rows[i].Cells[12].Text));
-                        cmd.Parameters.AddWithValue("@s_sub_total", Convert.ToDecimal(lbl_subtotal.Text));
-                        cmd.Parameters.AddWithValue("@s_total_gst", Convert.ToDecimal(lbl_gst.Text));
-
-                        if (Txt_TransportCharges.Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@s_shipping_charges", "0");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@s_shipping_charges", Convert.ToDecimal(Txt_TransportCharges.Text));
-                        }
-
-                        cmd.Parameters.AddWithValue("@s_adjustment", Convert.ToDecimal(Txt_advance.Text));
-                        cmd.Parameters.AddWithValue("@s_total", Convert.ToDecimal(hide_total.Text));
-                        cmd.Parameters.AddWithValue("@s_stotal", Convert.ToDecimal(GridView1.Rows[i].Cells[8].Text));
-                        cmd.Parameters.AddWithValue("@s_hsn", Convert.ToString(GridView1.Rows[i].Cells[1].Text));
-                        cmd.Parameters.AddWithValue("@s_desc", Convert.ToString(GridView1.Rows[i].Cells[16].Text));
-                        cmd.Parameters.AddWithValue("@s_height", Convert.ToDecimal(GridView1.Rows[i].Cells[2].Text));
-                        cmd.Parameters.AddWithValue("@s_width", Convert.ToDecimal(GridView1.Rows[i].Cells[3].Text));
-                        cmd.Parameters.AddWithValue("@s_size", Convert.ToDecimal(GridView1.Rows[i].Cells[4].Text));
-                        cmd.Parameters.AddWithValue("@s_samount", Convert.ToDecimal(GridView1.Rows[i].Cells[6].Text));
-                        cmd.Parameters.AddWithValue("@s_total_cgst", Convert.ToDecimal(lbl_total_cgst.Value));
-                        cmd.Parameters.AddWithValue("@s_total_sgst", Convert.ToDecimal(lbl_total_sgst.Value));
-                        cmd.Parameters.AddWithValue("@s_total_igst", Convert.ToDecimal(lbl_total_igst.Value));
-                        cmd.Parameters.AddWithValue("@s_total_taxable", Convert.ToDecimal(lbl_total_taxable.Value));
-                        cmd.Parameters.AddWithValue("@s_balance", Convert.ToDecimal(new_balance));
-
-                        if (Txt_Dtp_charges.Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@s_dtp_charges", "0");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@s_dtp_charges", Convert.ToDecimal(Txt_Dtp_charges.Text));
-                        }
-
-                        if (Txt_Fitting.Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@s_fitting_charges", "0");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@s_fitting_charges", Convert.ToDecimal(Txt_Fitting.Text));
-                        }
-
-                        cmd.Parameters.AddWithValue("@s_payment_method", Convert.ToString(drp_payment.SelectedItem.Text));
-                        cmd.Parameters.AddWithValue("@drp_designer", Convert.ToString(drp_designer.SelectedItem.Text));
-                        cmd.Parameters.AddWithValue("@s_transaction_type", "Sale");
-                        cmd.Parameters.AddWithValue("@s_cess", "0");
-
-                        if (GridView1.Rows[i].Cells[18].Text == "--Select--" || GridView1.Rows[i].Cells[18].Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@s_material", "0");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@s_material", Convert.ToDecimal(GridView1.Rows[i].Cells[18].Text));
-                        }
-
-                        if (Txt_Pasting.Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@s_pasting_charges", "0");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@s_pasting_charges", Convert.ToDecimal(Txt_Pasting.Text));
-                        }
-
-                        if (Txt_Framing.Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@s_framing_charges", "0");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@s_framing_charges", Convert.ToDecimal(Txt_Framing.Text));
-                        }
-
-                        if (Txt_install.Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@s_installation_charges", "0");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@s_installation_charges", Convert.ToDecimal(Txt_install.Text));
-                        }
-
-                        if (txt_UPIno.Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@s_upichqno", "");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@s_upichqno", txt_UPIno.Text);
-                        }
-
-                        conn.Open();
-                        cmd.ExecuteNonQuery();
-                        conn.Close();
-
-                        //material stock
-                        string sqrft = Convert.ToString(GridView1.Rows[i].Cells[4].Text);
-
-                        if ((sqrft) == string.Empty || sqrft == "&nbsp;")
-                        {
-
-                        }
-
-                        if (GridView1.Rows[i].Cells[18].Text == "--Select--" || GridView1.Rows[i].Cells[18].Text == "")
-                        {
-                            GridView1.Rows[i].Cells[18].Text = "0";
-                        }
-                        else
-                        {
-
-                        }
-
-                        decimal Sqrft_total = Convert.ToDecimal(GridView1.Rows[i].Cells[4].Text) * Convert.ToDecimal(GridView1.Rows[i].Cells[7].Text);
-
-                        SqlCommand cmd33 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock=p_stock-('" + Sqrft_total + "') WHERE p_id='" + Convert.ToString(GridView1.Rows[i].Cells[18].Text) + "'", conn);
-
-                        conn.Open();
-                        cmd33.ExecuteNonQuery();
-                        conn.Close();
-
-                        //used stock material
-
-                        SqlCommand cmd44 = new SqlCommand("insert into tbl_used_stock values(@p_name,@date,@sqrft,@quantity)", conn);
-                        cmd44.Parameters.AddWithValue("@p_name", Convert.ToString(GridView1.Rows[i].Cells[0].Text));
-                        cmd44.Parameters.AddWithValue("@date", Convert.ToDateTime(Txt_invoice_date.Text).ToString("MM/dd/yyyy"));
-                        cmd44.Parameters.AddWithValue("@sqrft", Sqrft_total);
-                        cmd44.Parameters.AddWithValue("@quantity", Convert.ToDecimal(GridView1.Rows[i].Cells[7].Text));
-
-                        conn.Open();
-                        cmd44.ExecuteNonQuery();
-                        conn.Close();
-
-                        //customer rate
-                        string ProductName, CustomerName;
-                        decimal ProductRate;
-                        ProductName = Convert.ToString(GridView1.Rows[i].Cells[0].Text);
-                        CustomerName = Convert.ToString(Dd_customer.SelectedItem.Text);
-                        ProductRate = Convert.ToDecimal(GridView1.Rows[i].Cells[5].Text);
-
-                        SqlCommand cmd8 = new SqlCommand("select * from tbl_rate where p_name='" + ProductName + "' and cust_name='" + CustomerName + "'", conn);
-                        SqlDataAdapter adapt8 = new SqlDataAdapter(cmd8);
-                        DataTable dt8 = new DataTable();
-                        adapt8.Fill(dt8);
-                        if (dt8.Rows.Count > 0)
-                        {
-
-                        }
-
-                        else
-                        {
-                            SqlCommand cmd9 = new SqlCommand("insert into tbl_rate values(@cust_name,@p_name,@r_rate,@c_id)", conn);
-                            cmd9.Parameters.AddWithValue("@cust_name", Convert.ToString(Dd_customer.SelectedItem.Text));
-                            cmd9.Parameters.AddWithValue("@p_name", Convert.ToString(GridView1.Rows[i].Cells[0].Text));
-                            cmd9.Parameters.AddWithValue("@r_rate", Convert.ToDecimal(GridView1.Rows[i].Cells[5].Text));
-                            cmd9.Parameters.AddWithValue("@c_id", Convert.ToString(Dd_customer.SelectedValue));
-
-                            conn.Open();
-                            cmd9.ExecuteNonQuery();
-                            conn.Close();
-                        }
-                    }
-                }
-                SqlCommand cmd2 = new SqlCommand("insert into tbl_sale values(@sl_invoice_no,@sl_date,@c_id,@sl_order_no,@sl_invoice_date,@sl_due_date,@sl_total_quantity,@sl_discount,@sl_sub_total,@sl_total_gst,@sl_shipping_charges,@sl_adjustment,@sl_total,@sl_total_cgst,@sl_total_sgst,@sl_total_igst,@sl_total_taxable,@sl_balance,@sl_dtp_charges,@sl_fitting_charges,@sl_payment_method,@drp_designer,@sl_transaction_type,@sl_cess,@sl_pasting_charges,@sl_framing_charges,@sl_installation_charges,@sl_upichqno)", conn);
-                cmd2.Parameters.AddWithValue("@sl_invoice_no", Convert.ToString(Txt_invoice.Text));
-                cmd2.Parameters.AddWithValue("@sl_date", Convert.ToDateTime(DateTime.Now.ToShortDateString()).ToString("MM/dd/yyyy"));
-                cmd2.Parameters.AddWithValue("@c_id", Convert.ToString(Dd_customer.SelectedValue));
-                cmd2.Parameters.AddWithValue("@sl_order_no", Convert.ToString(Txt_order_no.Text));
-                cmd2.Parameters.AddWithValue("@sl_invoice_date", Convert.ToDateTime(Txt_invoice_date.Text).ToString("MM/dd/yyyy"));
-                cmd2.Parameters.AddWithValue("@sl_due_date", Convert.ToDateTime(Txt_due_date.Text).ToString("MM/dd/yyyy"));
-
-                cmd2.Parameters.AddWithValue("@sl_total_quantity", Convert.ToDecimal(lbl_totalqty.Text));
-
-                cmd2.Parameters.AddWithValue("@sl_discount", Convert.ToDecimal(Txt_discount.Text));
-
-
-                cmd2.Parameters.AddWithValue("@sl_sub_total", Convert.ToDecimal(lbl_subtotal.Text));
-                cmd2.Parameters.AddWithValue("@sl_total_gst", Convert.ToDecimal(lbl_gst.Text));
-
-                if (Txt_TransportCharges.Text == "")
-                {
-                    cmd2.Parameters.AddWithValue("@sl_shipping_charges", "0");
-                }
-                else
-                {
-                    cmd2.Parameters.AddWithValue("@sl_shipping_charges", Convert.ToDecimal(Txt_TransportCharges.Text));
-                }
-
-                
-                cmd2.Parameters.AddWithValue("@sl_adjustment", Convert.ToDecimal(Txt_advance.Text));
-                cmd2.Parameters.AddWithValue("@sl_total", Convert.ToDecimal(hide_total.Text));
-                cmd2.Parameters.AddWithValue("@sl_total_cgst", Convert.ToDecimal(lbl_total_cgst.Value));
-                cmd2.Parameters.AddWithValue("@sl_total_sgst", Convert.ToDecimal(lbl_total_sgst.Value));
-                cmd2.Parameters.AddWithValue("@sl_total_igst", Convert.ToDecimal(lbl_total_igst.Value));
-                cmd2.Parameters.AddWithValue("@sl_total_taxable", Convert.ToDecimal(lbl_total_taxable.Value));
-                cmd2.Parameters.AddWithValue("@sl_balance", Convert.ToDecimal(new_balance));
-
-                if (Txt_Dtp_charges.Text == "")
-                {
-                    cmd2.Parameters.AddWithValue("@sl_dtp_charges", "0");
-                }
-                else
-                {
-                    cmd2.Parameters.AddWithValue("@sl_dtp_charges", Convert.ToDecimal(Txt_Dtp_charges.Text));
-                }
-
-                if (Txt_Fitting.Text == "")
-                {
-                    cmd2.Parameters.AddWithValue("@sl_fitting_charges", "0");
-                }
-                else
-                {
-                    cmd2.Parameters.AddWithValue("@sl_fitting_charges", Convert.ToDecimal(Txt_Fitting.Text));
-                }
-
-               
-              
-                cmd2.Parameters.AddWithValue("@sl_payment_method", Convert.ToString(drp_payment.SelectedItem.Text));
-                cmd2.Parameters.AddWithValue("@drp_designer", Convert.ToString(drp_designer.SelectedItem.Text));
-                cmd2.Parameters.AddWithValue("@sl_transaction_type", "Sale");
-                cmd2.Parameters.AddWithValue("@sl_cess", "0");
-                
-
-                if (Txt_Pasting.Text == "")
-                {
-                    cmd2.Parameters.AddWithValue("@sl_pasting_charges", "0");
-                }
-                else
-                {
-                    cmd2.Parameters.AddWithValue("@sl_pasting_charges", Convert.ToDecimal(Txt_Pasting.Text));
-                }
-
-                if (Txt_Framing.Text == "")
-                {
-                    cmd2.Parameters.AddWithValue("@sl_framing_charges", "0");
-                }
-                else
-                {
-                    cmd2.Parameters.AddWithValue("@sl_framing_charges", Convert.ToDecimal(Txt_Framing.Text));
-                }
-
-                if (Txt_install.Text == "")
-                {
-                    cmd2.Parameters.AddWithValue("@sl_installation_charges", "0");
-                }
-                else
-                {
-                    cmd2.Parameters.AddWithValue("@sl_installation_charges", Convert.ToDecimal(Txt_install.Text));
-                }
-
-                if (txt_UPIno.Text == "")
-                {
-                    cmd2.Parameters.AddWithValue("@sl_upichqno", "");
-                }
-                else
-                {
-                    cmd2.Parameters.AddWithValue("@sl_upichqno", txt_UPIno.Text);
-                }
-
-                conn.Open();
-                cmd2.ExecuteNonQuery();
-                conn.Close();
-
-                SqlCommand cmd3 = new SqlCommand("update tbl_customer set c_opening_balance=c_opening_balance + '" + new_balance + "' where c_id='" + Dd_customer.SelectedValue + "'", conn);
-
-                conn.Open();
-                cmd3.ExecuteNonQuery();
-                conn.Close();
-
-                SqlCommand cmd4 = new SqlCommand("insert into tbl_sale_invoice_payment values(@si_invoice,@c_id,@si_due,@si_discount,@si_pay,@si_mode,@si_chno,@si_balance,@si_date,@si_upichqno)", conn);
-                cmd4.Parameters.AddWithValue("@si_invoice", Convert.ToString(Txt_invoice.Text));
-                cmd4.Parameters.AddWithValue("@c_id", Convert.ToString(Dd_customer.SelectedValue));
-                cmd4.Parameters.AddWithValue("@si_due", Convert.ToDecimal(hide_total.Text));
-                cmd4.Parameters.AddWithValue("@si_discount", Convert.ToDecimal(Txt_discount.Text));
-                cmd4.Parameters.AddWithValue("@si_pay", Convert.ToDecimal(Txt_advance.Text));
-                cmd4.Parameters.AddWithValue("@si_mode", "Cash");
-                cmd4.Parameters.AddWithValue("@si_chno", "");
-                cmd4.Parameters.AddWithValue("@si_balance", Convert.ToDecimal(new_balance));
-                cmd4.Parameters.AddWithValue("@si_date", Convert.ToDateTime(DateTime.Now.ToShortDateString()).ToString("MM/dd/yyyy"));
-                if (txt_UPIno.Text == "")
-                {
-                    cmd4.Parameters.AddWithValue("@si_upichqno", "");
-                }
-                else
-                {
-                    cmd4.Parameters.AddWithValue("@si_upichqno", txt_UPIno.Text);
-                }
-                conn.Open();
-                cmd4.ExecuteNonQuery();
-                conn.Close();
-
-                try
-                {
-                    SqlCommand cmd5 = new SqlCommand("select * from tbl_company_details ", conn);
-                    SqlDataAdapter adapt5 = new SqlDataAdapter(cmd5);
-                    DataTable dt5 = new DataTable();
-                    adapt5.Fill(dt5);
-                    if (dt5.Rows.Count > 0)
-                    {
-                        com_email = dt5.Rows[0]["com_company_name"].ToString();
-
+                        cmd2.Parameters.AddWithValue("@sl_shipping_charges", Convert.ToDecimal(Txt_TransportCharges.Text));
                     }
 
-                    SqlCommand cmd6 = new SqlCommand("select * from tbl_feature", conn);
-                    SqlDataAdapter adapt6 = new SqlDataAdapter(cmd6);
-                    DataTable dt6 = new DataTable();
-                    adapt6.Fill(dt6);
-                    if (dt6.Rows.Count > 0)
+
+                    cmd2.Parameters.AddWithValue("@sl_adjustment", Convert.ToDecimal(Txt_advance.Text));
+                    cmd2.Parameters.AddWithValue("@sl_total", Convert.ToDecimal(hide_total.Text));
+                    cmd2.Parameters.AddWithValue("@sl_total_cgst", Convert.ToDecimal(lbl_total_cgst.Value));
+                    cmd2.Parameters.AddWithValue("@sl_total_sgst", Convert.ToDecimal(lbl_total_sgst.Value));
+                    cmd2.Parameters.AddWithValue("@sl_total_igst", Convert.ToDecimal(lbl_total_igst.Value));
+                    cmd2.Parameters.AddWithValue("@sl_total_taxable", Convert.ToDecimal(lbl_total_taxable.Value));
+                    cmd2.Parameters.AddWithValue("@sl_balance", Convert.ToDecimal(new_balance));
+
+                    if (Txt_Dtp_charges.Text == "")
                     {
-                        sms = Convert.ToInt32(dt6.Rows[0]["fe_sms"]);
-                        mail2 = Convert.ToInt32(dt6.Rows[0]["fe_mail"]);
+                        cmd2.Parameters.AddWithValue("@sl_dtp_charges", "0");
+                    }
+                    else
+                    {
+                        cmd2.Parameters.AddWithValue("@sl_dtp_charges", Convert.ToDecimal(Txt_Dtp_charges.Text));
+                    }
 
-                        if (sms == 1)
+                    if (Txt_Fitting.Text == "")
+                    {
+                        cmd2.Parameters.AddWithValue("@sl_fitting_charges", "0");
+                    }
+                    else
+                    {
+                        cmd2.Parameters.AddWithValue("@sl_fitting_charges", Convert.ToDecimal(Txt_Fitting.Text));
+                    }
+
+
+
+                    cmd2.Parameters.AddWithValue("@sl_payment_method", Convert.ToString(drp_payment.SelectedItem.Text));
+                    cmd2.Parameters.AddWithValue("@drp_designer", Convert.ToString(drp_designer.SelectedItem.Text));
+                    cmd2.Parameters.AddWithValue("@sl_transaction_type", "Sale");
+                    cmd2.Parameters.AddWithValue("@sl_cess", "0");
+
+
+                    if (Txt_Pasting.Text == "")
+                    {
+                        cmd2.Parameters.AddWithValue("@sl_pasting_charges", "0");
+                    }
+                    else
+                    {
+                        cmd2.Parameters.AddWithValue("@sl_pasting_charges", Convert.ToDecimal(Txt_Pasting.Text));
+                    }
+
+                    if (Txt_Framing.Text == "")
+                    {
+                        cmd2.Parameters.AddWithValue("@sl_framing_charges", "0");
+                    }
+                    else
+                    {
+                        cmd2.Parameters.AddWithValue("@sl_framing_charges", Convert.ToDecimal(Txt_Framing.Text));
+                    }
+
+                    if (Txt_install.Text == "")
+                    {
+                        cmd2.Parameters.AddWithValue("@sl_installation_charges", "0");
+                    }
+                    else
+                    {
+                        cmd2.Parameters.AddWithValue("@sl_installation_charges", Convert.ToDecimal(Txt_install.Text));
+                    }
+
+                    if (txt_UPIno.Text == "")
+                    {
+                        cmd2.Parameters.AddWithValue("@sl_upichqno", "");
+                    }
+                    else
+                    {
+                        cmd2.Parameters.AddWithValue("@sl_upichqno", txt_UPIno.Text);
+                    }
+
+                    conn.Open();
+                    cmd2.ExecuteNonQuery();
+                    conn.Close();
+
+                    SqlCommand cmd3 = new SqlCommand("update tbl_customer set c_opening_balance=c_opening_balance + '" + new_balance + "' where c_id='" + Dd_customer.SelectedValue + "'", conn);
+
+                    conn.Open();
+                    cmd3.ExecuteNonQuery();
+                    conn.Close();
+
+                    SqlCommand cmd4 = new SqlCommand("insert into tbl_sale_invoice_payment values(@si_invoice,@c_id,@si_due,@si_discount,@si_pay,@si_mode,@si_chno,@si_balance,@si_date,@si_upichqno)", conn);
+                    cmd4.Parameters.AddWithValue("@si_invoice", Convert.ToString(Txt_invoice.Text));
+                    cmd4.Parameters.AddWithValue("@c_id", Convert.ToString(Dd_customer.SelectedValue));
+                    cmd4.Parameters.AddWithValue("@si_due", Convert.ToDecimal(hide_total.Text));
+                    cmd4.Parameters.AddWithValue("@si_discount", Convert.ToDecimal(Txt_discount.Text));
+                    cmd4.Parameters.AddWithValue("@si_pay", Convert.ToDecimal(Txt_advance.Text));
+                    cmd4.Parameters.AddWithValue("@si_mode", "Cash");
+                    cmd4.Parameters.AddWithValue("@si_chno", "");
+                    cmd4.Parameters.AddWithValue("@si_balance", Convert.ToDecimal(new_balance));
+                    cmd4.Parameters.AddWithValue("@si_date", Convert.ToDateTime(DateTime.Now.ToShortDateString()).ToString("MM/dd/yyyy"));
+                    if (txt_UPIno.Text == "")
+                    {
+                        cmd4.Parameters.AddWithValue("@si_upichqno", "");
+                    }
+                    else
+                    {
+                        cmd4.Parameters.AddWithValue("@si_upichqno", txt_UPIno.Text);
+                    }
+                    conn.Open();
+                    cmd4.ExecuteNonQuery();
+                    conn.Close();
+
+                    try
+                    {
+                        SqlCommand cmd5 = new SqlCommand("select * from tbl_company_details ", conn);
+                        SqlDataAdapter adapt5 = new SqlDataAdapter(cmd5);
+                        DataTable dt5 = new DataTable();
+                        adapt5.Fill(dt5);
+                        if (dt5.Rows.Count > 0)
                         {
-
-                            SqlCommand cmd7 = new SqlCommand("select * from tbl_sms_config ", conn);
-                            SqlDataAdapter adapt7 = new SqlDataAdapter(cmd7);
-                            DataTable dt7 = new DataTable();
-                            adapt7.Fill(dt7);
-                            if (dt7.Rows.Count > 0)
-                            {
-                                key = dt7.Rows[0]["sc_key"].ToString();
-                                country = dt7.Rows[0]["sc_country"].ToString();
-
-                                senderid = dt7.Rows[0]["sc_sender"].ToString();
-                                route = dt7.Rows[0]["sc_route"].ToString();
-
-                            }
-
-                        //    decimal mob = Convert.ToDecimal(lbl_cutomer_contact.Value);
-                        //    WebClient client = new WebClient();
-                        //    string to;
-                        //    Int64 temp_id = 1234567890123456788;
-                        //    string msgRecepient = mob.ToString();
-                        //    string msgText = "Welcome to " + com_email + ", Your invoice " + Txt_invoice.Text.ToString() + " has been created. Your Invoice Amount is " + finaltotal.ToString() + ".";
-
-                        //    to = mob.ToString();
-                        //    string baseURL = "http://sms.hitechsms.com/app/smsapi/index.php?" +
-
-                        //    "key=" + key +
-                        //       "&campaign=" + "0" +
-                        //       "&routeid=" + route +
-                        //       "&type=" + "text" +
-                        //       "&contacts=" + msgRecepient +
-                        //       "&senderid=" + senderid +
-                        //       "&msg=" + System.Web.HttpUtility.UrlEncode(msgText, Encoding.GetEncoding("ISO-8859-1")) +
-                        //       "&template_id=" + temp_id;
-
-
-                        //    // client.OpenRead(baseURL);
-
-                        //StringBuilder sbPostData = new StringBuilder();
-                        //    sbPostData.AppendFormat("key={0}", key);
-                        //    sbPostData.AppendFormat("&campaign={0}", "0");
-                        //    sbPostData.AppendFormat("&routeid={0}", route);
-                        //    sbPostData.AppendFormat("&type={0}", "text");
-                        //    sbPostData.AppendFormat("&contacts={0}", msgRecepient);
-                        //    sbPostData.AppendFormat("&senderid={0}", senderid);
-                        //    sbPostData.AppendFormat("&msg={0}", System.Web.HttpUtility.UrlEncode(msgText, Encoding.GetEncoding("ISO-8859-1")));
-                        //    sbPostData.AppendFormat("&template_id={0}", temp_id);
-
-
-                        //    //Create HTTPWebrequest
-                        //    HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create(baseURL);
-                        //    //Prepare and Add URL Encoded data
-                        //    UTF8Encoding encoding = new UTF8Encoding();
-                        //    byte[] data = encoding.GetBytes(sbPostData.ToString());
-                        //    //Specify post method
-                        //    httpWReq.Method = "POST";
-                        //    httpWReq.ContentType = "application/x-www-form-urlencoded";
-                        //    httpWReq.ContentLength = data.Length;
-                        //    using (Stream stream = httpWReq.GetRequestStream())
-                        //    {
-                        //        stream.Write(data, 0, data.Length);
-                        //    }
-                        //    //Get the response
-                        //    HttpWebResponse response = (HttpWebResponse)httpWReq.GetResponse();
-                        //    StreamReader reader = new StreamReader(response.GetResponseStream());
-                        //    string responseString = reader.ReadToEnd();
-                            
-                        //    //Close the response
-                        //    reader.Close();
-                        //    response.Close();
+                            com_email = dt5.Rows[0]["com_company_name"].ToString();
 
                         }
-                        if (mail2 == 1)
+
+                        SqlCommand cmd6 = new SqlCommand("select * from tbl_feature", conn);
+                        SqlDataAdapter adapt6 = new SqlDataAdapter(cmd6);
+                        DataTable dt6 = new DataTable();
+                        adapt6.Fill(dt6);
+                        if (dt6.Rows.Count > 0)
                         {
-                            try
+                            sms = Convert.ToInt32(dt6.Rows[0]["fe_sms"]);
+                            mail2 = Convert.ToInt32(dt6.Rows[0]["fe_mail"]);
+
+                            if (sms == 1)
                             {
-                                if (lbl_cutomer_email.Value.ToString() != "")
+
+                                SqlCommand cmd7 = new SqlCommand("select * from tbl_sms_config ", conn);
+                                SqlDataAdapter adapt7 = new SqlDataAdapter(cmd7);
+                                DataTable dt7 = new DataTable();
+                                adapt7.Fill(dt7);
+                                if (dt7.Rows.Count > 0)
                                 {
-                                    SqlCommand cmd8 = new SqlCommand("select * from tbl_email_config ", conn);
-                                    SqlDataAdapter adapt8 = new SqlDataAdapter(cmd8);
-                                    DataTable dt8 = new DataTable();
-                                    adapt8.Fill(dt8);
-                                    if (dt8.Rows.Count > 0)
-                                    {
-                                        email = dt8.Rows[0]["ec_email"].ToString();
-                                        password = dt8.Rows[0]["ec_password"].ToString();
+                                    key = dt7.Rows[0]["sc_key"].ToString();
+                                    country = dt7.Rows[0]["sc_country"].ToString();
 
-                                        port = dt8.Rows[0]["ec_port"].ToString();
-                                        subject = dt8.Rows[0]["ec_subject"].ToString();
-                                        smtp = dt8.Rows[0]["ec_smtp"].ToString();
-                                    }
+                                    senderid = dt7.Rows[0]["sc_sender"].ToString();
+                                    route = dt7.Rows[0]["sc_route"].ToString();
 
-                                    MailMessage mail = new MailMessage();
-                                    SmtpClient SmtpServer = new SmtpClient(smtp);
-
-                                    mail.From = new MailAddress(email);
-                                    mail.To.Add(lbl_cutomer_email.Value.ToString());
-                                    mail.Subject = "Invoice Created";
-                                    mail.Body = "Welcome to " + com_email + ", Your invoice " + Txt_invoice.Text.ToString() + " has been created. Your Invoice Amount is " + finaltotal.ToString() + ".";
-
-                                    SmtpServer.Port = Convert.ToInt32(port);
-                                    SmtpServer.Credentials = new System.Net.NetworkCredential(email, password);
-                                    SmtpServer.EnableSsl = true;
-
-                                    SmtpServer.Send(mail);
                                 }
+
+                                //    decimal mob = Convert.ToDecimal(lbl_cutomer_contact.Value);
+                                //    WebClient client = new WebClient();
+                                //    string to;
+                                //    Int64 temp_id = 1234567890123456788;
+                                //    string msgRecepient = mob.ToString();
+                                //    string msgText = "Welcome to " + com_email + ", Your invoice " + Txt_invoice.Text.ToString() + " has been created. Your Invoice Amount is " + finaltotal.ToString() + ".";
+
+                                //    to = mob.ToString();
+                                //    string baseURL = "http://sms.hitechsms.com/app/smsapi/index.php?" +
+
+                                //    "key=" + key +
+                                //       "&campaign=" + "0" +
+                                //       "&routeid=" + route +
+                                //       "&type=" + "text" +
+                                //       "&contacts=" + msgRecepient +
+                                //       "&senderid=" + senderid +
+                                //       "&msg=" + System.Web.HttpUtility.UrlEncode(msgText, Encoding.GetEncoding("ISO-8859-1")) +
+                                //       "&template_id=" + temp_id;
+
+
+                                //    // client.OpenRead(baseURL);
+
+                                //StringBuilder sbPostData = new StringBuilder();
+                                //    sbPostData.AppendFormat("key={0}", key);
+                                //    sbPostData.AppendFormat("&campaign={0}", "0");
+                                //    sbPostData.AppendFormat("&routeid={0}", route);
+                                //    sbPostData.AppendFormat("&type={0}", "text");
+                                //    sbPostData.AppendFormat("&contacts={0}", msgRecepient);
+                                //    sbPostData.AppendFormat("&senderid={0}", senderid);
+                                //    sbPostData.AppendFormat("&msg={0}", System.Web.HttpUtility.UrlEncode(msgText, Encoding.GetEncoding("ISO-8859-1")));
+                                //    sbPostData.AppendFormat("&template_id={0}", temp_id);
+
+
+                                //    //Create HTTPWebrequest
+                                //    HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create(baseURL);
+                                //    //Prepare and Add URL Encoded data
+                                //    UTF8Encoding encoding = new UTF8Encoding();
+                                //    byte[] data = encoding.GetBytes(sbPostData.ToString());
+                                //    //Specify post method
+                                //    httpWReq.Method = "POST";
+                                //    httpWReq.ContentType = "application/x-www-form-urlencoded";
+                                //    httpWReq.ContentLength = data.Length;
+                                //    using (Stream stream = httpWReq.GetRequestStream())
+                                //    {
+                                //        stream.Write(data, 0, data.Length);
+                                //    }
+                                //    //Get the response
+                                //    HttpWebResponse response = (HttpWebResponse)httpWReq.GetResponse();
+                                //    StreamReader reader = new StreamReader(response.GetResponseStream());
+                                //    string responseString = reader.ReadToEnd();
+
+                                //    //Close the response
+                                //    reader.Close();
+                                //    response.Close();
+
                             }
-                            catch (Exception ex)
-                            { }
+                            if (mail2 == 1)
+                            {
+                                try
+                                {
+                                    if (lbl_cutomer_email.Value.ToString() != "")
+                                    {
+                                        SqlCommand cmd8 = new SqlCommand("select * from tbl_email_config ", conn);
+                                        SqlDataAdapter adapt8 = new SqlDataAdapter(cmd8);
+                                        DataTable dt8 = new DataTable();
+                                        adapt8.Fill(dt8);
+                                        if (dt8.Rows.Count > 0)
+                                        {
+                                            email = dt8.Rows[0]["ec_email"].ToString();
+                                            password = dt8.Rows[0]["ec_password"].ToString();
+
+                                            port = dt8.Rows[0]["ec_port"].ToString();
+                                            subject = dt8.Rows[0]["ec_subject"].ToString();
+                                            smtp = dt8.Rows[0]["ec_smtp"].ToString();
+                                        }
+
+                                        MailMessage mail = new MailMessage();
+                                        SmtpClient SmtpServer = new SmtpClient(smtp);
+
+                                        mail.From = new MailAddress(email);
+                                        mail.To.Add(lbl_cutomer_email.Value.ToString());
+                                        mail.Subject = "Invoice Created";
+                                        mail.Body = "Welcome to " + com_email + ", Your invoice " + Txt_invoice.Text.ToString() + " has been created. Your Invoice Amount is " + finaltotal.ToString() + ".";
+
+                                        SmtpServer.Port = Convert.ToInt32(port);
+                                        SmtpServer.Credentials = new System.Net.NetworkCredential(email, password);
+                                        SmtpServer.EnableSsl = true;
+
+                                        SmtpServer.Send(mail);
+                                    }
+                                }
+                                catch (Exception ex)
+                                { }
+                            }
                         }
                     }
+                    catch (Exception exp)
+                    { }
+
+                    isTrue = true;
+                    string redirectScript = " window.location.href = 'invoice_report.aspx?insert=success';";
+                    System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('New Sale Invoice Added Successfully!!!');" + redirectScript, true);
+
                 }
-                catch (Exception exp)
-                { }
 
-                isTrue = true;
-           
+                else
+                {
+                    string redirectScript = " window.location.href = 'invoice_report.aspx?insert=success';";
+                    System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('New Sale Invoice Added Successfully!!!');" + redirectScript, true);
+                }
 
+            }
         }
-        }
-            catch (Exception ex)
+        catch (Exception ex)
         {
             isTrue = false;
         }
         return isTrue;
     }
-  
+
     protected void Btn_generate_pdf_Click(object sender, EventArgs e)
     {
+        if (GridView1.Rows.Count == 0)
+        {
+            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Please Add Products First !!!');", true);
+        }
         //System.Threading.Thread.Sleep(5000);
-        bool isTrue = dataEntry();
-        if(isTrue==true)
-        {
-           
-            //Response.Redirect("invoice_report.aspx?insert=success");
-            string redirectScript = " window.location.href = 'invoice_report.aspx?insert=success';";
-            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('New Sale Invoice Added Successfully!!!');" + redirectScript, true);
+        //Btn_generate_pdf.Enabled = false;
+        else {
+            bool isTrue = dataEntry();
+            if (isTrue == true)
+            {
+
+                //Response.Redirect("invoice_report.aspx?insert=success");
+                string redirectScript = " window.location.href = 'invoice_report.aspx?insert=success';";
+                System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('New Sale Invoice Added Successfully!!!');" + redirectScript, true);
+            }
+            else
+            {
+                Btn_generate_pdf.Enabled = true;
+            }
         }
-        else
-        {
-            Btn_generate_pdf.Enabled = true;
-        }
+        
     }
 
     protected void Btn_submit_payment_Click(object sender, EventArgs e)
     {
-        bool isTrue = dataEntry();
-        if (isTrue == true)
-        {
-            string redirectScript = " window.location.href = 'bill.aspx?invoice=" + Txt_invoice.Text + "';";
-            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('New Sale Invoice Added Successfully!!!');" + redirectScript, true);
 
+
+
+        if (GridView1.Rows.Count == 0)
+        {
+            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Please Add Products First !!!');", true);
         }
+        //System.Threading.Thread.Sleep(5000);
+        //Btn_generate_pdf.Enabled = false;
         else
         {
+            bool isTrue = dataEntry();
+            if (isTrue == true)
+            {
+                string redirectScript = " window.location.href = 'bill.aspx?invoice=" + Txt_invoice.Text + "';";
+                System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('New Sale Invoice Added Successfully!!!');" + redirectScript, true);
 
+            }
+            else
+            {
+
+            }
         }
+
+
+       
     }
 
     protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         //GridView1.PageIndex = e.NewPageIndex;
-      
+
     }
 
 
@@ -1425,125 +1646,217 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
         {
             lbl_cutomer_contact.Value = dt.Rows[0]["c_contact"].ToString();
             lbl_cutomer_email.Value = dt.Rows[0]["c_email"].ToString();
-            lbl_total_remaining.Text= dt.Rows[0]["c_opening_balance"].ToString();
+            lbl_total_remaining.Text = dt.Rows[0]["c_opening_balance"].ToString();
 
             order();
             this.Order_reference();
         }
     }
-    
+
     protected void GridView1_RowDeleted(object sender, GridViewDeletedEventArgs e)
     {
 
     }
 
+   
     protected void GridView1_RowDeleting(object sender, GridViewDeleteEventArgs e)
     {
         int index = Convert.ToInt32(e.RowIndex);
         DataTable dt = ViewState["Details"] as DataTable;
         dt.Rows[index].Delete();
         ViewState["Details"] = dt;
-        GridView1.DataSource = dt;
-        GridView1.DataBind();
+       
+
+
+        if (dt.Rows.Count > 0)
+        {
+            GridView1.DataSource = dt;
+            GridView1.DataBind();
+            GridView1.Visible = true;
+            product();
+            material();
+            txt_height.Text = "0";
+            txt_width.Text = "0";
+            txt_sqrft.Text = "0";
+            txt_rate.Text = "0";
+            txt_rate2.Text = "0";
+            txt_height2.Text = "0";
+            txt_width2.Text = "0";
+            txt_sqrft2.Text = "0";
+
+            txt_amount.Text = "0";
+            txt_amount2.Text = "0";
+            txt_quantity.Text = "0";
+            txt_quantity2.Text = "0";
+            txt_total_amt.Text = "0";
+            txt_total_amt2.Text = "0";
+
+            txt_cgst.Text = "0";
+            txt_igst.Text = "0";
+            txt_sgst.Text = "0";
+            txt_final_amt.Text = "0";
+
+        }
+        else
+        {
+            GridView1.DataSource = null;
+            GridView1.DataBind();
+            lbl_total.Text = "0";
+            hide_total.Text = "0";
+            lbl_subtotal.Text = "0";
+            lbl_subtotal2.Value = "0";
+            lbl_gst.Text = "0";
+
+            lbl_totalqty.Text = "0";
+            //Dd_enter_product.SelectedValue = "--Slect--";
+            product();
+            material();
+            GridView1.Visible = false;
+            // lbl_product_hsn.Value = "";
+            Txt_description.Text = "";
+            lbl_unit.Value = ""; 
+
+            txt_height.Text = "0";
+            txt_width.Text = "0";
+            txt_sqrft.Text = "0";
+            txt_rate.Text = "0";
+            txt_rate2.Text = "0";
+            txt_height2.Text = "0";
+            txt_width2.Text = "0";
+            txt_sqrft2.Text = "0";
+
+            txt_amount.Text = "0";
+            txt_amount2.Text = "0";
+            txt_quantity.Text = "0";
+            txt_quantity2.Text = "0";
+            txt_total_amt.Text = "0";
+            txt_total_amt2.Text = "0";
+
+            txt_cgst.Text = "0";
+            txt_igst.Text = "0";
+            txt_sgst.Text = "0";
+           txt_final_amt.Text = "0";
+
+            Txt_Dtp_charges.Text = "0";
+            Txt_Fitting.Text = "0";
+            Txt_Framing.Text = "0";
+            Txt_install.Text = "0";
+            Txt_Pasting.Text = "0";
+            Txt_TransportCharges.Text = "0";
+
+          
+           
+            lbl_subtotal.Text = "0";
+            lbl_subtotal2.Value = "0";
+
+            Txt_advance.Text = "0";
+            Txt_discount.Text = "0";
+
+            lbl_gst.Text = "0";
+            lbl_gst2.Value = "0";
+            lbl_total.Text = "0";
+           
+            lbl_final.Text = "0";
+            hide_total.Text = "0";
+
+        }
     }
 
 
     protected void Button1_Click(object sender, EventArgs e)
     {
-        SqlCommand cmd = new SqlCommand("Select * from tbl_customer where c_name='" + Txt_customer_name.Text.Trim() + "' ", conn);
-
-        SqlDataAdapter adapt = new SqlDataAdapter(cmd);
-        DataTable dt = new DataTable();
-        adapt.Fill(dt);
-
-
-        //var result = cmd2.ExecuteScalar();
-        if (dt.Rows.Count > 0)
+        try
         {
+            SqlCommand cmd = new SqlCommand("INSERT INTO tbl_customer (c_name, c_address, c_contact, c_contact2, c_gst_no, c_opening_balance, c_email, c_dob, c_anidate) VALUES (@c_name, @c_address, @c_contact, @c_contact2, @c_gst_no, @c_opening_balance, @c_email, @c_dob, @c_anidate)", conn);
 
-            lbl_msg.ForeColor = System.Drawing.Color.Red;
-            lbl_msg.Text = "Customer Already Exist!!!";
-        }
-        else
-        {
-            SqlCommand cmd2 = new SqlCommand("insert into tbl_customer values(@c_name,@c_address,@c_contact,@c_contact2,@c_gst_no,@c_opening_balance,@c_email,@c_dob,@c_anidate)", conn);
-            cmd2.Parameters.AddWithValue("@c_name", Txt_customer_name.Text);
-            if (Txt_address.Text == "")
+            cmd.Parameters.AddWithValue("@c_name", Txt_customer_name.Text);
+            cmd.Parameters.AddWithValue("@c_address", Txt_address.Text);
+            cmd.Parameters.AddWithValue("@c_contact", Txt_contact.Text);
+            cmd.Parameters.AddWithValue("@c_contact2", Txt_contact2.Text);
+
+            if (string.IsNullOrEmpty(Txt_gst_no.Text))
             {
-                cmd2.Parameters.AddWithValue("@c_address", "-");
-            }
-            else
-            {
-                cmd2.Parameters.AddWithValue("@c_address", Txt_address.Text);
-            }
-            if (Txt_contact.Text == "")
-            {
-                cmd2.Parameters.AddWithValue("@c_contact", "-");
-            }
-            else
-            {
-                cmd2.Parameters.AddWithValue("@c_contact", Txt_contact.Text);
+               
+                Random random = new Random();
+                int randomNumber = random.Next(1000, 9999); 
+                Txt_gst_no.Text = "N/A-" + randomNumber.ToString();
             }
 
-            if (Txt_contact2.Text == "")
+            cmd.Parameters.AddWithValue("@c_gst_no", Txt_gst_no.Text.Trim());
+
+            if (string.IsNullOrEmpty(Txt_opening_balance.Text))
             {
-                cmd2.Parameters.AddWithValue("@c_contact2", "-");
+                cmd.Parameters.AddWithValue("@c_opening_balance", 0);
             }
             else
             {
-                cmd2.Parameters.AddWithValue("@c_contact2", Txt_contact2.Text);
-            }
-            if (Txt_gst_no.Text == "")
-            {
-                cmd2.Parameters.AddWithValue("@c_gst_no", "-");
-            }
-            else
-            {
-                cmd2.Parameters.AddWithValue("@c_gst_no", Txt_gst_no.Text);
-            }
-            if (Txt_opening_balance.Text == "")
-            {
-                cmd2.Parameters.AddWithValue("@c_opening_balance", 0);
-            }
-            else
-            {
-                cmd2.Parameters.AddWithValue("@c_opening_balance", Txt_opening_balance.Text);
+                cmd.Parameters.AddWithValue("@c_opening_balance", Txt_opening_balance.Text);
             }
 
-            if (Txt_email.Text == "")
-            {
-                cmd2.Parameters.AddWithValue("@c_email", "");
-            }
-            else
-            {
-                cmd2.Parameters.AddWithValue("@c_email", Txt_email.Text);
-            }
+            cmd.Parameters.AddWithValue("@c_email", Txt_email.Text);
+            cmd.Parameters.AddWithValue("@c_dob", Txt_dob.Text);
+            cmd.Parameters.AddWithValue("@c_anidate", Txt_ani.Text);
 
-            if (Txt_dob.Text == "")
-            {
-                cmd2.Parameters.AddWithValue("@c_dob", "");
-            }
-            else
-            {
-                cmd2.Parameters.AddWithValue("@c_dob", Txt_dob.Text);
-            }
-
-            if (Txt_ani.Text == "")
-            {
-                cmd2.Parameters.AddWithValue("@c_anidate", "");
-            }
-            else
-            {
-                cmd2.Parameters.AddWithValue("@c_anidate", Txt_ani.Text);
-            }
             conn.Open();
-            cmd2.ExecuteNonQuery();
+            cmd.ExecuteNonQuery();
             conn.Close();
+
             customer();
             lbl_msg.ForeColor = System.Drawing.Color.Green;
             lbl_msg.Text = "Customer Added Successfully!!!";
-            //string redirectScript = " window.location.href = 'sale_invoice.aspx';";
-            //System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('New Customer Added Successfully!!!');" + redirectScript, true);
+
+
+        }
+        catch (SqlException ex)
+        {
+            if (ex.Number == 2601)
+            {
+                
+                if (ex.Message.Contains("IX_UniqueContact"))
+                {
+                    lbl_msg.ForeColor = System.Drawing.Color.Red;
+                    lbl_msg.Text = "This contact number already exists!!!";
+                }
+                else if (ex.Message.Contains("IX_UniqueGST"))
+                {
+                    
+                        lbl_msg.ForeColor = System.Drawing.Color.Red;
+                        lbl_msg.Text = "This GST number already exists!!!";
+                  
+                }
+                else
+                {
+                    
+                }
+            }
+            else
+            {
+                
+            }
+
+        }
+
+        if (lbl_msg.Text == "This GST number already exists!!!")
+        {
+            Txt_gst_no.Text = "";
+
+        }
+        else if (lbl_msg.Text == "This contact number already exists!!!")
+        {
+            Txt_contact.Text = "";
+        }
+        else
+        {
+            Txt_customer_name.Text = "";
+            Txt_address.Text = "";
+            Txt_gst_no.Text = "";
+            Txt_contact2.Text = "";
+            Txt_address.Text = "";
+            Txt_contact.Text = "";
+            Txt_opening_balance.Text = "";
+            Txt_email.Text = "";
+            Txt_dob.Text = "";
+            Txt_ani.Text = "";
 
         }
     }
@@ -1593,6 +1906,17 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
             //string redirectScript = " window.location.href = 'sale_invoice.aspx';";
             //System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('New Sale Product Added Successfully!!!');" + redirectScript, true);
 
+            Dd_unit.SelectedItem.Text = "Sqft";
+            Txt_product_name.Text = "";
+            //string redirectScript = " window.location.href = 'purchase_invoice.aspx';";
+            //System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('New Purchase Product Added Successfully!!!');" + redirectScript, true);
+            //Txt_product_name.Text = "";
+            Txt_hsn.Text = "";
+            Txt_ra.Text = "";
+            Txt_desc.Text = "";
+            Dd_igst.SelectedItem.Text = "0 %";
+            Dd_sgst.SelectedItem.Text = "0 %";
+            Dd_cgst.SelectedItem.Text = "0 %";
 
         }
     }
@@ -1601,7 +1925,7 @@ public partial class Sale_sale_invoice : System.Web.UI.Page
 
     protected void drp_order_ref_SelectedIndexChanged(object sender, EventArgs e)
     {
-       // order_ref_total();
+        // order_ref_total();
     }
 
     protected void drp_payment_SelectedIndexChanged(object sender, EventArgs e)

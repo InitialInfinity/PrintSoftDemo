@@ -29,7 +29,7 @@ public partial class admin_panel_Sale_bill : System.Web.UI.Page
         {
             try
             {
-                bill_update = Request.QueryString["bill_update"].ToString();
+                bill_update = (Request.QueryString["bill_update"]??"").ToString();
                 if (bill_update == "success")
                 {
                     Panel3.Visible = true;
@@ -63,7 +63,16 @@ public partial class admin_panel_Sale_bill : System.Web.UI.Page
     }
     protected void payment(object sender, EventArgs e)
     {
-        Response.Redirect("invoice_payment.aspx?invoice=" + invoice);
+        if (lbl_balance.Text != "0")
+        {
+            Response.Redirect("invoice_payment.aspx?invoice=" + invoice);
+
+        }
+        else
+        {
+          
+            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Payment is alredy done!!!');", true);
+        }
 
     }
 	  protected void print2(object sender, EventArgs e)

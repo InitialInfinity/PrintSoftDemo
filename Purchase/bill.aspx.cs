@@ -16,12 +16,12 @@ public partial class admin_panel_Purchase_bill : System.Web.UI.Page
     string bill_update;
     protected void Page_Load(object sender, EventArgs e)
     {
-        invoice = Request.QueryString["invoice"].ToString();
+        invoice = (Request.QueryString["invoice"]??"").ToString();
         if (Session["a_email"] != null)
         {
             try
             {
-                bill_update = Request.QueryString["bill_update"].ToString();
+                bill_update = (Request.QueryString["bill_update"]??"").ToString();
                 if (bill_update == "success")
                 {
                     Panel3.Visible = true;
@@ -41,7 +41,17 @@ public partial class admin_panel_Purchase_bill : System.Web.UI.Page
     }
     protected void payment(object sender, EventArgs e)
     {
-        Response.Redirect("invoice_payment.aspx?invoice=" + lbl_invoice_no.Text);
+        if (lbl_balance.Text != "0")
+        {
+            Response.Redirect("invoice_payment.aspx?invoice=" + lbl_invoice_no.Text);
+
+        }
+        else
+        {
+            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Payment is alredy done!!!');", true);
+        }
+
+       
 
     }
     protected void print(object sender, EventArgs e)

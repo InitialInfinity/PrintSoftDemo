@@ -36,7 +36,7 @@ public partial class admin_panel_Reports_gstq_report : System.Web.UI.Page
    
     public void FillRepeater()
     {
-        SqlCommand cmd = new SqlCommand("select * from tbl_gst_quotation inner join tbl_customer on tbl_gst_quotation.c_id=tbl_customer.c_id order by qu_id desc", conn);
+        SqlCommand cmd = new SqlCommand("select * from tbl_gst_quotation inner join tbl_customer on tbl_gst_quotation.c_id=tbl_customer.c_id order by qu_id asc", conn);
         SqlDataAdapter adapt = new SqlDataAdapter(cmd);
         DataTable dt = new DataTable();
         adapt.Fill(dt);

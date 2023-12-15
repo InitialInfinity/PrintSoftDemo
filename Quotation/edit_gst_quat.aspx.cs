@@ -7,13 +7,16 @@ using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
+using System.Activities.Statements;
+using System.Security.Cryptography.Xml;
+using System.Windows.Forms;
 
 public partial class Quotation_edit_gst_quat : System.Web.UI.Page
 {
     SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["String"].ConnectionString);
     decimal total_amount = 0, final_total = 0;
     decimal dPageTotal, finaltotal;
-    decimal totalvalue, totalcgst, totalsgst, totaligst, totalgst, totalqty, totaltaxable, Old_total, old_balance, paid, new_balance, new_total, rem;
+    decimal totalvalue, totalcgst, totalsgst, totaligst, totalgst, totalqty, totaltaxable, Old_total, old_balance, paid, new_balance, new_total, rem, design, advanced, discount, pasting, fitting, transport;
     string quot;
     int id;
     string admin_email;
@@ -45,7 +48,7 @@ public partial class Quotation_edit_gst_quat : System.Web.UI.Page
                     this.customer();
                     this.product();
                     GetData();
-
+                    Btn_cart.Visible= false;
                     if (ViewState["Details"] == null)
                     {
 
@@ -218,11 +221,187 @@ public partial class Quotation_edit_gst_quat : System.Web.UI.Page
                 lbl_total_taxable.Value = totaltaxable.ToString();
 
 
+                pasting = Convert.ToDecimal(Txt_Pasting.Text);
+                transport = Convert.ToDecimal(Txt_TransportCharges.Text);
+                design = Convert.ToDecimal(Txt_Dtp_charges.Text);
+                fitting = Convert.ToDecimal(Txt_Fitting.Text);
+                discount = Convert.ToDecimal(Txt_discount.Text);
+
+                decimal total1 = (totalvalue + pasting + transport + design + fitting - discount);
+                decimal final = (totalvalue + pasting + transport + design + fitting);
+                lbl_final.Text = final.ToString();
+                lbl_total.Text = total1.ToString();
+                hide_total.Text = final.ToString();
+                product();
+                //txt_height.Text = "0";
+                //txt_height2.Text = "0";
+                //txt_width.Text = "0";
+                //txt_width2.Text = "0";
+                //txt_sqrft.Text = "0";
+                //txt_sqrft2.Text = "0";
+                //txt_rate2.Text = "0";
+                //txt_rate.Text = "0";
+                //txt_amount.Text = "0";
+                //txt_amount2.Text = "0";
+                //txt_quantity.Text = "0";
+                //txt_quantity2.Text = "0";
+                //txt_total_amt.Text = "0";
+                //txt_total_amt2.Text = "0";
+                //txt_cgst.Text = "0";
+                //txt_igst.Text = "0";
+                //txt_sgst.Text = "0";
+                //Txt_description.Text = "";
+                //txt_final_amt.Text = "0";
+                txt_height.Text = "0";
+                txt_width.Text = "0";
+                txt_sqrft.Text = "0";
+                txt_rate.Text = "0";
+                txt_rate2.Text = "0";
+                txt_height2.Text = "0";
+                txt_width2.Text = "0";
+                txt_sqrft2.Text = "0";
+
+                txt_amount.Text = "0";
+                txt_amount2.Text = "0";
+                txt_quantity.Text = "0";
+                txt_quantity2.Text = "0";
+                txt_total_amt.Text = "0";
+                txt_total_amt2.Text = "0";
+
+                txt_cgst.Text = "0";
+                txt_igst.Text = "0";
+                txt_sgst.Text = "0";
+                txt_final_amt.Text = "0";
+               
+                GridView1.Visible = true;
             }
             else
             {
                 GridView1.DataSource = null;
                 GridView1.DataBind();
+
+                //lbl_total.Text = "0";
+                //hide_total.Text = "0";
+                //lbl_subtotal.Text = "0";
+                //lbl_subtotal2.Value = "0";
+                //lbl_gst.Text = "0";
+                //Txt_Pasting.Text = "0";
+                //Txt_Fitting.Text = "0";
+                //Txt_discount.Text = "0";
+                //lbl_final.Text = "0";
+                //Txt_TransportCharges.Text = "0";
+                //Txt_advance.Text = "0";
+
+
+
+
+
+
+                //lbl_total.Text = "0";
+                //hide_total.Text = "0";
+                //lbl_subtotal.Text = "0";
+                //lbl_subtotal2.Value = "0";
+                //lbl_gst.Text = "0";
+
+                //lbl_totalqty.Text = "0";
+                ////Dd_enter_product.SelectedValue = "--Slect--";
+                //// product();
+
+                //// lbl_product_hsn.Value = "";
+
+                //txt_amount.Text = "0";
+                //txt_quantity.Text = "0";
+
+                //txt_total_amt.Text = "0";
+
+
+                //txt_final_amt.Text = "0";
+                //hide_total.Text = "0";
+                //Txt_description.Text = "";
+                //lbl_unit.Value = "";
+
+                //Txt_discount.Text = "0";
+
+                //txt_cgst.Text = "0";
+                //txt_igst.Text = "0";
+                //txt_sgst.Text = "0";
+                //Txt_Dtp_charges.Text = "0";
+                //Txt_Pasting.Text = "0";
+                //Txt_Fitting.Text = "0";
+                //Txt_discount.Text = "0";
+                //lbl_final.Text = "0";
+                //Txt_TransportCharges.Text = "0";
+                //txt_quantity2.Text = "0";
+                //txt_amount.Text = "0";
+                //txt_quantity.Text = "0";
+                //txt_total_amt.Text = "0";
+                //txt_height.Text = "0";
+                //txt_height2.Text = "0";
+                //txt_width.Text = "0";
+                //txt_width2.Text = "0";
+                //txt_sqrft.Text = "0";
+                //txt_sqrft2.Text = "0";
+                //txt_rate2.Text = "0";
+                //txt_rate.Text = "0";
+                //Txt_description.Text = "";
+                GridView1.Visible = false;
+                lbl_total.Text = "0";
+                hide_total.Text = "0";
+                lbl_subtotal.Text = "0";
+                lbl_subtotal2.Value = "0";
+                lbl_gst.Text = "0";
+
+                lbl_totalqty.Text = "0";
+                //Dd_enter_product.SelectedValue = "--Slect--";
+                product();
+               
+                // lbl_product_hsn.Value = "";
+                Txt_description.Text = "";
+                lbl_unit.Value = "";
+
+                txt_height.Text = "0";
+                txt_width.Text = "0";
+                txt_sqrft.Text = "0";
+                txt_rate.Text = "0";
+                txt_rate2.Text = "0";
+                txt_height2.Text = "0";
+                txt_width2.Text = "0";
+                txt_sqrft2.Text = "0";
+
+                txt_amount.Text = "0";
+                txt_amount2.Text = "0";
+                txt_quantity.Text = "0";
+                txt_quantity2.Text = "0";
+                txt_total_amt.Text = "0";
+                txt_total_amt2.Text = "0";
+
+                txt_cgst.Text = "0";
+                txt_igst.Text = "0";
+                txt_sgst.Text = "0";
+                txt_final_amt.Text = "0";
+
+                Txt_Dtp_charges.Text = "0";
+                Txt_Fitting.Text = "0";
+                
+                Txt_Pasting.Text = "0";
+                Txt_TransportCharges.Text = "0";
+
+
+
+                lbl_subtotal.Text = "0";
+                lbl_subtotal2.Value = "0";
+
+                Txt_advance.Text = "0";
+                Txt_discount.Text = "0";
+
+                lbl_gst.Text = "0";
+                // lbl_gst2.Value = "0";
+                lbl_total.Text = "0";
+
+                lbl_final.Text = "0";
+                hide_total.Text = "0";
+              
+                GridView1.Visible = false;
             }
         }
         catch (Exception ex)
@@ -240,7 +419,7 @@ public partial class Quotation_edit_gst_quat : System.Web.UI.Page
 
     protected void Btn_cart_Click(object sender, EventArgs e)
     {
-        GetData();
+        //GetData();
         string str = Dd_enter_product.SelectedItem.Text;
 
         string str2 = txt_quantity.Text.Trim();
@@ -498,18 +677,59 @@ public partial class Quotation_edit_gst_quat : System.Web.UI.Page
                 Panel1.Visible = false;
                 Panel2.Visible = true;
                 txt_rate2.Text = rate;
+                txt_quantity2.Text = "0";
+                txt_sqrft2.Text = "0";
+                txt_width2.Text = "0";
+
+                txt_height2.Text = "0";
+
             }
             else if (unit == "Ltr")
             {
                 Panel1.Visible = false;
                 Panel2.Visible = true;
                 txt_rate2.Text = rate;
+                txt_quantity2.Text = "0";
+                txt_sqrft2.Text = "0";
+                txt_width2.Text = "0";
+
+                txt_height2.Text = "0";
             }
+            //packet
+            else if (unit == "Packet")
+            {
+                Panel1.Visible = false;
+                Panel2.Visible = true;
+                txt_rate2.Text = rate;
+                txt_quantity2.Text = "0";
+                txt_sqrft2.Text = "0";
+                txt_width2.Text = "0";
+
+                txt_height2.Text = "0";
+            }
+            //copy
+            else if (unit == "Copy")
+            {
+                Panel1.Visible = false;
+                Panel2.Visible = true;
+                txt_rate2.Text = rate;
+                txt_width2.Text = "0";
+
+                txt_height2.Text = "0";
+                txt_quantity2.Text = "0";
+                txt_sqrft2.Text = "0";
+            }
+
+
             else
             {
                 Panel1.Visible = true;
                 Panel2.Visible = false;
                 txt_rate.Text = rate;
+                txt_width.Text = "0";
+                txt_height.Text = "0";
+                txt_quantity.Text = "0";
+                txt_sqrft.Text = "0";
             }
             txt_cgst.Text = cgst;
             txt_sgst.Text = sgst;
@@ -519,6 +739,10 @@ public partial class Quotation_edit_gst_quat : System.Web.UI.Page
 
             lbl_product_hsn.Value = hsn;
             lbl_unit.Value = unit;
+            txt_cgst.Text = "0";
+            txt_sgst.Text = "0";
+            txt_igst.Text = "0";
+            txt_final_amt.Text = "0";
         }
 
     }
@@ -535,19 +759,23 @@ public partial class Quotation_edit_gst_quat : System.Web.UI.Page
         {
             try
             {
-                SqlCommand cmd4 = new SqlCommand("select * from tbl_gst_quotation_details where q_quotation_no='" + quot + "'", conn);
-                SqlDataAdapter adapt4 = new SqlDataAdapter(cmd4);
-                DataTable dt4 = new DataTable();
-                adapt4.Fill(dt4);
-                if (dt4.Rows.Count > 0)
-                {
-                    Old_total = Convert.ToDecimal(dt4.Rows[0]["q_total"]);
+                //SqlCommand cmd4 = new SqlCommand("select * from tbl_gst_quotation_details where q_quotation_no='" + quot + "'", conn);
+                //SqlDataAdapter adapt4 = new SqlDataAdapter(cmd4);
+                //DataTable dt4 = new DataTable();
+                //adapt4.Fill(dt4);
+                //if (dt4.Rows.Count > 0)
+                //{
+                //    Old_total = Convert.ToDecimal(dt4.Rows[0]["q_total"]);
 
-                    //paid = Old_total - old_balance;
-                    new_total = Convert.ToDecimal(hide_total.Text) - Convert.ToDecimal(Txt_discount.Text);
-                    new_balance = new_total;
-                    rem = new_total;
-                }
+                //    //paid = Old_total - old_balance;
+                //    new_total = Convert.ToDecimal(hide_total.Text) - Convert.ToDecimal(Txt_discount.Text);
+                //    new_balance = new_total;
+                //    rem = new_total;
+                //}
+                decimal new_balance;
+                finaltotal = Math.Round(Convert.ToDecimal(hide_total.Text));
+                new_balance = finaltotal - Convert.ToDecimal(Txt_discount.Text);  
+
 
                 SqlCommand cmd5 = new SqlCommand("DELETE FROM tbl_gst_quotation_details Where q_quotation_no='" + quot + "'", conn);
                 conn.Open();

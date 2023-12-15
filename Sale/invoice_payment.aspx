@@ -92,7 +92,7 @@
                                                     <label class="control-label text-right col-md-3">Date<span style="color:red;">*</span></label>
 
                                                     <div class="col-md-6">
-                                                         <asp:TextBox ID="Txt_date" class="form-control" placeholder="Advance" runat="server" TextMode="Date" TabIndex="5"></asp:TextBox>
+                                                         <asp:TextBox ID="Txt_date" class="form-control" placeholder="Advance" runat="server"  TextMode="Date" TabIndex="5"></asp:TextBox>
                                                     </div>
                                                 </div>
 
@@ -304,8 +304,26 @@ return true;
             var pay = document.getElementById('<%=Txt_pay.ClientID %>');
          
            var discount = document.getElementById('<%=Txt_discount.ClientID %>');
-         
-           var balance = (parseFloat(due.value) - parseFloat(discount.value) - parseFloat(pay.value));
+
+           var discount1 = discount.value;
+
+           if (discount1== "") {
+               discount1 = 0;
+               var balance = (parseFloat(due.value) - parseFloat(discount1) - parseFloat(pay.value));
+
+           }
+           else if (discount1 == 0)
+           {
+               discount1 = 0;
+               var balance = (parseFloat(due.value) - parseFloat(discount1) - parseFloat(pay.value));
+
+           }
+
+           else {
+               var balance = (parseFloat(due.value) - parseFloat(discount1) - parseFloat(pay.value));
+
+           }
+           
 
            
             document.getElementById('<%=Lbl_total_balance.ClientID %>').value = balance;

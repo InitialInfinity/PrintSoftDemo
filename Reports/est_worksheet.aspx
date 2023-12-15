@@ -40,19 +40,7 @@ function ShowModel2() {
     $('#myModal2').modal('show');
 }
 </script>
-     <script type="text/javascript">
-
-function printdiv(dropHere) {
-    var printContents = document.getElementById(dropHere).innerHTML;
-    var originalContents = document.body.innerHTML;
-
-    document.body.innerHTML = printContents;
-
-    window.print();
-
-    document.body.innerHTML = originalContents;
-}
-</script>
+     
     <script>
         function Closepopup() {
             $('#myModal').modal('close');
@@ -87,7 +75,7 @@ function printdiv(dropHere) {
         
              <div class="col-md-7 exportbtn">
           
-        <button type="button" id="btn_print" title="Print" onclick="printdiv('dropHere');" class="btn btnsqr btn-primary "> <i class="fa fa-print"></i> Print</button>
+        <button type="button" id="btn_print" title="Print" onclick="printdiv('dropHere');" class="btn btnsqr btn-primary"> <i class="fa fa-print"></i> Print</button>
      
       </div>
       </div>
@@ -188,7 +176,7 @@ function printdiv(dropHere) {
           <!-- /.row --> 
         
           <!-- Table row   table-striped-->
-          <div class="table-responsive">
+          <div class="table-responsive" id="example1">
             <div>
                 <br/>
               <table class="table table-bordered">
@@ -269,6 +257,20 @@ function printdiv(dropHere) {
     <div class="pull-right hidden-xs">Version 1.0</div>
     Copyright © 2018 PrintSoft. All rights reserved.</footer>
     <asp:GridView ID="GridView1" runat="server"></asp:GridView>
+
+    <script type="text/javascript">
+        function printdiv(dropHere) {
+            var printContents = document.getElementById(dropHere).innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+        
+        }
+</script>
 
 </asp:Content>
 

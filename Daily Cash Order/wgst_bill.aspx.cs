@@ -24,7 +24,7 @@ public partial class Daily_Cash_Order_wgst_bill : System.Web.UI.Page
         {
             try
             {
-                bill_update = Request.QueryString["bill_update"].ToString();
+                bill_update = (Request.QueryString["bill_update"]??"").ToString();
                 if (bill_update == "success")
                 {
                     Panel3.Visible = true;
@@ -53,7 +53,15 @@ public partial class Daily_Cash_Order_wgst_bill : System.Web.UI.Page
 
     protected void payment(object sender, EventArgs e)
     {
-        Response.Redirect("cash_payment.aspx?invoice=" + invoice.ToString());
+        if (lbl_balance.Text != "0") 
+        {
+            Response.Redirect("cash_payment.aspx?invoice=" + invoice.ToString());
+
+        }
+          else
+        {
+            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Payment is alredy done!!!');", true);
+        }
 
     }
 

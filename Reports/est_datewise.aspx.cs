@@ -165,7 +165,7 @@ public partial class Reports_est_datewise : System.Web.UI.Page
     {
         if (Txt_date1.Text == "" || Txt_date2.Text == "" && Dd_customer.SelectedValue != "--Select--")
         {
-            SqlCommand cmd = new SqlCommand("select * from tbl_estimate inner join tbl_customer on tbl_estimate.c_id=tbl_customer.c_id where tbl_estimate.c_id =  '" + 0 + "' Order By est_id desc", conn);
+            SqlCommand cmd = new SqlCommand("select * from tbl_estimate inner join tbl_customer on tbl_estimate.c_id=tbl_customer.c_id where tbl_estimate.c_id =  '" + Dd_customer.SelectedValue + "' Order By est_id desc", conn);
             SqlDataAdapter adapt = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
             adapt.Fill(dt);
@@ -223,6 +223,35 @@ public partial class Reports_est_datewise : System.Web.UI.Page
             }
         }
         else if (Txt_date1.Text != "" && Txt_date2.Text != "" && Dd_customer.SelectedValue != "--Select--")
+        {
+            SqlCommand cmd = new SqlCommand("select * from tbl_estimate inner join tbl_customer on tbl_estimate.c_id=tbl_customer.c_id where tbl_estimate.c_id='" + Dd_customer.SelectedValue + "' AND est_invoice_date Between '" + Txt_date1.Text + "' and '" + Txt_date2.Text + "'  Order By est_id desc", conn);
+            SqlDataAdapter adapt = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            adapt.Fill(dt);
+            if (dt.Rows.Count > 0)
+            {
+                Repeater1.DataSource = dt;
+                Repeater1.DataBind();
+
+                lbl_total_invoice_amount.Text = dt.Compute("Sum(est_total)", string.Empty).ToString();
+                lbl_total_invoice.Text = dt.Compute("count(est_id)", string.Empty).ToString();
+                Lbl_balance.Text = dt.Compute("Sum(est_balance)", string.Empty).ToString();
+
+                lbl_Advance.Text = dt.Compute("Sum(est_adjustment)", string.Empty).ToString();
+                lblTBalance.Text = dt.Compute("Sum(est_balance)", string.Empty).ToString();
+                lblTInvoiceAmount.Text = dt.Compute("Sum(est_total)", string.Empty).ToString();
+            }
+            else
+            {
+                Panel1.Visible = false;
+                Repeater1.DataSource = null;
+                Repeater1.DataBind();
+                lbl_total_invoice.Text = "0";
+                lbl_total_invoice_amount.Text = "0";
+                Lbl_balance.Text = "0";
+            }
+        }
+        else if (Txt_date1.Text == "" && Txt_date2.Text == "" || Dd_customer.SelectedValue != "--Select--")
         {
             SqlCommand cmd = new SqlCommand("select * from tbl_estimate inner join tbl_customer on tbl_estimate.c_id=tbl_customer.c_id where tbl_estimate.c_id='" + Dd_customer.SelectedValue + "' AND est_invoice_date Between '" + Txt_date1.Text + "' and '" + Txt_date2.Text + "'  Order By est_id desc", conn);
             SqlDataAdapter adapt = new SqlDataAdapter(cmd);

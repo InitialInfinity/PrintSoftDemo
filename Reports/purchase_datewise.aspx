@@ -80,25 +80,28 @@
         
              <div class="col-md-9 exportbtn">
           
-        <button type="button" id="btn_print" title="Print" onclick="printdiv('dropHere');" class="btn btnsqr btn-primary"> <i class="fa fa-print"></i> Print</button>
+        <button type="button" id="btn_print" title="Print" onclick="checkDataAndPrint();" class="btn btnsqr btn-primary"> <i class="fa fa-print"></i> Print</button>
       
       </div>
       </div>
     <br/>
-      <div class="row no-print" style="background-color:#dee2e6">
-          <div class="col-md-3 padding_3">
+      <div class="row no-print" style="background-color:#dee2e6; height:52px">
+          <div class="col-md-3 padding_3 " style="margin-top:8px">
            <asp:DropDownList ID="Dd_customer" class="form-control" runat="server"></asp:DropDownList>
           </div>
-          <div class="col-md-3 padding_3">
+           <div class="col-md-1 padding_10 d-flex align-items-center justify-content-end">
+              <b><asp:Label ID="Label2"  runat="server" Text="From"></asp:Label></b>
+          </div>
+          <div class="col-md-3 padding_3" style="margin-top:8px">
             <asp:TextBox ID="Txt_date1" class="form-control" runat="server" TextMode="Date"></asp:TextBox>
           </div>
-           <div class="col-md-1 padding_10">
+           <div class="col-md-1 padding_10 d-flex align-items-center justify-content-end">
               <b><asp:Label ID="Label1"  runat="server" Text="To"></asp:Label></b>
           </div>
-           <div class="col-md-3 padding_3">
+           <div class="col-md-3 padding_3" style="margin-top:8px">
             <asp:TextBox ID="Txt_date2" class="form-control" runat="server" TextMode="Date"></asp:TextBox>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-1" style="margin-top:5px">
           <asp:Button ID="Btn_search" class="btn btn-success" runat="server" Text="Search" OnClick="Btn_search_Click"/>
           </div>
 
@@ -140,10 +143,10 @@
                        
                        <td><asp:Label ID="lbl_total" runat="server" Text='<%# Eval("pu_total") %>'></asp:Label></td>
                   <td class="no-print">
-                  <asp:LinkButton ID="LinkButton1" runat="server" OnClientClick="return confirm('Do you want to delete this Sale Invoice?');" OnClick="DeleteSale"><i  class="fa fa-trash-o"></i></asp:LinkButton>
-                 <a href="../Purchase/bill.aspx?invoice=<%# Eval("pu_invoice_no") %>"><i style="padding-left:10px" class="fa fa-eye"></i></i></a>
-                  <a href="../Purchase/edit_bill.aspx?invoice=<%# Eval("pu_invoice_no") %>"> <i style="padding-left:10px" class="fa fa-edit"></i></a>
-                     
+                  <asp:LinkButton ID="LinkButton1" runat="server" style="display:none" OnClientClick="return confirm('Do you want to delete this Sale Invoice?');" OnClick="DeleteSale"><i  class="fa fa-trash-o"></i></asp:LinkButton>
+                
+                  <a href="../Purchase/edit_bill.aspx?invoice=<%# Eval("pu_invoice_no") %>" style="display:none"> <i style="padding-left:10px" class="fa fa-edit"></i></a>
+                      <a href="../Purchase/bill.aspx?invoice=<%# Eval("pu_invoice_no") %>"><i style="padding-left:10px" class="fa fa-eye"></i></i></a>
                   </td>
                 </tr>
               </ItemTemplate>
@@ -198,5 +201,22 @@ function printdiv(dropHere) {
     document.body.innerHTML = originalContents;
 }
 </script>
+
+    <script type="text/javascript">
+        function checkDataAndPrint() {
+            // Get the grid element
+            var table = document.getElementById('example1');
+
+            // Check if there are any rows in the table (excluding the header row)
+            if (table.rows.length > 3) {
+                printdiv('dropHere');
+            } else {
+                alert("No data to print");
+            }
+        }
+
+
+
+              </script>
 </asp:Content>
 

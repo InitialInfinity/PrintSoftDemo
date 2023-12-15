@@ -27,24 +27,27 @@ public partial class Master_add_vendor : System.Web.UI.Page
  
     protected void Btn_submit_Click(object sender, EventArgs e)
     {
-        SqlCommand cmd2 = new SqlCommand("Select * from tbl_vendor where v_name='" + Txt_vendor_name.Text.Trim() + "'", conn);
-
-        SqlDataAdapter adapt2 = new SqlDataAdapter(cmd2);
-        DataTable dt2 = new DataTable();
-        adapt2.Fill(dt2);
-        if (dt2.Rows.Count > 0)
-        {
-            Lbl_message.Text = "Vendor Already Exist!!!";
-        }
-        else
+        try
         {
             SqlCommand cmd = new SqlCommand("insert into tbl_vendor values(@v_name,@v_address,@v_contact,@v_gst_no,@v_opening_balance,@v_email,@v_contact2)", conn);
             cmd.Parameters.AddWithValue("@v_name", Txt_vendor_name.Text);
             cmd.Parameters.AddWithValue("@v_address", Txt_address.Text);
             cmd.Parameters.AddWithValue("@v_contact", Txt_contact.Text);
             cmd.Parameters.AddWithValue("@v_contact2", Txt_contact2.Text);
-            cmd.Parameters.AddWithValue("@v_gst_no", Txt_gst_no.Text);
-            if(Txt_opening_balance.Text=="")
+
+
+            if (string.IsNullOrEmpty(Txt_gst_no.Text))
+            {
+
+                Random random = new Random();
+                int randomNumber = random.Next(1000, 9999);
+                Txt_gst_no.Text = "N/A-" + randomNumber.ToString();
+            }
+
+            cmd.Parameters.AddWithValue("@v_gst_no", Txt_gst_no.Text.Trim());
+
+
+            if (Txt_opening_balance.Text == "")
             {
                 cmd.Parameters.AddWithValue("@v_opening_balance", 0);
             }
@@ -52,15 +55,46 @@ public partial class Master_add_vendor : System.Web.UI.Page
             {
                 cmd.Parameters.AddWithValue("@v_opening_balance", Txt_opening_balance.Text);
             }
-            
+
             cmd.Parameters.AddWithValue("@v_email", Txt_email.Text);
             conn.Open();
             cmd.ExecuteNonQuery();
             conn.Close();
-          
+
             Response.Redirect("list_of_vendor.aspx?insert_cust=success");
-     
         }
+        catch (SqlException ex)
+        {
+            if (ex.Number == 2601)
+            {
+                // Check if the exception is related to a unique constraint violation
+                if (ex.Message.Contains("IX_UniqueContact"))
+                {
+                    // Show an alert indicating that the contact number is a duplicate
+                    string script = "alert(' This contact number already exists.');";
+                    ClientScript.RegisterStartupScript(this.GetType(), "AlertContact", script, true);
+                    
+                }
+                else if (ex.Message.Contains("IX_UniqueGST"))
+                {
+                    
+                        string script = "alert('This GST number already exists.');";
+                        ClientScript.RegisterStartupScript(this.GetType(), "AlertGST", script, true);
+                    
+
+                }
+                else
+                {
+                    // Handle other SQL errors as needed
+                }
+            }
+            else
+            {
+                // Handle other SQL errors as needed
+            }
+
+        }
+
     }
 
 

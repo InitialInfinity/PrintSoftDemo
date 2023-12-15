@@ -91,7 +91,7 @@
         <div class="col-md-3">
          <h4 class="text-black">Estimate Report</h4>
         </div>
-        
+        <asp:TextBox ID="txtdate" runat="server" visible="false"></asp:TextBox>
              <div class="col-md-9 exportbtn">
            <a href="estimate.aspx"><button type="button" id="btn_mail"  title="Create New Cash Memo" class="btn btnsqr btn-primary4 btngap"> <i class="fa fa-plus"></i>Add Cash Memo</button></a>
           <button type="button" id="btn_excel" title="Export to Excel" runat="server" class="btn btnsqr btn-primary3 btngap" onserverclick="excel_export"> <i class="fa fa-file-excel-o"></i> Excel</button>
@@ -148,7 +148,8 @@
                         <td class="no-print" id="tbltextbox" runat="server">
                   <asp:LinkButton ID="LinkButton1" runat="server" OnClientClick="return confirm('Do you want to delete this Cash Memo?');" OnClick="DeleteSale"><i  class="fa fa-trash-o"></i></asp:LinkButton>
                  <%--<a href="wgst_bill.aspx?invoice=<%# Eval("est_invoice_no") %>"><i style="padding-left:10px" class="fa fa-eye"></i></a>--%>
-                 <a href="wgst_edit_bill.aspx?invoice=<%# Eval("est_invoice_no") %>"> <i style="padding-left:10px" class="fa fa-edit"></i></a>
+                 <%--<a href="wgst_edit_bill.aspx?invoice=<%# Eval("est_invoice_no") %>"> <i style="padding-left:10px" class="fa fa-edit"></i></a>--%>
+                            <asp:LinkButton ID="LinkButton2" runat="server" PostBackUrl='<%# "wgst_edit_bill.aspx?invoice=" + Eval("est_invoice_no") %>'> <i style="padding-left: 10px" class="fa fa-edit"></i></asp:LinkButton>
                      
                   </td>
                       </asp:Panel>

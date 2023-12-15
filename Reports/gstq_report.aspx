@@ -79,9 +79,10 @@
                   <asp:Panel ID="Panel1" runat="server">
                      
                         <td class="no-print" id="tbltextbox" runat="server">
-                  <asp:LinkButton ID="LinkButton1" runat="server" OnClientClick="return confirm('Do you want to delete this GST Quotation?');" OnClick="DeleteSale"><i  class="fa fa-trash-o"></i></asp:LinkButton>
+                 
                  <a href="../Quotation/gst_bill.aspx?invoice=<%# Eval("qu_invoice_no") %>"><i style="padding-left:10px" class="fa fa-eye"></i></i></a>
-                 <a href=""> <i style="padding-left:10px" class="fa fa-edit"></i></a>
+                  <asp:LinkButton ID="LinkButton1" runat="server" style="display:none" OnClientClick="return confirm('Do you want to delete this GST Quotation?');" OnClick="DeleteSale"><i  class="fa fa-trash-o"></i></asp:LinkButton>
+                 <a href="" style="display:none"> <i style="padding-left:10px" class="fa fa-edit"></i></a>
                      
                   </td>
                       </asp:Panel>

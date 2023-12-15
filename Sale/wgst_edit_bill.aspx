@@ -1,25 +1,53 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Sale/Sale.master" AutoEventWireup="true" CodeFile="wgst_edit_bill.aspx.cs" Inherits="Sale_wgst_edit_bill" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
-  
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <script type="text/javascript">
+
+        var isSubmitted = false;
+
+        function preventMultipleSubmissions() {
+
+            if (!isSubmitted) {
+
+                $('#<%=Btn_generate_pdf.ClientID %>').val('Submitting.. Plz Wait..');
+
+                isSubmitted = true;
+
+                return true;
+
+            }
+
+            else {
+
+                return false;
+
+            }
+
+        }
+
+
+
+
+
+    </script>
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-         <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper"> 
-    <!-- Content Header (Page header) -->
-    <section class="content-header sty-one">
-      <h1>Cash Memo</h1>
-      <ol class="breadcrumb">
-        <li><a href="#">Sale</a></li>
-        <li><i class="fa fa-angle-right"></i> Cash Memo</li>
-      </ol>
-    </section>
- <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header sty-one">
+            <h1>Cash Memo</h1>
+            <ol class="breadcrumb">
+                <li><a href="#">Sale</a></li>
+                <li><i class="fa fa-angle-right"></i>Cash Memo</li>
+            </ol>
+        </section>
+        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
 
             <ContentTemplate>
                 <section class="content">
-                    
+
                     <div class="card">
                         <div class="card-body">
                             <!-- Main content -->
@@ -27,7 +55,7 @@
                                 <!-- title row -->
                                 <div class="row">
                                     <div class="col-lg-12 m-b-3">
-                                        <h3 class="text-black">Cash Memo <span class="pull-right"></span> </h3>
+                                        <h3 class="text-black">Cash Memo <span class="pull-right"></span></h3>
                                     </div>
                                     <!-- /.col -->
                                 </div>
@@ -51,22 +79,22 @@
                                     </div>
                                 </div>
 
-                                     <%--<div class="form-group row">
+                                <%--<div class="form-group row">
                                     <label class="control-label text-right col-md-3">Order Reference #</label>
                                     <div class="col-md-6">
                                         <asp:TextBox ID="Txt_reference" Enabled="false" class="form-control" runat="server"></asp:TextBox>
                                     </div>
                                 </div>--%>
 
-                                 <div class="form-group row">
+                                <div class="form-group row">
                                     <label class="control-label text-right col-md-3">Designer#</label>
                                     <div class="col-md-6">
-                                      
+
                                         <asp:DropDownList ID="drp_designer" class="form-control" runat="server" OnSelectedIndexChanged="drp_order_ref_SelectedIndexChanged" AutoPostBack="true" TabIndex="4"></asp:DropDownList>
                                         <%--<h5>Amount :-<asp:Label ID="lbl_order_total" runat="server" Text=""></asp:Label> </h5>--%>
                                     </div>
                                 </div>
-                               
+
                                 <div class="form-group row">
                                     <label class="control-label text-right col-md-3">Cash Memo Date</label>
                                     <div class="col-md-3">
@@ -74,25 +102,25 @@
                                     </div>
                                     <label class="control-label text-right col-md-3">Due Date</label>
                                     <div class="col-md-3">
-                                       <asp:TextBox ID="Txt_due_date" class="form-control" runat="server" TextMode="SingleLine"></asp:TextBox>
+                                        <asp:TextBox ID="Txt_due_date" class="form-control" runat="server" TextMode="SingleLine"></asp:TextBox>
                                     </div>
                                 </div>
                                 <hr />
 
-                                  <div class="form-group row">
+                                <div class="form-group row">
 
                                     <div class="col-md-4">
                                         <asp:Label ID="Label1" runat="server" Text="Product"></asp:Label>
                                     </div>
 
-                                     <div class="col-md-4">
+                                    <div class="col-md-4">
                                         <asp:Label ID="Label3" runat="server" Text="Material"></asp:Label>
                                     </div>
 
-                                     <div class="col-md-4">
+                                    <div class="col-md-4">
                                         <asp:Label ID="Label2" runat="server" Text="Description"></asp:Label>
                                     </div>
-                                   
+
 
                                 </div>
 
@@ -101,97 +129,97 @@
 
                                     <div class="col-md-4">
                                         <asp:DropDownList ID="Dd_enter_product" class="form-control" runat="server" AutoPostBack="True" OnSelectedIndexChanged="Dd_enter_product_SelectedIndexChanged"></asp:DropDownList>
-                                         <asp:LinkButton ID="LinkButton2" Class="add_class" data-toggle="modal" data-target="#myModal2" runat="server">+Add Product</asp:LinkButton>
+                                        <asp:LinkButton ID="LinkButton2" Class="add_class" data-toggle="modal" data-target="#myModal2" runat="server">+Add Product</asp:LinkButton>
                                     </div>
 
                                     <div class="col-md-4">
-                                      <asp:DropDownList ID="Dd_material" class="form-control" runat="server" AutoPostBack="True" OnSelectedIndexChanged="Dd_material_SelectedIndexChanged"></asp:DropDownList>
-                                        Available : <b><asp:Label ID="lbl_available" runat="server" Text=""></asp:Label></b>
+                                        <asp:DropDownList ID="Dd_material" class="form-control" runat="server" AutoPostBack="True" OnSelectedIndexChanged="Dd_material_SelectedIndexChanged"></asp:DropDownList>
+                                        Available : <b>
+                                            <asp:Label ID="lbl_available" runat="server" Text=""></asp:Label></b>
                                     </div>
 
                                     <div class="col-md-4">
-                                        <asp:TextBox ID="Txt_description" rows="2" class="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
+                                        <asp:TextBox ID="Txt_description" Rows="2" class="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
                                     </div>
-                                   
+
 
                                 </div>
-                                
+
                                 <div class="form-group row">
-                                   
+
                                     <div class="col-md-3">
-                                        
                                     </div>
-                                    
+
                                 </div>
 
                                 <table class="table">
                                     <asp:Panel ID="Panel1" runat="server">
-                                    <thead>
-                                        <tr>
+                                        <thead>
+                                            <tr>
 
-                                            <th scope="col">Height</th>
-                                            <th scope="col">Width</th>
-                                            <th scope="col">Size</th>
-                                            <th scope="col">Rate</th>
-                                            <th scope="col">Amount</th>
-                                            <th scope="col">Quantity</th>
-                                            <th scope="col">Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
+                                                <th scope="col">Height<span style="color: red;">*</span></th>
+                                                <th scope="col">Length<span style="color: red;">*</span></th>
+                                                <th scope="col">Size</th>
+                                                <th scope="col">Rate</th>
+                                                <th scope="col">Amount</th>
+                                                <th scope="col">Quantity<span style="color: red;">*</span></th>
+                                                <th scope="col">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
 
-                                            <td>
-                                                <asp:TextBox ID="txt_height" OnkeyUp="sqrft(); rate();quan_amount(); gst();" onchange="sqrft(); rate();quan_amount(); gst();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>   
-                                            <td>
-                                                <asp:TextBox ID="txt_width" OnkeyUp="sqrft(); rate();quan_amount(); gst();" onchange="sqrft(); rate();quan_amount(); gst();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
-                                            <td>
-                                                <asp:TextBox ID="txt_sqrft" OnkeyUp="sqrft(); rate();quan_amount(); gst();" onchange="sqrft(); rate();quan_amount(); gst();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
-                                            <td>
-                                                <asp:TextBox ID="txt_rate" Onkeyup="sqrft(); rate();quan_amount(); gst();" onchange="sqrft(); rate();quan_amount(); gst();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
-                                            <td>
-                                                <asp:TextBox ID="txt_amount" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
-                                            <td>
-                                                <asp:TextBox ID="txt_quantity" OnkeyUp="sqrft(); rate();quan_amount(); gst();" onchange="sqrft(); rate();quan_amount(); gst();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
-                                            <td>
-                                                <asp:TextBox ID="txt_total_amt" onkeyup="gst();" onchange="gst();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
-                                        </tr>
+                                                <td>
+                                                    <asp:TextBox ID="txt_height" OnkeyUp="sqrft(); rate();quan_amount(); " onchange="sqrft(); rate();quan_amount(); " class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_width" OnkeyUp="sqrft(); rate();quan_amount(); " onchange="sqrft(); rate();quan_amount(); " class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_sqrft" OnkeyUp="sqrft(); rate();quan_amount();" onchange="sqrft(); rate();quan_amount(); " class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_rate" Onkeyup="sqrft(); rate();quan_amount(); " onchange="sqrft(); rate();quan_amount(); " class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_amount" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_quantity" OnkeyUp="sqrft(); rate();quan_amount(); " onchange="sqrft(); rate();quan_amount(); " class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_total_amt" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                            </tr>
 
-                                    </tbody>
+                                        </tbody>
                                     </asp:Panel>
                                     <asp:Panel ID="Panel2" runat="server">
-                                    <thead>
-                                        <tr>
+                                        <thead>
+                                            <tr>
 
-                                            <th scope="col">Height</th>
-                                            <th scope="col">Width</th>
-                                            <th scope="col">Size</th>
-                                            <th scope="col">Rate</th>
-                                            <th scope="col">Amount</th>
-                                            <th scope="col">Quantity</th>
-                                            <th scope="col">Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
+                                                <th scope="col">Height<span style="color: red;">*</span></th>
+                                                <th scope="col">Length<span style="color: red;">*</span></th>
+                                                <th scope="col">Size</th>
+                                                <th scope="col">Rate</th>
+                                                <th scope="col">Amount</th>
+                                                <th scope="col">Quantity<span style="color: red;">*</span></th>
+                                                <th scope="col">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
 
-                                            <td>
-                                                <asp:TextBox ID="txt_height2"  disabled="true" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>   
-                                            <td>
-                                                <asp:TextBox ID="txt_width2" disabled="true" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
-                                            <td>
-                                                <asp:TextBox ID="txt_sqrft2" disabled="true"  class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
-                                            <td>
-                                                <asp:TextBox ID="txt_rate2" Onkeyup="quan_amount2(); gst2();" onchange="quan_amount2(); gst2();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
-                                            <td>
-                                                <asp:TextBox ID="txt_amount2" disabled="true" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
-                                            <td>
-                                                <asp:TextBox ID="txt_quantity2" OnkeyUp="quan_amount2(); gst2();" onchange="quan_amount2(); gst2();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
-                                            <td>
-                                                <asp:TextBox ID="txt_total_amt2" onkeyup="gst2();" onchange="gst2();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
-                                        </tr>
+                                                <td>
+                                                    <asp:TextBox ID="txt_height2" disabled="true" class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_width2" disabled="true" class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_sqrft2" onkeydown="javascript:return false" disabled="true" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_rate2" Onkeyup="quan_amount2(); " onchange="quan_amount2(); " class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_amount2" onkeydown="javascript:return false" disabled="true" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_quantity2" OnkeyUp="quan_amount2(); " onchange="quan_amount2(); " class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_total_amt2" onkeydown="javascript:return false" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                            </tr>
 
-                                    </tbody>
+                                        </tbody>
                                     </asp:Panel>
                                 </table>
                                 <table class="table">
@@ -203,42 +231,42 @@
                                             <th scope="col"></th>
                                             <th scope="col"></th>
                                             <th scope="col"></th>
-                                           
+
                                         </tr>
                                     </thead>
-                                    
+
                                 </table>
                                 <div class="row">
                                     <div class="col-md-3">
-                                         <asp:Button ID="Button3" class="btn btn-primary" Style="margin-right: 5px; background-color:gray !important;" runat="server" Text="Cancel" OnClick="Button3_Click"/>    
-                                   
+                                        <asp:Button ID="Button3" class="btn btn-primary" Style="margin-right: 5px; background-color: gray !important;" runat="server" Text="Cancel" OnClick="Button3_Click" />
+
                                     </div>
                                     <div class="col-md-3">
-                                    <asp:Button ID="Button2" class="btn btn-primary" Style="margin-right: 5px; background-color:red !important;" runat="server" Text="Delete Entry" OnClick="Button2_Click" />    
+                                        <asp:Button ID="Button2" class="btn btn-primary" Style="margin-right: 5px; background-color: red !important;" runat="server" Text="Delete Entry" OnClick="Button2_Click" />
                                     </div>
                                     <div class="col-md-3">
-                                        <asp:Button ID="Button1" class="btn btn-primary" Style="margin-right: 5px; background-color:green !important;" runat="server" Text="Edit / Update" OnClick="Button1_Click" />    
-                                    
+                                        <asp:Button ID="Button1" class="btn btn-primary" Style="margin-right: 5px; background-color: green !important;" runat="server" Text="Edit / Update" OnClientClick="return JSFunctionValidate4();" OnClick="Button1_Click" />
+
                                     </div>
                                     <div class="col-md-3">
-                                        <asp:LinkButton ID="Btn_cart" Style="margin-right: 5px;" OnClick="Btn_cart_Click" runat="server"><i style="padding-left:10px; font-size:40px;" class="fa fa-plus-circle"></i></asp:LinkButton>
-                                  
+                                        <asp:LinkButton ID="Btn_cart" Style="margin-right: 5px;" OnClick="Btn_cart_Click" OnClientClick="return JSFunctionValidate4();" runat="server"><i style="padding-left:10px; font-size:40px;" class="fa fa-plus-circle"></i></asp:LinkButton>
+
                                     </div>
-                                    </div>
-                                <br/>
+                                </div>
+                                <br />
                                 <div class="row ">
                                     <div class="col-xs-12 table-responsive">
-                                        <asp:GridView ID="GridView1" class="table table-striped" runat="server" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="3" OnDataBound="GridView1_DataBound" OnRowDataBound="GridView1_RowDataBound" OnPageIndexChanging="GridView1_PageIndexChanging" OnRowDeleting="GridView1_RowDeleting" OnRowCreated="GridView1_RowCreated" OnRowCommand="GridView1_RowCommand" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" >
-                                          
-                                            
-                                          
+                                        <asp:GridView ID="GridView1" class="table table-striped" runat="server" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="3" OnDataBound="GridView1_DataBound" OnRowDataBound="GridView1_RowDataBound" OnPageIndexChanging="GridView1_PageIndexChanging" OnRowDeleting="GridView1_RowDeleting" OnRowCreated="GridView1_RowCreated" OnRowCommand="GridView1_RowCommand" OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
+
+
+
                                             <Columns>
                                                 <%--<asp:ButtonField CommandName="Delete" HeaderText="Action" ShowHeader="True" Text="Delete" />--%>
-                                            <asp:CommandField HeaderText="Select" ShowHeader="True" ShowSelectButton="True" />
+                                                <asp:CommandField HeaderText="Select" ShowHeader="True" ShowSelectButton="True" />
                                             </Columns>
-                                          
-                                            
-                                          
+
+
+
                                             <FooterStyle BackColor="White" ForeColor="#000066" />
                                             <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" />
                                             <PagerStyle BackColor="White" ForeColor="#000066" HorizontalAlign="Left" />
@@ -256,16 +284,16 @@
                                 <div class="row m-t-3">
                                     <!-- accepted payments column -->
                                     <div class="col-lg-6">
-                                        <p class="lead">Total Qty: <asp:Label ID="lbl_totalqty" runat="server" Text=""></asp:Label></p>
-                                       <%-- <p class="lead">Payment Methods:</p>
+                                        <p class="lead">Total Qty:
+                                            <asp:Label ID="lbl_totalqty" runat="server" Text=""></asp:Label></p>
+                                        <%-- <p class="lead">Payment Methods:</p>
                                         <img src="../dist/img/mastercard.png" alt="Visa">
                                         <img src="../dist/img/mastercard.png" alt="Mastercard">
                                         <img src="../dist/img/american-express.png" alt="American Express">
                                         <img src="../dist/img/paypal2.png" alt="Paypal">--%>
                                         <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                                           
                                         </p>
-                                        
+
                                         <asp:HiddenField ID="lbl_product_hsn" runat="server" />
                                         <asp:HiddenField ID="lbl_unit" runat="server" />
                                         <asp:HiddenField ID="lbl_balance" runat="server" />
@@ -273,7 +301,7 @@
                                         <asp:HiddenField ID="lbl_date" runat="server" />
                                     </div>
                                     <!-- /.col -->
-                                   <%-- <div class="col-lg-6">
+                                    <%-- <div class="col-lg-6">
                                         <p class="lead"></p>
                                         <div class="table-responsive">
                                             <table class="table">
@@ -355,77 +383,78 @@
                                     </div>--%>
                                     <!-- /.col -->
 
-                                     <table class="table">
-                                    <thead>
-                                        <tr>
-                             
-                                            <th scope="col"> <asp:CheckBox ID="Chk_dtp" runat="server" />Design charges:</th>
-                                           
-                                            <th scope="col"><asp:CheckBox ID="Chk_pasting" runat="server" />Pasting Charges:</th>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
 
-                                             <th scope="col"><asp:CheckBox ID="Chk_framing" runat="server" />Framing Charges:</th>
+                                                <th scope="col">
+                                                    <asp:CheckBox ID="Chk_dtp" runat="server" />Design charges:</th>
 
-                                            <th scope="col"><asp:CheckBox ID="Chk_fitting" runat="server" />Fitting Charges:</th>
+                                                <th scope="col">
+                                                    <asp:CheckBox ID="Chk_pasting" runat="server" />Pasting Charges:</th>
 
-                                            <th scope="col"><asp:CheckBox ID="Chk_install" runat="server" />Installation Charges:</th>
-                                            
-                                            <th scope="col"><asp:CheckBox ID="Chk_trans" runat="server" />Transport charges:</th>
-                                           <%-- <th scope="col">Advance:</th>
+                                                <th scope="col">
+                                                    <asp:CheckBox ID="Chk_framing" runat="server" />Framing Charges:</th>
+
+                                                <th scope="col">
+                                                    <asp:CheckBox ID="Chk_fitting" runat="server" />Fitting Charges:</th>
+
+                                                <th scope="col">
+                                                    <asp:CheckBox ID="Chk_install" runat="server" />Installation Charges:</th>
+
+                                                <th scope="col">
+                                                    <asp:CheckBox ID="Chk_trans" runat="server" />Transport charges:</th>
+                                                <%-- <th scope="col">Advance:</th>
                                             <th scope="col">Discount:</th>--%>
-                                           
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
 
-                                            
-                                            <td>
-                                                <asp:TextBox ID="Txt_Dtp_charges" onkeyup="final_total();" class="form-control" runat="server" TabIndex="21" disabled="true"></asp:TextBox></td>
-                                            <td>
-                                                <asp:TextBox ID="Txt_Pasting" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" disabled="true"></asp:TextBox></td>
-                                             <td>
-                                                <asp:TextBox ID="Txt_Framing" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" disabled="true"></asp:TextBox></td>
-                                            <td>
-                                                <asp:TextBox ID="Txt_Fitting" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" disabled="true"></asp:TextBox></td>
-                                            <td>
-                                                <asp:TextBox ID="Txt_install" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" disabled="true"></asp:TextBox></td>                                           
-                                             <td>
-                                                 <asp:TextBox ID="Txt_TransportCharges" onkeyup="final_total();" class="form-control" runat="server" TabIndex="23" disabled="true"></asp:TextBox></td>
-                                             
-                                            <%--<td>
+
+                                                <td>
+                                                    <asp:TextBox ID="Txt_Dtp_charges" onkeyup="final_total();" class="form-control" runat="server" TabIndex="21" disabled="true" TextMode="Number" min="0"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="Txt_Pasting" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" disabled="true" TextMode="Number" min="0"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="Txt_Framing" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" disabled="true" TextMode="Number" min="0"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="Txt_Fitting" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" disabled="true" TextMode="Number" min="0"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="Txt_install" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" disabled="true" TextMode="Number" min="0"></asp:TextBox></td>
+                                                <td>
+                                                    <asp:TextBox ID="Txt_TransportCharges" onkeyup="final_total();" class="form-control" runat="server" TabIndex="23" disabled="true" TextMode="Number" min="0"></asp:TextBox></td>
+
+                                                <%--<td>
                                                  <asp:TextBox ID="Txt_advance" onkeyup="final_total();" onchange="final_total();" class="form-control" runat="server" TextMode="Number" TabIndex="24"></asp:TextBox>
                                                  <asp:RequiredFieldValidator ID="RequiredFieldValidatorAdvance" runat="server" ErrorMessage="Please Enter Advance.." ControlToValidate="Txt_advance" Display="Dynamic" ValidationGroup="g1"></asp:RequiredFieldValidator></td>
                                             <td>
                                                 <asp:TextBox ID="Txt_discount" onkeyup="final_total();" onchange="final_total();" class="form-control" runat="server" TextMode="Number" TabIndex="25"></asp:TextBox>
                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidatorDiscount" runat="server" ErrorMessage="Please Enter Discount.." ControlToValidate="Txt_discount" Display="Dynamic" ValidationGroup="g1"></asp:RequiredFieldValidator></td>--%>
-                                            
-                                           
-                                        </tr>
+                                            </tr>
 
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
 
-                                        <table class="table">
-                                    <thead>
-                                        <tr>
-                                            
-                                            
-                                            <th scope="col">Advance:</th>
-                                            <th scope="col">Discount:</th>
-                                            <th scope="col">Payment Method:</th>
-                                            
-                                             <%--<th scope="col">Subtotal:</th>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+
+
+                                                <th scope="col">Advance:</th>
+                                                <th scope="col">Discount:</th>
+                                                <th scope="col">Payment Method:</th>
+
+                                                <%--<th scope="col">Subtotal:</th>
                                             <th scope="col">Total GST:</th>
                                             <th scope="col">Final Amount:</th>
                                            <th scope="col">Balance Amount:</th>--%>
-                                          
-                                           
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
 
-                                            <%--<td>
+                                                <%--<td>
                                                 ₹ <asp:Label ID="lbl_subtotal" runat="server" Text=""></asp:Label></td>
                                                  <asp:HiddenField ID="lbl_subtotal2" runat="server" />
                                             <td>
@@ -433,82 +462,83 @@
                                             <td class="grand_total">₹ <asp:Label ID="lbl_final" runat="server" Text=""></asp:Label></td>
                                             
                                             <td class="grand_total">₹ <asp:Label ID="lbl_total" runat="server" Text=""></asp:Label></td>--%>
-                                           
-                                           
-                                            
-                                            <td>
-                                           <asp:TextBox ID="Txt_advance" onkeyup="final_total();" onchange="final_total();" class="form-control" runat="server" TextMode="Number" TabIndex="24" disabled="true"></asp:TextBox>
-                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidatorAdvance" runat="server" ErrorMessage="Please Enter Advance.." ControlToValidate="Txt_advance" Display="Dynamic" ValidationGroup="g1"></asp:RequiredFieldValidator>
-                                           </td>
 
-                                            <td>
-                                                <asp:TextBox ID="Txt_discount" onkeyup="final_total();" onchange="final_total();" class="form-control" runat="server" TextMode="Number" TabIndex="25"></asp:TextBox>
-                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidatorDiscount" runat="server" ErrorMessage="Please Enter Discount.." ControlToValidate="Txt_discount" Display="Dynamic" ValidationGroup="g1"></asp:RequiredFieldValidator></td>
-                                            <td>
-                                                <asp:DropDownList ID="drp_payment"  class="form-control"  runat="server" TabIndex="26">
 
-                                                                <asp:ListItem Selected="True">Cash</asp:ListItem>
-                                                                <asp:ListItem>Credit</asp:ListItem>
-                                                                <asp:ListItem>Cheque</asp:ListItem>
-                                                                <asp:ListItem>Paytm</asp:ListItem>
-                                                                <asp:ListItem>Google Pay</asp:ListItem>
-                                                                <asp:ListItem>Phone Pay</asp:ListItem>
-                                                            </asp:DropDownList>
 
-                                            </td>
-                                            
-                                            <%-- <td>
+                                                <td>
+                                                    <asp:TextBox ID="Txt_advance" onkeyup="final_total();" onchange="final_total();" class="form-control" runat="server" TextMode="Number" min="0" TabIndex="24"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidatorAdvance" runat="server" ErrorMessage="Please Enter Advance.." ControlToValidate="Txt_advance" Display="Dynamic" ValidationGroup="g1"></asp:RequiredFieldValidator>
+                                                </td>
+
+                                                <td>
+                                                    <asp:TextBox ID="Txt_discount" onkeyup="final_total();" onchange="final_total();" class="form-control" runat="server" TextMode="Number" min="0" TabIndex="25"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidatorDiscount" runat="server" ErrorMessage="Please Enter Discount.." ControlToValidate="Txt_discount" Display="Dynamic" ValidationGroup="g1"></asp:RequiredFieldValidator></td>
+                                                <td>
+                                                    <asp:DropDownList ID="drp_payment" class="form-control" runat="server" TabIndex="26">
+
+                                                        <asp:ListItem Selected="True">Cash</asp:ListItem>
+                                                        <asp:ListItem>Credit</asp:ListItem>
+                                                        <asp:ListItem>Cheque</asp:ListItem>
+                                                        <asp:ListItem>Paytm</asp:ListItem>
+                                                        <asp:ListItem>Google Pay</asp:ListItem>
+                                                        <asp:ListItem>Phone Pay</asp:ListItem>
+                                                    </asp:DropDownList>
+
+                                                </td>
+
+                                                <%-- <td>
                                                 <asp:TextBox Class="Txt_hide" ID="hide_total" runat="server"></asp:TextBox></td></td>
                                             <td>--%>
-                                           
-                                           
-                                        </tr>
+                                            </tr>
 
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
 
-                                               <table class="table">
-                                    <thead>
-                                        <tr>
-                                            
-                                            <th scope="col">Subtotal:</th>
-                                          <%--  <th scope="col">Total GST:</th>--%>
-                                            <th scope="col">Final Amount:</th>
-                                           <th scope="col">Balance Amount:</th>
-                                            
-                                           
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
 
-                                            <td>
-                                                ₹ <asp:Label ID="lbl_subtotal" runat="server" Text=""></asp:Label></td>
-                                                 <asp:HiddenField ID="lbl_subtotal2" runat="server" />
-                                          <%--  <td>
+                                                <th scope="col">Subtotal:</th>
+                                                <%--  <th scope="col">Total GST:</th>--%>
+                                                <th scope="col">Final Amount:</th>
+                                                <th scope="col">Balance Amount:</th>
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+
+
+                                                <td>₹
+                                                    <asp:Label ID="lbl_subtotal" runat="server" Text=""></asp:Label></td>
+                                                <asp:HiddenField ID="lbl_subtotal2" runat="server" />
+                                                <%--  <td>
                                                ₹ <asp:Label ID="lbl_gst" runat="server" Text=""></asp:Label></td>--%>
-                                            <td class="grand_total">₹ <asp:Label ID="lbl_final" runat="server" Text=""></asp:Label></td>
-                                            
-                                            <td class="grand_total">₹ <asp:Label ID="lbl_total" runat="server" Text=""></asp:Label></td>
-                                            <td>
-                                                <asp:TextBox Class="Txt_hide" ID="hide_total" runat="server"></asp:TextBox></td></td>
+                                                <td class="grand_total">₹
+                                                    <asp:Label ID="lbl_final" runat="server" Text=""></asp:Label></td>
+
+                                                <td class="grand_total">₹
+                                                    <asp:Label ID="lbl_total" runat="server" Text=""></asp:Label></td>
+                                                <td>
+                                                    <asp:TextBox Class="Txt_hide" ID="hide_total" runat="server"></asp:TextBox></td>
+                                                </td>
                                             
                                             
                                            
-                                        </tr>
+                                            </tr>
 
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
 
                                 </div>
                                 <!-- /.row -->
 
                                 <!-- this row will not appear when printing -->
                                 <div class="row no-print">
-                                    <div class="col-lg-12">
-                                        <asp:Label ID="Lbl_message"  runat="server" Text=""></asp:Label>
-                                       <asp:Button ID="Btn_generate_pdf" class="btn btn-primary pull-right" Style="margin-right: 5px;" runat="server" Text="Update Cash Memo" OnClick="Btn_generate_pdf_Click" />
+                                    <div class="col-lg-10 py-2 ml-5">
+                                        <asp:Label ID="Lbl_message" runat="server" Text=""></asp:Label>
+                                        <asp:Button ID="Btn_generate_pdf" class="btn btn-primary pull-right" Style="margin-right: 5px;" runat="server" Text="Update Cash Memo" OnClick="Btn_generate_pdf_Click" OnClientClick="return JSFunctionValidate();"/>
                                     </div>
                                 </div>
                             </section>
@@ -518,67 +548,67 @@
                 </section>
             </ContentTemplate>
         </asp:UpdatePanel>
-   </div>
-  <!-- /.content-wrapper -->
-  <footer class="main-footer">
-    <div class="pull-right hidden-xs">Version 1.0</div>
-    Copyright © 2018 PrintSoft. All rights reserved.</footer>
+    </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">Version 1.0</div>
+        Copyright © 2018 PrintSoft. All rights reserved.
+    </footer>
 
 
 
-          
-   <style>
-        .Txt_hide{
-            display:none;
+
+    <style>
+        .Txt_hide {
+            display: none;
         }
-</style>
+    </style>
 
     <script type="text/javascript">
-         function sqrft()
-    {
-        var first = document.getElementById('<%= txt_height.ClientID %>');
+        function sqrft() {
+            var first = document.getElementById('<%= txt_height.ClientID %>');
              var second = document.getElementById('<%= txt_width.ClientID %>');
              var sqrft = document.getElementById('<%= txt_sqrft.ClientID %>');
-             var sqrft_total = (parseFloat(first.value) * parseFloat(second.value));
+            var sqrft_total = (parseFloat(first.value) * parseFloat(second.value));
 
-             sqrft.value = sqrft_total;
+            sqrft.value = sqrft_total;
 
-         }
+        }
 
         function rate() {
             var rates = document.getElementById('<%=txt_rate.ClientID %>');
-            var sqrft= document.getElementById('<%=txt_sqrft.ClientID %>');
-            var amount = document.getElementById('<%=txt_amount.ClientID %>');   
+            var sqrft = document.getElementById('<%=txt_sqrft.ClientID %>');
+            var amount = document.getElementById('<%=txt_amount.ClientID %>');
 
             var rate_amount = (parseFloat(sqrft.value) * parseFloat(rates.value));
 
             amount.value = rate_amount;
         }
-         
+
 
         function quan_amount() {
             var amt = document.getElementById('<%=txt_amount.ClientID %>');
             var quantity = document.getElementById('<%=txt_quantity.ClientID %>');
-           var total = document.getElementById('<%=txt_total_amt.ClientID %>');
+            var total = document.getElementById('<%=txt_total_amt.ClientID %>');
 
             var total_amount = (parseFloat(amt.value) * parseFloat(quantity.value))
 
-            total.value = total_amount;
+            total.value = total_amount.toFixed(2);
 
         }
         function quan_amount2() {
             var rate = document.getElementById('<%=txt_rate2.ClientID %>');
             var quantity = document.getElementById('<%=txt_quantity2.ClientID %>');
-           var total = document.getElementById('<%=txt_total_amt2.ClientID %>');
+            var total = document.getElementById('<%=txt_total_amt2.ClientID %>');
 
             var total_amount = (parseFloat(rate.value) * parseFloat(quantity.value))
 
-            total.value = total_amount;
+            total.value = total_amount.toFixed(2);
 
         }
 
 
-          function final_total() {
+        <%--  function final_total() {
             var subtotal = document.getElementById('<%=lbl_subtotal2.ClientID %>');
           
            
@@ -612,8 +642,795 @@
               document.getElementById('<%=lbl_final.ClientID %>').innerHTML = balance;
 
          document.getElementById('<%=hide_total.ClientID %>').value = total_amount;
+        }--%>
+        function final_total() {
+            var subtotal = document.getElementById('<%=lbl_subtotal2.ClientID %>');
+
+
+            var discount = document.getElementById('<%=Txt_discount.ClientID %>');
+
+            var dtpcharges = document.getElementById('<%=Txt_Dtp_charges.ClientID %>');
+            var dtp_value = parseFloat(dtpcharges.value);
+
+            var transport_charges = document.getElementById('<%=Txt_TransportCharges.ClientID %>');
+            var transport_value = parseFloat(transport_charges.value);
+
+            var advance = document.getElementById('<%=Txt_advance.ClientID %>');
+
+            var fitting = document.getElementById('<%=Txt_Fitting.ClientID%>');
+            var fitting_value = parseFloat(fitting.value);
+
+            var install = document.getElementById('<%=Txt_install.ClientID%>');
+            var install_value = parseFloat(install.value);
+
+            var pasting = document.getElementById('<%=Txt_Pasting.ClientID%>');
+            var pasting_value = parseFloat(pasting.value);
+
+            var framing = document.getElementById('<%=Txt_Framing.ClientID%>');
+            var framing_value = parseFloat(framing.value);
+
+            if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                fitting_value = "0";
+                pasting_value = "0";
+                transport_value = "0";
+                install_value = "0";
+                framing_value = "0";
+            }
+
+            //1 column
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         fitting_value = "0";
+         pasting_value = "0";
+         transport_value = "0";
+         framing_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         fitting_value = "0";
+         dtp_value = "0";
+         transport_value = "0";
+         framing_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         pasting_value = "0";
+         transport_value = "0";
+         framing_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         pasting_value = "0";
+         fitting_value = "0";
+         framing_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         pasting_value = "0";
+         fitting_value = "0";
+         transport_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         pasting_value = "0";
+         fitting_value = "0";
+         framing_value = "0";
+         transport_value = "0";
+     }
+
+     //2 column
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         transport_value = "0";
+         fitting_value = "0";
+         framing_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         transport_value = "0";
+         pasting_value = "0";
+         framing_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         fitting_value = "0";
+         pasting_value = "0";
+         framing_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         fitting_value = "0";
+         pasting_value = "0";
+         transport_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         fitting_value = "0";
+         pasting_value = "0";
+         transport_value = "0";
+         framing_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         transport_value = "0";
+         framing_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         fitting_value = "0";
+         framing_value = "0";
+         install_value = "0";
+
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         transport_value = "0";
+         fitting_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         fitting_value = "0";
+         transport_value = "0";
+         fitting_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         fitting_value = "0";
+         pasting_value = "0";
+         framing_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         install_value = "0";
+         pasting_value = "0";
+         framing_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         install_value = "0";
+         pasting_value = "0";
+         transport_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         framing_value = "0";
+         pasting_value = "0";
+         transport_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         fitting_value = "0";
+         pasting_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         framing_value = "0";
+         pasting_value = "0";
+         fitting_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         transport_value = "0";
+         pasting_value = "0";
+         fitting_value = "0";
+     }
+
+     //3 column
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         transport_value = "0";
+         framing_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         fitting_value = "0";
+         framing_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         fitting_value = "0";
+         transport_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         transport_value = "0";
+         framing_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         pasting_value = "0";
+         framing_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         pasting_value = "0";
+         transport_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         pasting_value = "0";
+         transport_value = "0";
+         framing_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         pasting_value = "0";
+         fitting_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         pasting_value = "0";
+         fitting_value = "0";
+         transport_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         framing_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         transport_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         transport_value = "0";
+         framing_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         install_value = "0";
+         fitting_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         fitting_value = "0";
+         framing_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         fitting_value = "0";
+         transport_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         install_value = "0";
+         pasting_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         framing_value = "0";
+         pasting_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         fitting_value = "0";
+         pasting_value = "0";
+     }
+
+     //4 column
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         framing_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         transport_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         transport_value = "0";
+         framing_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         install_value = "0";
+         pasting_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         framing_value = "0";
+         pasting_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         fitting_value = "0";
+         pasting_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         framing_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         dtp_value = "0";
+         pasting_value = "0";
+     }
+
+     //5 column
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         install_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         framing_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+         //dtpvar = "0";
+         //fittingvar = "0";
+         //pastingvar = "0";
+         pasting_value = "0";
+     }
+
+     else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+            }
+
+            ////////////////////////
+            if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+
+            }
+
+            var total_dtp_transport = (parseFloat(transport_value) + parseFloat(dtp_value));
+
+            var total_amount = (parseFloat(subtotal.value) + parseFloat(total_dtp_transport) + parseFloat(fitting_value) + parseFloat(pasting_value) + parseFloat(framing_value) + parseFloat(install_value));
+
+           <%-- var balance = (parseFloat(total_amount) - parseFloat(advance.value) - parseFloat(discount.value));
+            var roundoff = Math.round(balance);
+
+            document.getElementById('<%=lbl_total.ClientID %>').innerHTML = roundoff;
+            document.getElementById('<%=hide_total.ClientID %>').value = total_amount;
+            document.getElementById('<%=lbl_final.ClientID %>').innerHTML = total_amount;--%>
+            if (advance.value == "0" && discount == "0") {
+                var balance = (parseFloat(total_amount))
+                var roundoff = Math.round(balance);
+                document.getElementById('<%=lbl_total.ClientID %>').innerHTML = roundoff
+
+            }
+
+            else if (advance.value != "0" || discount != "0") {
+                var balance = (parseFloat(total_amount) - parseFloat(advance.value) - parseFloat(discount.value));
+                var roundoff = Math.round(balance);
+
+                document.getElementById('<%=lbl_total.ClientID %>').innerHTML = roundoff
+
+            }
+           // document.getElementById('<%=lbl_total.ClientID %>').innerHTML = roundoff;
+            document.getElementById('<%=hide_total.ClientID %>').value = total_amount;
+            document.getElementById('<%=lbl_final.ClientID %>').innerHTML = total_amount;
+        }
+    </script>
+    <script type="text/javascript">
+
+        function disableTextBox() {
+            document.getElementById('<%=Txt_Dtp_charges.ClientID%>').disabled = true;
+             document.getElementById('<%=Txt_Pasting.ClientID%>').disabled = true;
+             document.getElementById('<%=Txt_Framing.ClientID%>').disabled = true;
+             document.getElementById('<%=Txt_Fitting.ClientID%>').disabled = true;
+             document.getElementById('<%=Txt_install.ClientID%>').disabled = true;
+             document.getElementById('<%=Txt_TransportCharges.ClientID%>').disabled = true;
+            addListeners();
         }
 
+        function toggleTextBox(e) {
+            checkbox = e.target;
+
+            if (checkbox.checked == true) {
+                if (checkbox.id == "<%=Chk_dtp.ClientID%>") {
+                     document.getElementById('<%=Txt_Dtp_charges.ClientID%>').disabled = false;
+                 }
+                 if (checkbox.id == "<%=Chk_pasting.ClientID%>") {
+                     document.getElementById('<%=Txt_Pasting.ClientID%>').disabled = false;
+                 }
+                 if (checkbox.id == "<%=Chk_framing.ClientID%>") {
+                     document.getElementById('<%=Txt_Framing.ClientID%>').disabled = false;
+                 }
+                 if (checkbox.id == "<%=Chk_fitting.ClientID%>") {
+                     document.getElementById('<%=Txt_Fitting.ClientID%>').disabled = false;
+                 }
+                 if (checkbox.id == "<%=Chk_install.ClientID%>") {
+                     document.getElementById('<%=Txt_install.ClientID%>').disabled = false;
+                 }
+                 if (checkbox.id == "<%=Chk_trans.ClientID%>") {
+                     document.getElementById('<%=Txt_TransportCharges.ClientID%>').disabled = false;
+                 }
+             }
+             else {
+               <%-- document.getElementById('<%=Txt_Dtp_charges.ClientID%>').disabled = true;
+                document.getElementById('<%=Txt_Pasting.ClientID%>').disabled = true;
+                document.getElementById('<%=Txt_Fitting.ClientID%>').disabled = true;
+                document.getElementById('<%=Txt_TransportCharges.ClientID%>').disabled = true;--%>
+                 if (checkbox.id == "<%=Chk_dtp.ClientID%>") {
+                     document.getElementById('<%=Txt_Dtp_charges.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_Dtp_charges.ClientID%>').value = "0";
+                     final_total();
+                 }
+                 if (checkbox.id == "<%=Chk_pasting.ClientID%>") {
+                     document.getElementById('<%=Txt_Pasting.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_Pasting.ClientID%>').value = "0";
+                     final_total();
+                 }
+                 if (checkbox.id == "<%=Chk_framing.ClientID%>") {
+                     document.getElementById('<%=Txt_Framing.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_Framing.ClientID%>').value = "0";
+                     final_total();
+                 }
+                 if (checkbox.id == "<%=Chk_fitting.ClientID%>") {
+                     document.getElementById('<%=Txt_Fitting.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_Fitting.ClientID%>').value = "0";
+                     final_total();
+                 }
+                 if (checkbox.id == "<%=Chk_install.ClientID%>") {
+                     document.getElementById('<%=Txt_install.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_install.ClientID%>').value = "0";
+                     final_total();
+                 }
+                 if (checkbox.id == "<%=Chk_trans.ClientID%>") {
+                     document.getElementById('<%=Txt_TransportCharges.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_TransportCharges.ClientID%>').value = "0";
+                    final_total();
+                }
+
+
+            }
+        }
+
+        function addListeners() {
+            check1 = document.getElementById('<%=Chk_dtp.ClientID%>');
+            check2 = document.getElementById('<%=Chk_pasting.ClientID%>');
+            check3 = document.getElementById('<%=Chk_fitting.ClientID%>');
+            check4 = document.getElementById('<%=Chk_trans.ClientID%>');
+            check5 = document.getElementById('<%=Chk_framing.ClientID%>');
+            check6 = document.getElementById('<%=Chk_install.ClientID%>');
+
+            check1.addEventListener('click', toggleTextBox, false);
+            check2.addEventListener('click', toggleTextBox, false);
+            check3.addEventListener('click', toggleTextBox, false);
+            check4.addEventListener('click', toggleTextBox, false);
+            check5.addEventListener('click', toggleTextBox, false);
+            check6.addEventListener('click', toggleTextBox, false);
+
+        }
+        window.onload = disableTextBox;
+        window.onscroll = disableTextBox;
+
+    </script>
+    <script>
+        function JSFunctionValidate4() {
+
+            var quant2 = document.getElementById('<%=txt_quantity2.ClientID %>');
+            var quant = document.getElementById('<%=txt_quantity.ClientID %>');
+            var height = document.getElementById('<%=txt_height.ClientID %>');
+            var height2 = document.getElementById('<%=txt_height2.ClientID %>');
+            var width = document.getElementById('<%=txt_width.ClientID %>');
+            var width2 = document.getElementById('<%=txt_width2.ClientID %>');
+            <%--if (document.getElementById('<%=txt_height.ClientID%>').value == "0") {
+                alert("Height should not be 0  !!!");
+                return false;
+            }
+            if (document.getElementById('<%=txt_width.ClientID%>').value == "0") {
+                alert("Length should  not be 0 !!!");
+                return false;
+            }
+            if (document.getElementById('<%=txt_height2.ClientID%>').value == "0") {
+                alert("Height should not be 0  !!!");
+                return false;
+            }
+            if (document.getElementById('<%=txt_width2.ClientID%>').value == "0") {
+                alert("Length should  not be 0 !!!");
+                return false;
+            }--%>
+
+
+               //if (height2 != null) {
+               //    if (height2.value == "0") {
+               //        alert("Height Should NOT BE 0 !!!");
+               //        return false;
+               //    }
+               //}
+            if (document.getElementById('<%=Dd_customer.ClientID%>').value == "--Select--") {
+                alert("Please Select Customer !!!");
+                return false;
+            }
+           if (document.getElementById('<%=drp_designer.ClientID%>').value == "--Select Designer--") {
+                alert("Please Select Designer Name !!!");
+                return false;
+            }
+            <%--if (document.getElementById('<%=Dd_enter_product.ClientID%>').value == "--Select--") {
+                alert("Please Select Product !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Dd_material.ClientID%>').value == "--Select--") {
+                alert("Please Select Material !!!");
+                return false;
+            }--%>
+
+            if (width != null) {
+                if (width.value == "0") {
+                    alert("Length should  not be 0 !!!");
+                    return false;
+                }
+            }
+
+            if (height != null) {
+                if (height.value == "0") {
+                    alert("Height should not be 0  !!!");
+                    return false;
+                }
+            }
+            //if (width2 != null) {
+            //    if (height2.value == "0") {
+            //        alert("Length should  not be 0 !!!");
+            //        return false;
+            //    }
+            //}
+            if (quant2 != null) {
+                if (quant2.value == "0") {
+                    alert("Please Enter Quantity !!!");
+                    return false;
+                }
+            }
+            if (quant != null) {
+                if (quant.value == "0") {
+                    alert("Please Enter Quantity !!!");
+                    return false;
+                }
+            }
+
+
+
+            return true;
+        }
+
+
+        function JSFunctionValidate() {
+            if (document.getElementById('<%=Dd_customer.ClientID%>').value == "--Select--") {
+                  alert("Please Select Customer Name !!!");
+                  return false;
+              }
+              if (document.getElementById('<%=drp_designer.ClientID%>').value == "--Show Designer--") {
+                  alert("Please Select Designer Name !!!");
+                  return false;
+              }
+          <%--  if (document.getElementById('<%=Dd_enter_product.ClientID%>').value == "--Select--") {
+                alert("Please Select Product !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Dd_material.ClientID%>').value == "--Select--") {
+                alert("Please Select Material !!!");
+                return false;
+            }--%>
+              if (document.getElementById('<%=Txt_invoice_date.ClientID%>').value.length == 0) {
+                alert("Please Select Invoice Date !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Txt_due_date.ClientID%>').value.length == 0) {
+                alert("Please Select Due Date !!!");
+                return false;
+            }
+
+            if (document.getElementById('<%=Txt_advance.ClientID%>').value.length == 0) {
+                alert("Please Enter Advance !!!");
+                return false;
+            }
+              if (document.getElementById('<%=Txt_discount.ClientID%>').value.length == 0) {
+                  alert("Please Enter Discount !!!");
+                  return false;
+              }
+              preventMultipleSubmissions();
+              return true;
+          }
     </script>
 </asp:Content>
 

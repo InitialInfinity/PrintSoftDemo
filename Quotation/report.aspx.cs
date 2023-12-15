@@ -26,7 +26,7 @@ public partial class Quotation_report : System.Web.UI.Page
       
             try
             {
-                insert = Request.QueryString["insert"].ToString();
+                insert = (Request.QueryString["insert"]??"").ToString();
                 if (insert == "success")
                 {
                     Panel2.Visible = true;

@@ -10,6 +10,7 @@ using System.Data;
 using System.Drawing;
 using System.Net;
 using System.Text;
+using System.Activities.Expressions;
 
 public partial class Sale_invoice_payment : System.Web.UI.Page
 {
@@ -30,12 +31,31 @@ public partial class Sale_invoice_payment : System.Web.UI.Page
             customer();
             fill();
             FillRepeater();
+            Txt_pay.Text = "0";
+            Txt_discount.Text = "0";
 
         }
         else
         {
             Response.Redirect("../login.aspx");
         }
+
+        //if (Dd_payment_mode.SelectedValue == "Cash" || Dd_payment_mode.SelectedValue == "Cash"|| Dd_payment_mode.SelectedValue == "Google Pay" || Dd_payment_mode.SelectedValue == "Phone Pay" || Dd_payment_mode.SelectedValue == "Paytm" ||Dd_payment_mode.SelectedValue == "Other")
+        //{
+        //    Txt_date.Text = DateTime.Today.ToString("yyyy-MM-dd");
+        //}
+        if (Dd_payment_mode.SelectedValue != "Cheque")
+        {
+            //Txt_date.Text = DateTime.Today.ToString("yyyy-MM-dd");
+            Txt_date.ReadOnly = true;
+        }
+        else 
+        {
+            //Txt_date.Text = DateTime.Today.ToString("yyyy-MM-dd");
+            Txt_date.ReadOnly = false;
+
+        }
+
     }
     public void customer()
     {
@@ -582,10 +602,12 @@ public partial class Sale_invoice_payment : System.Web.UI.Page
     {
         if(Dd_payment_mode.SelectedValue== "Cheque")
         {
+            Txt_date.ReadOnly = false;
             Panel3.Visible = true;
         }
         else
         {
+            Txt_date.ReadOnly = true;
             Panel3.Visible = false;
         }
     }

@@ -178,8 +178,8 @@ public partial class Reports_est_monthly_worksheet : System.Web.UI.Page
 
 
         }
-        else
-        {
+        else if (Date1.Text == "" || Date2.Text == "" && Dd_customer.SelectedItem.Value !="--Select--")
+		{
             Panel1.Visible = true;
             cmd2 = new SqlCommand("select * from tbl_estimate_details where c_id ='" + Dd_customer.SelectedItem.Value + "' AND es_date between '" + Date1.Text + "' AND '" + Date2.Text + "'", conn);
             adapt2 = new SqlDataAdapter(cmd2);
@@ -238,5 +238,68 @@ public partial class Reports_est_monthly_worksheet : System.Web.UI.Page
 
             }
         }
+
+
+        else
+			{
+				Panel1.Visible = true;
+				cmd2 = new SqlCommand("select * from tbl_estimate_details where es_date between '" + Date1.Text + "' AND '" + Date2.Text + "'", conn);
+				adapt2 = new SqlDataAdapter(cmd2);
+				dt1 = new DataTable();
+				adapt2.Fill(dt1);
+				if (dt1.Rows.Count > 0)
+				{
+					Repeater2.DataSource = dt1;
+					Repeater2.DataBind();
+					lbl_invoice_amount.Text = dt1.Compute("Sum(es_stotal)", string.Empty).ToString();
+				}
+
+				SqlCommand cmd5 = new SqlCommand("select * from tbl_company_details where com_id = 1", conn);
+				SqlDataAdapter adapt5 = new SqlDataAdapter(cmd5);
+				DataTable dt5 = new DataTable();
+				adapt5.Fill(dt5);
+				if (dt5.Rows.Count > 0)
+				{
+					lbl_company_name.Text = dt5.Rows[0]["com_company_name"].ToString();
+					lbl_company_address.Text = dt5.Rows[0]["com_address"].ToString();
+					lbl_company_contact.Text = dt5.Rows[0]["com_contact"].ToString();
+					lbl_company_email.Text = dt5.Rows[0]["com_email"].ToString();
+					Image1.ImageUrl = "~/Company/Company_Photos/" + dt5.Rows[0]["com_company_logo"].ToString();
+				}
+
+				SqlCommand cmd6 = new SqlCommand("select * from tbl_customer where c_name = '" + Dd_customer.SelectedItem.Text + "'", conn);
+				SqlDataAdapter adapt6 = new SqlDataAdapter(cmd6);
+				DataTable dt6 = new DataTable();
+				adapt6.Fill(dt6);
+				if (dt6.Rows.Count > 0)
+				{
+					lbl_customer_name.Text = dt6.Rows[0]["c_name"].ToString();
+					lbl_customer_contact.Text = dt6.Rows[0]["c_contact"].ToString();
+					lbl_customer_address.Text = dt6.Rows[0]["c_address"].ToString();
+					lbl_gst_no.Text = dt6.Rows[0]["c_gst_no"].ToString();
+
+
+				}
+
+				cmd7 = new SqlCommand("select sum(est_balance) from tbl_estimate where  est_date between '" + Date1.Text + "' AND '" + Date2.Text + "' ", conn);
+				adapt7 = new SqlDataAdapter(cmd7);
+				dt7 = new DataTable();
+				adapt7.Fill(dt7);
+				if (dt7.Rows.Count > 0)
+				{
+					if (dt7.Rows[0][0] == System.DBNull.Value)
+					{
+						lbl_balance_amount.Text = "0";
+						// lbl_due_balance.Text = "0";
+					}
+					else
+					{
+						lbl_balance_amount.Text = dt7.Rows[0][0].ToString();
+						//  lbl_due_balance.Text = dt7.Rows[0][0].ToString();
+					}
+
+				}
+			}
+		
         }
     }

@@ -35,7 +35,8 @@
         </div>
         
              <div class="col-md-9 exportbtn">
-          <a href="../Purchase/purchase_invoice.aspx"><button type="button" id="btn_mail"  title="Add New Customer" class="btn btn-primary4"> <i class="fa fa-plus"></i>Add Purchase</button></a>
+                 
+          <a href="add_vendor.aspx"><button type="button" id="btn_mail"  title="Add New Vendor" class="btn btn-primary4"> <i class="fa fa-plus"></i>Add Vendor</button></a>
           <button type="button" id="btn_excel" title="Export to Excel" runat="server" class="btn btnsqr btn-primary3 btngap" onserverclick="excel_export"> <i class="fa fa-file-excel-o"></i> Excel</button>
            
         <button type="button" id="btn_print" title="Print" onclick="printdiv('dropHere');" class="btn btnsqr btn-primary btngap"> <i class="fa fa-print"></i> Print</button>

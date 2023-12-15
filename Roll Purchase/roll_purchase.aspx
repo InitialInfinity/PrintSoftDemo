@@ -7,7 +7,53 @@
             display:none;
         }
 </style>
+      <script type="text/javascript">
 
+          var isSubmitted = false;
+
+          function preventMultipleSubmissions() {
+
+              if (!isSubmitted) {
+
+                  $('#<%=Btn_generate_pdf.ClientID %>').val('Submitting.. Plz Wait..');
+
+                  isSubmitted = true;
+
+                  return true;
+
+              }
+
+              else {
+
+                  return false;
+
+              }
+
+          }
+
+          function preventMultipleSubmissions1() {
+
+
+              if (!isSubmitted) {
+
+                  $('#<%=Btn_submit_payment.ClientID %>').val('Submitting.. Plz Wait..');
+
+                     isSubmitted = true;
+
+                     return true;
+
+                 }
+                 else {
+
+                     return false;
+
+                 }
+
+             }
+
+
+
+      </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
   <!-- Content Wrapper. Contains page content -->
@@ -39,7 +85,7 @@
                                 </div>
                                 <!-- info row -->
                                 <div class="customer_name  row">
-                                    <label class="control-label text-right col-md-3">Vendor Name</label>
+                                    <label class="control-label text-right col-md-3">Vendor Name<span style="color:red;">*</span></label>
                                     <div class="col-md-6">
                                         <asp:DropDownList ID="Dd_customer" class="form-control" runat="server" OnSelectedIndexChanged="Dd_customer_SelectedIndexChanged" AutoPostBack="True" TabIndex="1"></asp:DropDownList>
                                     </div>
@@ -67,11 +113,11 @@
                                 </div>
                                 <div class="form-group row">
                                     <label class="control-label text-right col-md-3">Invoice Date</label>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <asp:TextBox ID="Txt_invoice_date" class="form-control" runat="server" TextMode="Date" TabIndex="4"></asp:TextBox>
                                     </div>
-                                    <label class="control-label text-right col-md-3">Due Date</label>
-                                    <div class="col-md-3">
+                                    <label class="control-label text-right col-md-2">Due Date</label>
+                                    <div class="col-md-2">
                                         <asp:TextBox ID="Txt_due_date" class="form-control" runat="server" TextMode="Date" TabIndex="5"></asp:TextBox>
                                     </div>
                                 </div>
@@ -79,7 +125,7 @@
                                 <div class="form-group row">
 
                                     <div class="col-md-5">
-                                        <asp:Label ID="Label1" runat="server" Text="Product"></asp:Label>
+                                        <asp:Label ID="Label1" runat="server">Product<span style="color:red;">*</span></asp:Label>
                                     </div>
                                      <div class="col-md-6">
                                         <asp:Label ID="Label2" runat="server" Text="Description"></asp:Label>
@@ -114,9 +160,9 @@
                                     <thead>
                                         <tr>
 
-                                            <th scope="col">Roll (Feet)</th>
+                                            <th scope="col">Roll (Feet)<span style="color:red;">*</span></th>
                                             <th scope="col">Roll (Mtr)</th>
-                                            <th scope="col">Roll length (Mtr)</th>
+                                            <th scope="col">Roll length (Mtr)<span style="color:red;">*</span></th>
                                             <th scope="col">Total Sq. Meter </th>
                                         </tr>
                                     </thead>
@@ -130,11 +176,11 @@
                                             <%--</td>--%> 
                                               
                                             <td>
-                                                <asp:TextBox ID="txt_roll_width" onkeyup="Total_sqmtr();rate();" class="form-control" runat="server" TabIndex="9"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_roll_width" onkeydown="javascript:return false" onkeyup="Total_sqmtr();rate();" class="form-control" runat="server" TabIndex="9" ></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="Txt_roll_height" class="form-control" onkeyup="Total_sqmtr();rate();" onchange="Total_sqmtr(); rate();" runat="server" TabIndex="10"></asp:TextBox></td>
+                                                <asp:TextBox ID="Txt_roll_height" class="form-control" onkeyup="Total_sqmtr();rate();" onchange="Total_sqmtr(); rate();" runat="server" TabIndex="10" TextMode="Number" min="0"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="Txt_total_roll" class="form-control" onkeyup="Total_sqmtr();rate();" runat="server" TabIndex="11"></asp:TextBox></td>
+                                                <asp:TextBox ID="Txt_total_roll" class="form-control"   onkeyup="Total_sqmtr();rate();" runat="server" TabIndex="11"  onkeydown="javascript:return false"></asp:TextBox></td>
                                         </tr>
                                              </tbody>
                                 </table>
@@ -145,7 +191,7 @@
                                             <th scope="col">Total Sq.ft</th>
                                             <th scope="col">Rate</th>
                                             <th scope="col">Amount</th>
-                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Quantity<span style="color:red;">*</span></th>
                                             <th scope="col">Total</th>
                                         </tr>
                                         </thead>
@@ -153,15 +199,15 @@
                                          <tr>
 
                                            <td>
-                                                <asp:TextBox ID="Txt_total_roll_sq" class="form-control" onkeyup="rate();" runat="server" TabIndex="12"></asp:TextBox></td>
+                                                <asp:TextBox ID="Txt_total_roll_sq" class="form-control" onkeyup="rate();" runat="server" TabIndex="12"  onkeydown="javascript:return false"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="Txt_rate" class="form-control" onkeyup="rate();" runat="server" TabIndex="13"></asp:TextBox></td>
+                                                <asp:TextBox ID="Txt_rate" class="form-control" onkeyup="rate();" onkeydown="javascript:return false" runat="server" TabIndex="13" ></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_amount" class="form-control" runat="server" TabIndex="14"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_amount" onkeydown="javascript:return false" class="form-control" runat="server" TabIndex="14" ></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_quantity" class="form-control" onkeyup="quan_amount();gst();" onchange="quan_amount();gst();" runat="server" TabIndex="15"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_quantity" class="form-control" onkeyup="quan_amount();gst();" onchange="quan_amount();gst();" runat="server" TabIndex="15" TextMode="Number" min="0"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_total_amt" class="form-control" runat="server" TabIndex="16"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_total_amt" onkeydown="javascript:return false" class="form-control" runat="server" TabIndex="16" ></asp:TextBox></td>
                                         </tr>
 
                                     </tbody>
@@ -183,14 +229,14 @@
                                         <tr>
 
                                             <td>
-                                                <asp:TextBox ID="txt_cgst" class="form-control" OnkeyUp="rate(); quan_amount(); gst(); " onchange="rate(); quan_amount(); gst(); " runat="server" TabIndex="16"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_cgst" class="form-control" OnkeyUp="rate(); quan_amount(); gst(); " onchange="rate(); quan_amount(); gst(); " TextMode="Number" min="0"  runat="server" TabIndex="16"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_sgst" class="form-control" OnkeyUp="rate(); quan_amount(); gst(); " onchange="rate(); quan_amount(); gst(); " runat="server" TabIndex="17"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_sgst" class="form-control" OnkeyUp="rate(); quan_amount(); gst(); " onchange="rate(); quan_amount(); gst(); " TextMode="Number" min="0"  runat="server" TabIndex="17"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_igst" class="form-control" OnkeyUp="rate(); quan_amount(); gst(); " onchange="rate(); quan_amount(); gst(); "  runat="server" TabIndex="18"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_igst" class="form-control" OnkeyUp="rate(); quan_amount(); gst(); " onchange="rate(); quan_amount(); gst(); " TextMode="Number" min="0" runat="server" TabIndex="18"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_final_amt" class="form-control" runat="server" TabIndex="19"></asp:TextBox></td>
-                                            <td><asp:Button ID="Btn_cart" class="btn btn-primary pull-right" Style="margin-right: 5px;" runat="server" Text="Add to Cart" OnClick="Btn_cart_Click" /></td>
+                                                <asp:TextBox ID="txt_final_amt" onkeydown="javascript:return false" class="form-control" runat="server" TabIndex="19" ></asp:TextBox></td>
+                                            <td><asp:Button ID="Btn_cart" class="btn btn-primary pull-right" Style="margin-right: 5px;" runat="server" Text="Add to Cart"  OnClientClick="return JSFunctionValidate5();" OnClick="Btn_cart_Click" /></td>
                                            
                                         </tr>
 
@@ -299,10 +345,10 @@
 
                                 <!-- this row will not appear when printing -->
                                 <div class="row no-print">
-                                    <div class="col-lg-12">
+                                    <div class="col-lg-11 py-2 ml-4">
                                         <asp:Label ID="Lbl_message"  runat="server" Text=""></asp:Label>
-                                        <asp:Button ID="Btn_submit_payment" class="btn btn-success pull-right" runat="server" OnClientClick="return JSFunctionValidate();" Text="Save & Close" OnClick="Btn_submit_payment_Click" />
-                                        <asp:Button ID="Btn_generate_pdf" class="btn btn-primary pull-right" Style="margin-right: 5px;" runat="server" Text="Save Invoice" OnClientClick="return JSFunctionValidate();" OnClick="Btn_generate_pdf_Click" />
+                                        <asp:Button ID="Btn_submit_payment" class="btn btn-success pull-right" runat="server" OnClientClick="return JSFunctionValidate4();" Text="Save & Close" OnClick="Btn_submit_payment_Click" />
+                                        <asp:Button ID="Btn_generate_pdf" class="btn btn-primary pull-right" Style="margin-right: 5px;" runat="server" Text="Save Invoice"  OnClientClick="return JSFunctionValidate();"  OnClick="Btn_generate_pdf_Click" />
 
 
                                     </div>
@@ -331,6 +377,8 @@
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           
         </div>
+            <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+              <ContentTemplate>
         <div class="modal-body">
           <div class="form-body">
                   <div class="form-group row">
@@ -349,9 +397,9 @@
                   </div>
                     
                    <div class="form-group row">
-                    <label class="control-label text-right col-md-3">Contact no.</label>
+                    <label class="control-label text-right col-md-3">Contact no.<span style="color:red;">*</span></label>
                     <div class="col-md-9">
-                       <asp:TextBox ID="Txt_contact"  placeholder="Contact no." class="form-control" runat="server"></asp:TextBox>
+                       <asp:TextBox ID="Txt_contact"  placeholder="Contact no." class="form-control" runat="server" MaxLength="10" oninput="validateInput(this);"></asp:TextBox>
                       </div>
                   </div>
                     <div class="form-group row">
@@ -363,7 +411,7 @@
                   <div class="form-group row">
                     <label class="control-label text-right col-md-3">GST no.</label>
                     <div class="col-md-9">
-                      <asp:TextBox ID="Txt_gst_no" placeholder="GST no." class="form-control" runat="server"></asp:TextBox>
+                      <asp:TextBox ID="Txt_gst_no" placeholder="GST no." class="form-control" runat="server" MaxLength="15"></asp:TextBox>
                     </div>
                   </div>
                   <div class="form-group row">
@@ -382,8 +430,7 @@
                 </div>
         </div>
           
-          <asp:UpdatePanel ID="UpdatePanel3" runat="server">
-              <ContentTemplate>
+        
         <div class="modal-footer">
              <asp:Label ID="lbl_msg" Style="color:red;" runat="server" Text=""></asp:Label>
              <asp:Button ID="Button1" class="btn btn-success" runat="server" Text="Submit" OnClientClick="return JSFunctionValidate2();" OnClick="Button1_Click"  />
@@ -406,6 +453,8 @@
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           
         </div>
+           <asp:UpdatePanel ID="UpdatePanel4" runat="server">
+              <ContentTemplate>
         <div class="modal-body">
         <div class="form-body">
                   <div class="form-group row">
@@ -493,8 +542,7 @@
                   
                 </div>
         </div>
-          <asp:UpdatePanel ID="UpdatePanel4" runat="server">
-              <ContentTemplate>
+         
         <div class="modal-footer">
               <asp:Label ID="lbl_msg2" Style="color:red;" runat="server" Text=""></asp:Label>
              <asp:Button ID="Button2" class="btn btn-success" runat="server" OnClientClick="return JSFunctionValidate3();" Text="Submit" OnClick="Button2_Click"  />
@@ -511,6 +559,11 @@
 
 
  <script type="text/javascript">
+     
+         function validateInput(input) {
+             input.value = input.value.replace(/\D/g, '').substring(0, 10);
+        }
+
 
 
      function Total_sqmtr() {
@@ -627,13 +680,13 @@
             var ship = document.getElementById('<%=Txt_shipping.ClientID %>');
             var adjustment = document.getElementById('<%=Txt_adjustment.ClientID %>');
             var discount = document.getElementById('<%=Txt_discount.ClientID %>');
-           
+            var hideamount = (parseFloat(subtotal.value) + parseFloat(ship.value));
          
             var total_amount = ((parseFloat(subtotal.value) + parseFloat(ship.value) - parseFloat(adjustment.value)) - parseFloat(discount.value));
 
            
             document.getElementById('<%=lbl_total.ClientID %>').innerHTML = total_amount;
-         document.getElementById('<%=hide_total.ClientID %>').value = total_amount;
+            document.getElementById('<%=hide_total.ClientID %>').value = hideamount;
         }
        
 
@@ -786,17 +839,18 @@
          document.getElementById('<%=hide_total.ClientID %>').value = total_amount;
         }--%>
 
-    </script>
-     <script>
+ </script>
+    <%-- <script>
 function JSFunctionValidate()
 {
 
 
-    if(document.getElementById('<%=Dd_customer.ClientID%>').selectedIndex == 0)
-{
-        alert("Please Select Customer !!!");
-return false;
+   
+    if (document.getElementById('<%=Dd_customer.ClientID%>').value == "--Select--") {
+        alert("Please Select Vendor !!!");
+        return false;
     }
+
     if(document.getElementById('<%=Txt_order_no.ClientID%>').value.length==0)
 {
 alert("Please Enter Order no. !!!");
@@ -829,11 +883,53 @@ return false;
 }
      
   
-    
+    preventMultipleSubmissions();
   
 return true;
+         }
+         function JSFunctionValidate00() {
+
+
+
+             if (document.getElementById('<%=Dd_customer.ClientID%>').value == "--Select--") {
+        alert("Please Select Vendor !!!");
+        return false;
+    }
+
+    if (document.getElementById('<%=Txt_order_no.ClientID%>').value.length == 0) {
+        alert("Please Enter Order no. !!!");
+        return false;
+    }
+    if (document.getElementById('<%=Txt_invoice_date.ClientID%>').value.length == 0) {
+        alert("Please Select Invoice Date !!!");
+        return false;
+    }
+    if (document.getElementById('<%=Txt_due_date.ClientID%>').value.length==0)
+{
+alert("Please Select Due Date !!!");
+return false;
+    }
+    if(document.getElementById('<%=Txt_shipping.ClientID%>').value.length==0)
+{
+alert("Please Enter Shipping Charges !!!");
+return false;
+    }
+    if(document.getElementById('<%=Txt_adjustment.ClientID%>').value.length==0)
+{
+alert("Please Enter Adjustment !!!");
+return false;
+    }
+    if (document.getElementById('<%=Txt_discount.ClientID%>').value.length == 0) {
+        alert("Please Enter Discount !!!");
+        return false;
+    }
+
+
+    preventMultipleSubmissions1();
+
+    return true;
 }
-        </script>
+     </script>
       <script>
 function JSFunctionValidate2()
 {
@@ -889,6 +985,241 @@ return false;
 return true;
 }
         </script>
+    <script>
+        function JSFunctionValidate4() {
+
+            
+             var quant = document.getElementById('<%=txt_quantity.ClientID %>');
+             var rollheight = document.getElementById('<%=Txt_roll_height.ClientID %>');
+            
+            if (document.getElementById('<%=Dd_customer.ClientID%>').value == "--Select--") {
+                alert("Please Select Vendor's Name !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Dd_enter_product.ClientID%>').value == "--Select--") {
+                alert("Please Select Product !!!");
+                return false;
+            }
+           
+            if (document.getElementById('<%=drp_feet.ClientID%>').value == "--Select--") {
+                alert("Please Select Roll Feet !!!");
+                return false;
+            }
+
+            if (rollheight != null) {
+                if (rollheight.value == "0") {
+                    alert("Please Enter Roll Length !!!");
+                    return false;
+                }
+            }
+            if (quant != null) {
+                 if (quant.value == "0") {
+                     alert("Please Enter Quantity !!!");
+                     return false;
+                 }
+             }
+
+
+
+             return true;
+         }
+    </script>--%>
+
+
+    <script>
+        function JSFunctionValidate() {
+            if (document.getElementById('<%=Dd_customer.ClientID%>').value == "--Select--") {
+                alert("Please Select Vendor Name !!!");
+                return false;
+            }
+            
+           <%-- if (document.getElementById('<%=Dd_enter_product.ClientID%>').value == "--Select--") {
+                alert("Please Select Product !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Dd_material.ClientID%>').value == "--Select--") {
+                alert("Please Select Material !!!");
+                return false;
+            }--%>
+            if (document.getElementById('<%=Txt_invoice_date.ClientID%>').value.length == 0) {
+                alert("Please Select Invoice Date !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Txt_due_date.ClientID%>').value.length == 0) {
+                alert("Please Select Due Date !!!");
+                return false;
+            }
+
+            if (document.getElementById('<%=Txt_shipping.ClientID%>').value.length == 0) {
+                alert("Please Enter Transport Charges !!!");
+                return false;
+            }
+
+            if (document.getElementById('<%=Txt_adjustment.ClientID%>').value.length == 0) {
+                alert("Please Enter Advance Amount !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Txt_discount.ClientID%>').value.length == 0) {
+                alert("Please Enter Discount Amount !!!");
+                return false;
+            }
+            preventMultipleSubmissions();
+            return true;
+        }
+
+   </script>
+
+    <script> 
+
+        function JSFunctionValidate4() {
+            if (document.getElementById('<%=Dd_customer.ClientID%>').value == "--Select--") {
+                alert("Please Select Customer Name !!!");
+                return false;
+            }
+           
+          <%--  if (document.getElementById('<%=Dd_enter_product.ClientID%>').value == "--Select--") {
+                alert("Please Select Product !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Dd_material.ClientID%>').value == "--Select--") {
+                alert("Please Select Material !!!");
+                return false;
+            }--%>
+            if (document.getElementById('<%=Txt_invoice_date.ClientID%>').value.length == 0) {
+                alert("Please Select Invoice Date !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Txt_due_date.ClientID%>').value.length == 0) {
+                alert("Please Select Due Date !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Txt_shipping.ClientID%>').value.length == 0) {
+                alert("Please Enter Transport Charges !!!");
+                return false;
+            }
+
+            if (document.getElementById('<%=Txt_adjustment.ClientID%>').value.length == 0) {
+                alert("Please Enter Advance Amount !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Txt_discount.ClientID%>').value.length == 0) {
+                alert("Please Enter Discount Amount !!!");
+                return false;
+            }
+            preventMultipleSubmissions1();
+
+            return true;
+        }
+
+
+        function JSFunctionValidate5() {
+
+          <%--  var quant2 = document.getElementById('<%=txt_quantity.ClientID %>');--%>
+            var quant = document.getElementById('<%=txt_quantity.ClientID %>');
+            var height = document.getElementById('<%=Txt_roll_height.ClientID %>');
+          <%--  var height2 = document.getElementById('<%=txt_height2.ClientID %>');--%>
+            var width = document.getElementById('<%=txt_roll_width.ClientID %>');
+          <%--  var width2 = document.getElementById('<%=txt_width2.ClientID %>');--%>
+           <%-- var rollsize = document.getElementById('<%=Txt_roll_size.ClientID %>');--%>
+            if (document.getElementById('<%=Dd_customer.ClientID%>').value == "--Select--") {
+                alert("Please Select Customer Name !!!");
+                return false;
+            }
+            if (document.getElementById('<%=drp_feet.ClientID%>').value == "--Select--") {
+                alert("Please Select Feet  !!!");
+                return false;
+            }
+     if (document.getElementById('<%=Dd_enter_product.ClientID%>').value == "--Select--") {
+                alert("Please Select Product !!!");
+                return false;
+            }
+          
+
+            //if (width != null) {
+            //    if (width.value == "0") {
+            //        alert("Length should  not be 0 !!!");
+            //        return false;
+            //    }
+            //}
+            if (height != null) {
+                if (height.value == "0") {
+                    alert(" Length should not be 0  !!!");
+                    return false;
+                }
+            }
+
+            //if (rollsize != null) {
+            //    if (rollsize.value == "0") {
+            //        alert("Please Enter Roll Size !!!");
+            //        return false;
+            //    }
+            //}
+            //if (width2 != null) {
+            //    if (height2.value == "0") {
+            //        alert("Length should  not be 0 !!!");
+            //        return false;
+            //    }
+            //}
+          
+            if (quant != null) {
+                if (quant.value == "0") {
+                    alert("Please Enter Quantity !!!");
+                    return false;
+                }
+            }
+
+
+             return true;
+         }
+    </script>
+    <script>
+        function JSFunctionValidate2() {
+            if (document.getElementById('<%=Txt_vendor_name.ClientID%>').value.length == 0)
+    {
+        alert("Please Enter Customer's Name !!!");
+        return false;
+    }
+            if (document.getElementById('<%=Txt_contact.ClientID%>').value.length == 0) {
+                alert("Please Enter Contact No !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Txt_gst_no.ClientID%>').value.length != 0) {
+        //alert("Please Enter Gst Number !!!");
+        //return false;
+                 if (document.getElementById('<%=Txt_gst_no.ClientID%>').value.length != 15) {
+                     alert("Please Enter Valid Gst Number !!!");
+                     return false;
+                 }
+             }
+
+    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(document.getElementById('<%=Txt_email.ClientID%>').value)) && !(document.getElementById('<%=Txt_email.ClientID%>').value.length == 0)) {
+                alert("You Have Entered an Invalid Email Address!");
+                return false;
+            }
+            return true;
+        }
+    </script>
+    <script>
+        function JSFunctionValidate3() {
+            if (document.getElementById('<%=Txt_product_name.ClientID%>').value.length == 0) {
+        alert("Please Enter Product Name !!!");
+        return false;
+    }
+
+
+    if (document.getElementById('<%=Txt_ra.ClientID%>').value.length == 0) {
+                alert("Please Enter Product's Rate  !!!");
+                return false;
+            }
+            if (document.getElementById('<%=drp_feet.ClientID%>').value == "--Show Designer--") {
+                alert("Please Select Feet  !!!");
+                return false;
+            }
+
+            return true;
+        }
+
+    </script>
 
 
 </asp:Content>

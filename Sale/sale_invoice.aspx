@@ -5,45 +5,53 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="../dist/css/select2.css" rel="stylesheet" />
     <script src="../dist/js/select2.js"></script>
-    <script type="text/javascript">
+     <script type="text/javascript">
 
-        var isSubmitted = false;
+         var isSubmitted = false;
 
-        function preventMultipleSubmissions() {
+         function preventMultipleSubmissions() {
 
-           <%-- if (!isSubmitted) {
+             if (!isSubmitted) {
 
-                $('#<%=Btn_submit_payment.ClientID %>').val('Submitting.. Plz Wait..');
+                 $('#<%=Btn_generate_pdf.ClientID %>').val('Submitting.. Plz Wait..');
 
-      isSubmitted = true;
+                 isSubmitted = true;
 
-      return true;
+                 return true;
 
-  }--%>
+             }
 
-    if (!isSubmitted) {
+             else {
 
-        $('#<%=Btn_generate_pdf.ClientID %>').val('Submitting.. Plz Wait..');
+                 return false;
 
-                isSubmitted = true;
+             }
 
-                return true;
+         }
 
-            }
-
-            else {
-
-                return false;
-
-            }
-
-        }
+         function preventMultipleSubmissions1() {
 
 
+             if (!isSubmitted) {
+
+                 $('#<%=Btn_submit_payment.ClientID %>').val('Submitting.. Plz Wait..');
+
+                  isSubmitted = true;
+
+                  return true;
+
+              }
+              else {
+
+                  return false;
+
+              }
+
+          }
 
 
 
-    </script>
+     </script>
 
     <script type="text/javascript">
 
@@ -128,7 +136,7 @@
                                     <!-- info row -->
 
                                     <div class="customer_name row">
-                                        <label class="control-label text-right col-md-3">Customer Name</label>
+                                        <label class="control-label text-right col-md-3">Customer Name <span style="color:red;">*</span></label>
 
 
 
@@ -171,7 +179,7 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="control-label text-right col-md-3">Designer </label>
+                                        <label class="control-label text-right col-md-3">Designer <span style="color:red;">*</span></label>
                                         <div class="col-md-6">
 
                                             <asp:DropDownList ID="drp_designer" runat="server" OnSelectedIndexChanged="drp_order_ref_SelectedIndexChanged" AutoPostBack="true" class="form-control" TabIndex="4"></asp:DropDownList>
@@ -199,10 +207,10 @@
                                 <div class="form-group row">
 
                                     <div class="col-md-4">
-                                        <asp:Label ID="Label1" runat="server" Text="Product"></asp:Label>
+                                        <asp:Label ID="Label1" runat="server" >Product<span style="color:red;">*</span></asp:Label>
                                     </div>
                                     <div class="col-md-4">
-                                        <asp:Label ID="Label3" runat="server" Text="Material"></asp:Label>
+                                        <asp:Label ID="Label3" runat="server" >Material<span style="color:red;">*</span></asp:Label>
                                     </div>
                                     <div class="col-md-4">
                                         <asp:Label ID="Label2" runat="server" Text="Description"></asp:Label>
@@ -248,12 +256,12 @@
                                     <asp:Panel ID="Panel1" runat="server">
                                         <thead>
                                             <tr>
-                                                <th scope="col">Length</th>
-                                                <th scope="col">Height</th>
+                                                <th scope="col">Length<span style="color:red;">*</span></th>
+                                                <th scope="col">Height<span style="color:red;">*</span></th>
                                                 <th scope="col">Size</th>
                                                 <th scope="col">Rate</th>
                                                 <th scope="col">Amount</th>
-                                                <th scope="col">Quantity</th>
+                                                <th scope="col">Quantity<span style="color:red;">*</span></th>
                                                 <th scope="col">Total</th>
                                             </tr>
                                         </thead>
@@ -261,19 +269,19 @@
                                             <tr>
 
                                                 <td>
-                                                    <asp:TextBox ID="txt_width" OnkeyUp="rate(); quan_amount(); gst(); sqrft();" onchange=" rate(); quan_amount(); gst(); sqrft();" class="form-control" runat="server" TextMode="Number" TabIndex="9"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_width" OnkeyUp="rate(); quan_amount(); gst(); sqrft();" onchange=" rate(); quan_amount(); gst(); sqrft();" class="form-control" runat="server" TextMode="Number" TabIndex="9" min="0"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="txt_height" OnkeyUp="rate(); quan_amount(); gst(); sqrft();" onchange=" rate(); quan_amount(); gst(); sqrft();" class="form-control" runat="server" TextMode="Number" TabIndex="10"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_height" OnkeyUp="rate(); quan_amount(); gst(); sqrft();" onchange=" rate(); quan_amount(); gst(); sqrft();" class="form-control" runat="server" TextMode="Number" TabIndex="10" min="0"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="txt_sqrft" OnkeyUp="rate(); quan_amount(); gst(); sqrft();" onchange=" rate(); quan_amount(); gst(); sqrft();" class="form-control" runat="server" TextMode="Number" TabIndex="11"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_sqrft" onkeydown="javascript:return false" OnkeyUp="rate(); quan_amount(); gst(); sqrft();" onchange=" rate(); quan_amount(); gst(); sqrft();" class="form-control" runat="server" TextMode="Number" TabIndex="11"></asp:TextBox></td>
                                                 <td>
                                                     <asp:TextBox ID="txt_rate" Onkeyup="sqrft(); rate(); quan_amount(); gst();" onchange="sqrft(); rate(); quan_amount(); gst();" class="form-control" runat="server" TextMode="Number" TabIndex="12"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="txt_amount" class="form-control" runat="server" TextMode="Number" TabIndex="13"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_amount" onkeydown="javascript:return false" class="form-control" runat="server" TextMode="Number" TabIndex="13"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="txt_quantity" OnkeyUp="sqrft(); rate();quan_amount(); gst();" onchange="sqrft(); rate();quan_amount(); gst();" class="form-control" runat="server" TextMode="Number" TabIndex="14"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_quantity" OnkeyUp="sqrft(); rate();quan_amount(); gst();" onchange="sqrft(); rate();quan_amount(); gst();" class="form-control" runat="server" TextMode="Number" TabIndex="14" min="0"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="txt_total_amt" onkeyup="gst();" onchange="gst();" class="form-control" runat="server" TextMode="Number" TabIndex="15"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_total_amt" onkeydown="javascript:return false" onkeyup="gst();" onchange="gst();" class="form-control" runat="server" TextMode="Number" TabIndex="15"></asp:TextBox></td>
                                             </tr>
 
                                         </tbody>
@@ -282,12 +290,12 @@
                                         <thead>
                                             <tr>
 
-                                                <th scope="col">Height</th>
-                                                <th scope="col">Width</th>
+                                                <th scope="col">Height<span style="color:red;">*</span></th>
+                                                <th scope="col">Length<span style="color:red;">*</span></th>
                                                 <th scope="col">Size</th>
                                                 <th scope="col">Rate</th>
                                                 <th scope="col">Amount</th>
-                                                <th scope="col">Quantity</th>
+                                                <th scope="col">Quantity<span style="color:red;">*</span></th>
                                                 <th scope="col">Total</th>
                                             </tr>
                                         </thead>
@@ -295,19 +303,19 @@
                                             <tr>
 
                                                 <td>
-                                                    <asp:TextBox ID="txt_height2" disabled="true" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_height2" disabled="true" class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="txt_width2" disabled="true" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_width2" disabled="true" class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="txt_sqrft2" disabled="true" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_sqrft2" onkeydown="javascript:return false" disabled="true" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
                                                 <td>
                                                     <asp:TextBox ID="txt_rate2" Onkeyup="quan_amount2(); gst();" onchange="quan_amount2(); gst();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="txt_amount2" disabled="true" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_amount2" onkeydown="javascript:return false" disabled="true" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="txt_quantity2" OnkeyUp="quan_amount2(); gst();" onchange="quan_amount2(); gst();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_quantity2" OnkeyUp="quan_amount2(); gst();" onchange="quan_amount2(); gst();" class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="txt_total_amt2" onkeyup="gst();" onchange="gst();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_total_amt2"  onkeydown="javascript:return false" onkeyup="gst();" onchange="gst();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
                                             </tr>
 
                                         </tbody>
@@ -331,15 +339,15 @@
                                         <tr>
 
                                             <td>
-                                                <asp:TextBox ID="txt_cgst" class="form-control" OnkeyUp="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " onchange="quan_amount2(); sqrft(); rate(); quan_amount(); gst();" runat="server" TextMode="Number" TabIndex="16"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_cgst" class="form-control" OnkeyUp="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " onchange="quan_amount2(); sqrft(); rate(); quan_amount(); gst();" runat="server" TextMode="Number" TabIndex="16" min="0"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_sgst" class="form-control" OnkeyUp="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " onchange="quan_amount2(); sqrft(); rate(); quan_amount(); gst();" runat="server" TextMode="Number" TabIndex="17"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_sgst" class="form-control" OnkeyUp="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " onchange="quan_amount2(); sqrft(); rate(); quan_amount(); gst();" runat="server" TextMode="Number" TabIndex="17" min="0"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_igst" class="form-control" OnkeyUp="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " onchange="quan_amount2(); sqrft(); rate(); quan_amount(); gst();" runat="server" TextMode="Number" TabIndex="18"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_igst" class="form-control" OnkeyUp="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " onchange="quan_amount2(); sqrft(); rate(); quan_amount(); gst();" runat="server" TextMode="Number" TabIndex="18" min="0"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_final_amt" class="form-control" runat="server" TabIndex="19"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_final_amt" onkeydown="javascript:return false" class="form-control" runat="server" TabIndex="19"></asp:TextBox></td>
                                             <td>
-                                                <asp:LinkButton ID="Btn_cart" Style="margin-right: 5px;" OnClientClick="return JSFunctionValidate4();" OnClick="Btn_cart_Click" runat="server"><i style="padding-left:10px; font-size:40px;" class="fa fa-plus-circle" tabindex="20"></i></asp:LinkButton>
+                                                <asp:LinkButton ID="Btn_cart" Style="margin-right: 5px;"  OnClientClick="return JSFunctionValidate5();" OnClick="Btn_cart_Click" runat="server"><i style="padding-left:10px; font-size:40px;" class="fa fa-plus-circle" tabindex="20"></i></asp:LinkButton>
                                             </td>
 
                                         </tr>
@@ -353,8 +361,9 @@
 
 
 
-                                            <Columns>
-                                                <asp:ButtonField CommandName="Delete" HeaderText="Action" ShowHeader="True" Text="Delete" />
+                                            <Columns >
+                                              
+                                                 <asp:ButtonField CommandName="Delete" HeaderText="Action" ShowHeader="True" Text="Delete" />
                                             </Columns>
 
 
@@ -518,17 +527,17 @@
 
 
                                                 <td>
-                                                    <asp:TextBox ID="Txt_Dtp_charges" onkeyup="final_total();" class="form-control" runat="server" TabIndex="21"></asp:TextBox></td>
+                                                    <asp:TextBox ID="Txt_Dtp_charges" onkeyup="final_total();" class="form-control" runat="server" TabIndex="21" TextMode="Number"  min="0"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="Txt_Pasting" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22"></asp:TextBox></td>
+                                                    <asp:TextBox ID="Txt_Pasting" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" TextMode="Number"  min="0"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="Txt_Framing" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22"></asp:TextBox></td>
+                                                    <asp:TextBox ID="Txt_Framing" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" TextMode="Number"  min="0"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="Txt_Fitting" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22"></asp:TextBox></td>
+                                                    <asp:TextBox ID="Txt_Fitting" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" TextMode="Number"  min="0"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="Txt_install" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22"></asp:TextBox></td>
+                                                    <asp:TextBox ID="Txt_install" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" TextMode="Number"  min="0"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="Txt_TransportCharges" onkeyup="final_total();" class="form-control" runat="server" TabIndex="23"></asp:TextBox></td>
+                                                    <asp:TextBox ID="Txt_TransportCharges" onkeyup="final_total();" class="form-control" runat="server" TabIndex="23" TextMode="Number"  min="0"></asp:TextBox></td>
 
                                                 <%--<td>
                                                  <asp:TextBox ID="Txt_advance" onkeyup="final_total();" onchange="final_total();" class="form-control" runat="server" TextMode="Number" TabIndex="24"></asp:TextBox>
@@ -587,18 +596,18 @@
 
                                                 <td>
                                                     <asp:TextBox ID="Txt_advance" onkeyup="final_total();" onchange="final_total();" class="form-control" runat="server" TextMode="Number" TabIndex="24"></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidatorAdvance" runat="server" ErrorMessage="Please Enter Advance.." ControlToValidate="Txt_advance" Display="Dynamic" ValidationGroup="g1"></asp:RequiredFieldValidator>
+                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidatorAdvance" runat="server" ErrorMessage=" Enter Advance amount.." ControlToValidate="Txt_advance" Display="Dynamic" ValidationGroup="g1"></asp:RequiredFieldValidator>
                                                 </td>
 
                                                 <asp:Panel ID="upinotxt" runat="server">
                                                     <td>
                                                         <asp:TextBox ID="txt_UPIno" class="form-control" runat="server" TabIndex="27"></asp:TextBox>
-                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidatorUPIno" runat="server" ErrorMessage="Please Enter UPI Number.." ControlToValidate="txt_UPIno" Display="Dynamic" ValidationGroup="g1"></asp:RequiredFieldValidator></td>
+                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidatorUPIno" runat="server" ErrorMessage=" Enter UPI Number.." ControlToValidate="txt_UPIno" Display="Dynamic" ValidationGroup="g1"></asp:RequiredFieldValidator></td>
                                                 </asp:Panel>
 
                                                 <td>
                                                     <asp:TextBox ID="Txt_discount" onkeyup="final_total();" onchange="final_total();" class="form-control" runat="server" TextMode="Number" TabIndex="25"></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidatorDiscount" runat="server" ErrorMessage="Please Enter Discount.." ControlToValidate="Txt_discount" Display="Dynamic" ValidationGroup="g1"></asp:RequiredFieldValidator></td>
+                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidatorDiscount" runat="server" ErrorMessage=" Enter Discount amount.." ControlToValidate="Txt_discount" Display="Dynamic" ValidationGroup="g1"></asp:RequiredFieldValidator></td>
 
 
 
@@ -656,8 +665,8 @@
                                 <div class="row no-print">
                                     <div class="col-lg-12">
                                         <asp:Label ID="Lbl_message" runat="server" Text=""></asp:Label>
-                                        <asp:Button ID="Btn_submit_payment" class="btn btn-success pull-right" runat="server" Text="Save & Close" OnClick="Btn_submit_payment_Click" TabIndex="28" OnClientClick="return JSFunctionValidate()" />
-                                        <asp:Button ID="Btn_generate_pdf" class="btn btn-primary pull-right" Style="margin-right: 5px;" runat="server" Text="Save Invoice" ValidationGroup="g1" UseSubmitBehavior="false" OnClick="Btn_generate_pdf_Click" TabIndex="27"  /><%--OnClientClick="this.disabled=true; this.value='Please Wait..';"   OnClientClick="return  JSFunctionValidate(); preventMultipleSubmissions()"    --%>
+                                        <asp:Button ID="Btn_submit_payment" class="btn btn-success pull-right" runat="server" Text="Save & Close"  OnClick="Btn_submit_payment_Click" TabIndex="28" OnClientClick="return JSFunctionValidate4()" />
+                                        <asp:Button ID="Btn_generate_pdf" class="btn btn-primary pull-right" Style="margin-right: 5px;" runat="server" Text="Save Invoice"    OnClientClick="return JSFunctionValidate();" OnClick="Btn_generate_pdf_Click" TabIndex="27"  /><%--OnClientClick="this.disabled=true; this.value='Please Wait..';"   OnClientClick="return  JSFunctionValidate(); preventMultipleSubmissions()"    --%>
                                     </div>
                                 </div>
                             </section>
@@ -684,6 +693,8 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
 
                 </div>
+                 <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+                    <ContentTemplate>
                 <div class="modal-body">
                     <div class="form-body">
                         <div class="form-group row">
@@ -703,7 +714,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="control-label text-right col-md-3">Contact no.</label>
+                            <label class="control-label text-right col-md-3">Contact no. <span style="color: red;">*</span></label>
                             <div class="col-md-9">
                                 <asp:TextBox ID="Txt_contact" placeholder="Contact no." class="form-control" runat="server" TextMode="Number"></asp:TextBox>
                             </div>
@@ -717,7 +728,7 @@
                         <div class="form-group row">
                             <label class="control-label text-right col-md-3">GST no.</label>
                             <div class="col-md-9">
-                                <asp:TextBox ID="Txt_gst_no" placeholder="GST no." class="form-control" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="Txt_gst_no" placeholder="GST no." class="form-control" runat="server" MaxLength="15"></asp:TextBox>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -736,7 +747,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="control-label text-right col-md-3">Date Of Birth</label>
+                            <label class="control-label text-right col-md-3">Date Of Birth<span style="color: red;">*</span></label>
                             <div class="col-md-9">
                                 <asp:TextBox ID="Txt_dob" placeholder="DOB" class="form-control" runat="server" TextMode="Date" TabIndex="8"></asp:TextBox>
                             </div>
@@ -752,8 +763,7 @@
                     </div>
                 </div>
 
-                <asp:UpdatePanel ID="UpdatePanel3" runat="server">
-                    <ContentTemplate>
+               
                         <div class="modal-footer">
                             <asp:Label ID="lbl_msg" runat="server" Text=""></asp:Label>
                             <asp:Button ID="Button1" class="btn btn-success" runat="server" Text="Submit" OnClientClick="return JSFunctionValidate2();" OnClick="Button1_Click" />
@@ -898,14 +908,14 @@
                 alert("Please Select Designer Name !!!");
                 return false;
             }
-            if (document.getElementById('<%=Dd_enter_product.ClientID%>').value == "--Select--") {
+           <%-- if (document.getElementById('<%=Dd_enter_product.ClientID%>').value == "--Select--") {
                 alert("Please Select Product !!!");
                 return false;
             }
             if (document.getElementById('<%=Dd_material.ClientID%>').value == "--Select--") {
                 alert("Please Select Material !!!");
                 return false;
-            }
+            }--%>
             if (document.getElementById('<%=Txt_invoice_date.ClientID%>').value.length == 0) {
                 alert("Please Select Invoice Date !!!");
                 return false;
@@ -923,66 +933,114 @@
                 alert("Please Enter Discount !!!");
                 return false;
             }
+            preventMultipleSubmissions();
             return true;
         }
         
    </script>
 
-    <script>
-
-
-
-<%--function JSFunctionValidate()
-{
-   
-
-    if(document.getElementById('<%=Dd_customer.ClientID%>').value == "--Select--")
-{
-        alert("Please Select Customer !!!");
-return false;
-    }
-    
-  if(document.getElementById('<%=Txt_invoice_date.ClientID%>').value.length==0)
-{
-alert("Please Select Invoice Date !!!");
-return false;
-  }
-    if(document.getElementById('<%=Txt_due_date.ClientID%>').value.length==0)
-{
-alert("Please Select Due Date !!!");
-return false;
-    }
-
-    if(document.getElementById('<%=Txt_advance.ClientID%>').value.length==0)
-{
-alert("Please Enter Advance !!!");
-return false;
-    }
-    if(document.getElementById('<%=Txt_discount.ClientID%>').value.length==0)
-{
-alert("Please Enter Discount !!!");
-return false;
-    }
-
-  
-    return true;
-
-   
-        
-    
-}--%>
+    <script> 
 
         function JSFunctionValidate4() {
-
-
-            if (document.getElementById('<%=Dd_customer.ClientID%>').selectedIndex == 0) {
-                alert("Please Select Customer !!!");
+            if (document.getElementById('<%=Dd_customer.ClientID%>').value == "--Select--") {
+                alert("Please Select Customer Name !!!");
+                return false;
+            }
+            if (document.getElementById('<%=drp_designer.ClientID%>').value == "--Show Designer--") {
+                alert("Please Select Designer Name !!!");
+                return false;
+            }
+          <%--  if (document.getElementById('<%=Dd_enter_product.ClientID%>').value == "--Select--") {
+                alert("Please Select Product !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Dd_material.ClientID%>').value == "--Select--") {
+                alert("Please Select Material !!!");
+                return false;
+            }--%>
+            if (document.getElementById('<%=Txt_invoice_date.ClientID%>').value.length == 0) {
+                alert("Please Select Invoice Date !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Txt_due_date.ClientID%>').value.length == 0) {
+                alert("Please Select Due Date !!!");
                 return false;
             }
 
+            if (document.getElementById('<%=Txt_advance.ClientID%>').value.length == 0) {
+                alert("Please Enter Advance !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Txt_discount.ClientID%>').value.length == 0) {
+                alert("Please Enter Discount !!!");
+                return false;
+            }
+            preventMultipleSubmissions1();
 
-            return true;
+          return true;
         }
+
+
+        function JSFunctionValidate5() {
+
+            var quant2 = document.getElementById('<%=txt_quantity2.ClientID %>');
+            var quant = document.getElementById('<%=txt_quantity.ClientID %>');
+            var height = document.getElementById('<%=txt_height.ClientID %>');
+          var height2 = document.getElementById('<%=txt_height2.ClientID %>');
+            var width = document.getElementById('<%=txt_width.ClientID %>');
+            var width2 = document.getElementById('<%=txt_width2.ClientID %>');
+           
+            if (document.getElementById('<%=Dd_customer.ClientID%>').value == "--Select--") {
+                alert("Please Select Customer Name !!!");
+                return false;
+            }
+            if (document.getElementById('<%=drp_designer.ClientID%>').value == "--Show Designer--") {
+                alert("Please Select Designer Name !!!");
+                return false;
+            }
+     if (document.getElementById('<%=Dd_enter_product.ClientID%>').value == "--Select--") {
+                alert("Please Select Product !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Dd_material.ClientID%>').value == "--Select--") {
+                alert("Please Select Material !!!");
+                return false;
+            }
+
+            if (width != null) {
+                if (width.value == "0") {
+                    alert("Length should  not be 0 !!!");
+                    return false;
+                }
+            }
+            if (height != null) {
+                if (height.value == "0") {
+                    alert("Height should not be 0  !!!");
+                    return false;
+                }
+            }
+            //if (width2 != null) {
+            //    if (height2.value == "0") {
+            //        alert("Length should  not be 0 !!!");
+            //        return false;
+            //    }
+            //}
+            if (quant2 != null) {
+                if (quant2.value == "0") {
+                    alert("Please Enter Quantity !!!");
+                    return false;
+                }
+            }
+            if (quant != null) {
+                if (quant.value == "0") {
+                    alert("Please Enter Quantity !!!");
+                    return false;
+                }
+            }
+
+
+             return true;
+         }
     </script>
     <script>
         function JSFunctionValidate2() {
@@ -991,7 +1049,18 @@ return false;
         alert("Please Enter Customer's Name !!!");
         return false;
     }
-
+            if (document.getElementById('<%=Txt_contact.ClientID%>').value.length == 0) {
+                alert("Please Enter Contact No !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Txt_gst_no.ClientID%>').value.length != 0) {
+        //alert("Please Enter Gst Number !!!");
+        //return false;
+                 if (document.getElementById('<%=Txt_gst_no.ClientID%>').value.length != 15) {
+                     alert("Please Enter Valid Gst Number !!!");
+                     return false;
+                 }
+             }
 
     if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(document.getElementById('<%=Txt_email.ClientID%>').value)) && !(document.getElementById('<%=Txt_email.ClientID%>').value.length == 0)) {
                 alert("You Have Entered an Invalid Email Address!");
@@ -1016,6 +1085,7 @@ return false;
 
             return true;
         }
+    
     </script>
     <script type="text/javascript">
         function sqrft() {
@@ -1071,7 +1141,7 @@ return false;
             }
             var total_amount = (parseFloat(amt.value) * parseFloat(quantity.value))
 
-            total.value = total_amount;
+            total.value = total_amount.toFixed(2);
 
         }
         function quan_amount2() {
@@ -1090,7 +1160,7 @@ return false;
             }
             var total_amount = (parseFloat(rate.value) * parseFloat(quantity.value))
 
-            total.value = total_amount;
+            total.value = total_amount.toFixed(2);
 
         }
 
@@ -1129,7 +1199,7 @@ return false;
               // var amt = total.value + rcgst.value + rsgst.value + rigst.value;
               var amt = parseFloat(rcgst) + parseFloat(rsgst) + parseFloat(rigst) + parseFloat(total_amount);
               var amount = document.getElementById('<%= txt_final_amt.ClientID %>');
-            amount.value = amt;
+            amount.value = amt.toFixed(2);
         }
         function gst2() {
             var cgst = document.getElementById('<%= txt_cgst.ClientID %>');
@@ -1157,7 +1227,7 @@ return false;
              // var amt = total.value + rcgst.value + rsgst.value + rigst.value;
              var amt = parseFloat(rcgst) + parseFloat(rsgst) + parseFloat(rigst) + parseFloat(total_amount);
              var amount = document.getElementById('<%= txt_final_amt.ClientID %>');
-            amount.value = amt;
+            amount.value = amt.toFixed(2);
         }
 
         function final_total() {
@@ -1733,7 +1803,7 @@ else
 
     </script>
 
-    <script type="text/javascript">
+   <%-- <script type="text/javascript">
 
         function disableTextBox() {
             document.getElementById('<%=Txt_Dtp_charges.ClientID%>').disabled = true;
@@ -1797,7 +1867,101 @@ else
         window.onload = disableTextBox;
         window.onscroll = disableTextBox;
 
-    </script>
+    </script>--%>
+     <script type="text/javascript">
 
+         function disableTextBox() {
+             document.getElementById('<%=Txt_Dtp_charges.ClientID%>').disabled = true;
+            document.getElementById('<%=Txt_Pasting.ClientID%>').disabled = true;
+            document.getElementById('<%=Txt_Framing.ClientID%>').disabled = true;
+            document.getElementById('<%=Txt_Fitting.ClientID%>').disabled = true;
+            document.getElementById('<%=Txt_install.ClientID%>').disabled = true;
+            document.getElementById('<%=Txt_TransportCharges.ClientID%>').disabled = true;
+             addListeners();
+         }
+
+         function toggleTextBox(e) {
+             checkbox = e.target;
+
+             if (checkbox.checked == true) {
+                 if (checkbox.id == "<%=Chk_dtp.ClientID%>") {
+                    document.getElementById('<%=Txt_Dtp_charges.ClientID%>').disabled = false;
+                }
+                if (checkbox.id == "<%=Chk_pasting.ClientID%>") {
+                    document.getElementById('<%=Txt_Pasting.ClientID%>').disabled = false;
+                }
+                if (checkbox.id == "<%=Chk_framing.ClientID%>") {
+                    document.getElementById('<%=Txt_Framing.ClientID%>').disabled = false;
+                }
+                if (checkbox.id == "<%=Chk_fitting.ClientID%>") {
+                    document.getElementById('<%=Txt_Fitting.ClientID%>').disabled = false;
+                }
+                if (checkbox.id == "<%=Chk_install.ClientID%>") {
+                    document.getElementById('<%=Txt_install.ClientID%>').disabled = false;
+                }
+                if (checkbox.id == "<%=Chk_trans.ClientID%>") {
+                    document.getElementById('<%=Txt_TransportCharges.ClientID%>').disabled = false;
+                }
+            }
+            else {
+               <%-- document.getElementById('<%=Txt_Dtp_charges.ClientID%>').disabled = true;
+                document.getElementById('<%=Txt_Pasting.ClientID%>').disabled = true;
+                document.getElementById('<%=Txt_Fitting.ClientID%>').disabled = true;
+                document.getElementById('<%=Txt_TransportCharges.ClientID%>').disabled = true;--%>
+                if (checkbox.id == "<%=Chk_dtp.ClientID%>") {
+                    document.getElementById('<%=Txt_Dtp_charges.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_Dtp_charges.ClientID%>').value = "0";
+                    final_total();
+                }
+                if (checkbox.id == "<%=Chk_pasting.ClientID%>") {
+                    document.getElementById('<%=Txt_Pasting.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_Pasting.ClientID%>').value = "0";
+                    final_total();
+                }
+                if (checkbox.id == "<%=Chk_framing.ClientID%>") {
+                    document.getElementById('<%=Txt_Framing.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_Framing.ClientID%>').value = "0";
+                    final_total();
+                }
+                if (checkbox.id == "<%=Chk_fitting.ClientID%>") {
+                    document.getElementById('<%=Txt_Fitting.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_Fitting.ClientID%>').value = "0";
+                    final_total();
+                }
+                if (checkbox.id == "<%=Chk_install.ClientID%>") {
+                    document.getElementById('<%=Txt_install.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_install.ClientID%>').value = "0";
+                    final_total();
+                }
+                if (checkbox.id == "<%=Chk_trans.ClientID%>") {
+                    document.getElementById('<%=Txt_TransportCharges.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_TransportCharges.ClientID%>').value = "0";
+                    final_total();
+                }
+
+
+            }
+        }
+
+        function addListeners() {
+            check1 = document.getElementById('<%=Chk_dtp.ClientID%>');
+        check2 = document.getElementById('<%=Chk_pasting.ClientID%>');
+        check3 = document.getElementById('<%=Chk_fitting.ClientID%>');
+        check4 = document.getElementById('<%=Chk_trans.ClientID%>');
+        check5 = document.getElementById('<%=Chk_framing.ClientID%>');
+        check6 = document.getElementById('<%=Chk_install.ClientID%>');
+
+             check1.addEventListener('click', toggleTextBox, false);
+             check2.addEventListener('click', toggleTextBox, false);
+             check3.addEventListener('click', toggleTextBox, false);
+             check4.addEventListener('click', toggleTextBox, false);
+             check5.addEventListener('click', toggleTextBox, false);
+             check6.addEventListener('click', toggleTextBox, false);
+
+         }
+         window.onload = disableTextBox;
+         window.onscroll = disableTextBox;
+
+     </script>
 </asp:Content>
 

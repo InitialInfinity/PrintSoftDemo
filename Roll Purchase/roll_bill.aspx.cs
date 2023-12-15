@@ -19,12 +19,12 @@ public partial class Purchase_roll_bill : System.Web.UI.Page
     string bill_update;
     protected void Page_Load(object sender, EventArgs e)
     {
-        invoice = Request.QueryString["invoice"].ToString();
+        invoice = (Request.QueryString["invoice"] ?? "").ToString();
         if (Session["a_email"] != null)
         {
             try
             {
-                bill_update = Request.QueryString["bill_update"].ToString();
+                bill_update = (Request.QueryString["bill_update"] ?? "").ToString();
                 if (bill_update == "success")
                 {
                     Panel3.Visible = true;
@@ -44,8 +44,24 @@ public partial class Purchase_roll_bill : System.Web.UI.Page
     }
     protected void payment(object sender, EventArgs e)
     {
-        Response.Redirect("roll_payment.aspx?invoice=" + lbl_invoice_no.Text);
 
+
+        //if (lbl_balance.Text != "0")
+        //{
+
+        //      Response.Redirect("roll_payment.aspx?invoice=" + lbl_invoice_no.Text);            
+
+        //}
+        decimal balance = Convert.ToDecimal(lbl_balance.Text);
+
+        if (lbl_balance.Text != "0")
+        {
+            Response.Redirect("roll_payment.aspx?invoice=" + lbl_invoice_no.Text);
+        }
+        else
+        {
+            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Payment is alredy done!!!');", true);
+        }
     }
     protected void print(object sender, EventArgs e)
     {
@@ -75,14 +91,14 @@ public partial class Purchase_roll_bill : System.Web.UI.Page
 
             lbl_discount.Text = dt.Rows[0]["rpc_discount"].ToString();
 
-            lbl_subtotal.Text = dt.Compute("Sum(rpc_stotal)", string.Empty).ToString();
+            lbl_subtotal.Text = dt.Rows[0]["rpc_sub_total"].ToString();//dt.Compute("Sum(rpc_stotal)", string.Empty).ToString(); 
             lbl_total_gst.Text = dt.Rows[0]["rpc_total_gst"].ToString();
             lbl_shipping.Text = dt.Rows[0]["rpc_shipping_charges"].ToString();
             lbl_adjustment.Text = dt.Rows[0]["rpc_adjustable"].ToString();
             decimal gsttotal = Convert.ToDecimal(lbl_total_gst.Text);
             decimal totalamt = Convert.ToDecimal(dt.Rows[0]["rpc_total"].ToString());
             decimal dfd = gsttotal + totalamt;
-            lbl_total.Text = dt.Rows[0]["rpc_sub_total"].ToString();
+            lbl_total.Text = dt.Rows[0]["rpc_total"].ToString();
             lbl_word.Text = ConvertNumbertoWords(Convert.ToInt64(dt.Rows[0]["rpc_sub_total"]));
             lbl_balance.Text = dt.Rows[0]["rpc_balance"].ToString();
 

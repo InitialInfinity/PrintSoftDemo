@@ -55,16 +55,16 @@ public partial class Reports_sale_datewise : System.Web.UI.Page
         adapt.Fill(dt);
         if (dt.Rows.Count > 0)
         {
-            Repeater1.DataSource = dt;
-            Repeater1.DataBind();
+            //Repeater1.DataSource = dt;
+            //Repeater1.DataBind();
 
-            lbl_total_invoice_amount.Text = dt.Compute("Sum(sl_total)", string.Empty).ToString();
-            lbl_total_invoice.Text = dt.Compute("count(sl_id)", string.Empty).ToString();
-            Lbl_balance.Text = dt.Compute("Sum(sl_balance)", string.Empty).ToString();
+            //lbl_total_invoice_amount.Text = dt.Compute("Sum(sl_total)", string.Empty).ToString();
+            //lbl_total_invoice.Text = dt.Compute("count(sl_id)", string.Empty).ToString();
+            //Lbl_balance.Text = dt.Compute("Sum(sl_balance)", string.Empty).ToString();
 
-            lbl_Advance.Text = dt.Compute("Sum(sl_adjustment)", string.Empty).ToString();
-            lblTBalance.Text = dt.Compute("Sum(sl_balance)", string.Empty).ToString();
-            lblTInvoiceAmount.Text = dt.Compute("Sum(sl_total)", string.Empty).ToString();
+            //lbl_Advance.Text = dt.Compute("Sum(sl_adjustment)", string.Empty).ToString();
+            //lblTBalance.Text = dt.Compute("Sum(sl_balance)", string.Empty).ToString();
+            //lblTInvoiceAmount.Text = dt.Compute("Sum(sl_total)", string.Empty).ToString();
         }
         else
         {
@@ -158,7 +158,20 @@ public partial class Reports_sale_datewise : System.Web.UI.Page
    
     protected void Btn_search_Click(object sender, EventArgs e)
     {
-        if (Txt_date1.Text == "" && Txt_date2.Text == "" && Dd_customer.SelectedValue != "--Select--")
+
+        if (Txt_date1.Text == "" && Txt_date2.Text == "" && Dd_customer.SelectedValue == "--Select--")
+        {
+            SqlCommand cmd = new SqlCommand("select * from tbl_sale inner join tbl_customer on tbl_sale.c_id=tbl_customer.c_id where  tbl_sale.c_id='" + 0 + "' Order By sl_id desc", conn);
+            SqlDataAdapter adapt = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            adapt.Fill(dt);
+            if (dt.Rows.Count == 0)
+            {
+				System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Please select customer name or from date to date');", true);
+			}
+        }
+
+		else if (Txt_date1.Text == "" && Txt_date2.Text == "" && Dd_customer.SelectedValue != "--Select--")
         {
             SqlCommand cmd = new SqlCommand("select * from tbl_sale inner join tbl_customer on tbl_sale.c_id=tbl_customer.c_id where  tbl_sale.c_id='" + 0 + "' Order By sl_id desc", conn);
             SqlDataAdapter adapt = new SqlDataAdapter(cmd);

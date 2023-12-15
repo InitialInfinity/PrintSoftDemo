@@ -85,7 +85,7 @@
           
           <button type="button" id="btn_excel" title="Export to Excel" runat="server" class="btn btnsqr btn-primary3 btngap" onserverclick="excel_export"> <i class="fa fa-file-excel-o"></i> Excel</button>
            
-        <button type="button" id="btn_print" title="Print" onclick="printdiv('dropHere');" class="btn btnsqr btn-primary"> <i class="fa fa-print"></i> Print</button>
+        <button type="button" id="btn_print" title="Print" onclick="checkDataAndPrint();" class="btn btnsqr btn-primary"> <i class="fa fa-print"></i> Print</button>
        <button type="button" id="btn_pdf" title="Export to PDF" runat="server"  class="btn btnsqr btn-primary2" onserverclick="pdf_export"> <i class="fa fa-file-pdf-o"></i> PDF</button>
        
       </div>
@@ -131,9 +131,9 @@
                        
                        <td><a href="../Sale/bill.aspx?invoice=<%# Eval("sl_invoice_no") %>"><asp:Label ID="lbl_total" runat="server" Text='<%# Eval("sl_total") %>'></asp:Label></a></td>
                  <td class="no-print">
-                  <asp:LinkButton ID="LinkButton1" runat="server" OnClientClick="return confirm('Do you want to delete this Sale Invoice?');" OnClick="DeleteSale"><i  class="fa fa-trash-o"></i></asp:LinkButton>
-                 <%--<a href="../Sale/bill.aspx?invoice=<%# Eval("sl_invoice_no") %>"><i style="padding-left:10px" class="fa fa-eye"></i></i></a>--%>
-                 <a href="../Sale/edit_bill.aspx?invoice=<%# Eval("sl_invoice_no") %>"> <i style="padding-left:10px" class="fa fa-edit"></i></a>
+                  <asp:LinkButton ID="LinkButton1" runat="server" OnClientClick="return confirm('Do you want to delete this Sale Invoice?');" OnClick="DeleteSale" style="display:none"><i  class="fa fa-trash-o"></i></asp:LinkButton>--%>
+                 <a href="../Sale/bill.aspx?invoice=<%# Eval("sl_invoice_no") %>" style="display:none"><i style="padding-left:10px" class="fa fa-eye"></i></i></a>
+                 <a href="../Sale/edit_bill.aspx?invoice=<%# Eval("sl_invoice_no") %>" style="display:none"> <i style="padding-left:10px" class="fa fa-edit"></i></a>
                      
                   </td>
                         </tr>
@@ -202,5 +202,23 @@ function printdiv(dropHere) {
            
         }
     </script>
+
+    <script type="text/javascript">
+        function checkDataAndPrint() {
+            // Get the grid element
+            var table = document.getElementById('example1');
+
+            // Check if there are any rows in the table (excluding the header row)
+            if (table.rows.length > 3) {
+                printdiv('dropHere');
+            } else {
+                alert("No data to print");
+            }
+        }
+
+
+
+    </script>
+   
 </asp:Content>
 

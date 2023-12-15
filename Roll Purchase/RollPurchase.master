@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="RollPurchase.master.cs" Inherits="Purchase_Purchase" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="RollPurchase.master.cs" Inherits="Roll_Purchase_RollPurchase" %>
 
 <!DOCTYPE html>
 
@@ -31,11 +31,10 @@
 <link rel="stylesheet" href="../dist/plugins/datatables/css/dataTables.bootstrap.min.css">
    
     <asp:ContentPlaceHolder id="head" runat="server">
-        
     </asp:ContentPlaceHolder>
 </head>
 <body>
-    <form id="form1" runat="server">
+     <form id="form1" runat="server">
    <div class="wrapper boxed-wrapper">
   <header class="main-header"> 
     <!-- Logo --> 
@@ -126,10 +125,12 @@
           <ul class="treeview-menu">
             <li><a href="../Sale/sale_invoice.aspx"><i class="fa fa-angle-right"></i> Sale Order</a></li>
             <li><a href="../Sale/invoice_report.aspx"><i class="fa fa-angle-right"></i> List of Invoices</a></li>
+              <li><a href="../Sale/SaleBulkPayment.aspx"><i class="fa fa-angle-right"></i>Sale Bulk Payment</a></li>
             <%--<li><a href="../Sale/customer_payment.aspx"><i class="fa fa-angle-right"></i> Customer Payment</a></li>
             <li><a href="../Sale/challan.aspx"><i class="fa fa-angle-right"></i> Challan</a></li>--%>
             <li><a href="../Sale/estimate.aspx"><i class="fa fa-angle-right"></i> Estimate</a></li>
             <li><a href="../Sale/estimate_report.aspx"><i class="fa fa-angle-right"></i> List of Estimate</a></li>
+              <li><a href="../Sale/EstimateBulkPayment.aspx"><i class="fa fa-angle-right"></i>Estimate Bulk Payment</a></li>
             
           </ul>
         </li>
@@ -224,21 +225,21 @@
 <script src="../dist/plugins/datatables/jquery.dataTables.min.js"></script> 
 <script src="../dist/plugins/datatables/dataTables.bootstrap.min.js"></script> 
 <script>
-  $(function () {
-      $('#example1').DataTable({
-          'ordering': false
-      })
-      $('#example2').DataTable({
-          'ordering': false
-      })
-  })
+    $(function () {
+        $('#example1').DataTable({
+            'ordering': false
+        })
+        $('#example2').DataTable({
+            'ordering': false
+        })
+    })
 </script>
 
 <script src="../dist/plugins/table-expo/filesaver.min.js"></script>
 <script src="../dist/plugins/table-expo/xls.core.min.js"></script>
 <script src="../dist/plugins/table-expo/tableexport.js"></script>
 <script>
-//$("table").tableExport({formats: ["xlsx","xls", "csv", "txt"],    });
+    //$("table").tableExport({formats: ["xlsx","xls", "csv", "txt"],    });
 </script>
     </form>
 </body>

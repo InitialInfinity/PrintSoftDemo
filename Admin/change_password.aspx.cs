@@ -7,21 +7,30 @@ using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
+using System.Data.Common.CommandTrees.ExpressionBuilder;
 
 public partial class Admin_change_password : System.Web.UI.Page
 {
     SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["String"].ConnectionString);
-    string admin_email,insert, update,insert_role, update_user;
+    string admin_email, insert, update, insert_role, update_user;
     protected void Page_Load(object sender, EventArgs e)
     {
+
+        //this.role();
+        //this.role2();
+        Panel2.Visible = false;
+        Panel3.Visible = false;
+        Panel4.Visible = false;
         if (Session["a_email"] != null || Session["admin_email"] != null)
         {
             Txt_date.Text = DateTime.Today.ToString("yyyy-MM-dd");
             try
             {
-                insert = Request.QueryString["insert"].ToString();
+                insert = (Request.QueryString["insert"] ?? "").ToString();
                 if (insert == "success")
                 {
+                    //this.role();
+                    //this.role2();
                     Panel2.Visible = true;
                 }
 
@@ -30,10 +39,13 @@ public partial class Admin_change_password : System.Web.UI.Page
             { Panel2.Visible = false; }
             try
             {
-                update = Request.QueryString["update"].ToString();
+                update = (Request.QueryString["update"] ?? "").ToString();
                 if (update == "success")
                 {
+                    //this.role();
+                    //this.role2();
                     Panel3.Visible = true;
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "toggle", "showpass();", true);
                 }
 
             }
@@ -41,10 +53,13 @@ public partial class Admin_change_password : System.Web.UI.Page
             { Panel3.Visible = false; }
             try
             {
-                insert_role = Request.QueryString["insert_role"].ToString();
+                insert_role = (Request.QueryString["insert_role"] ?? "").ToString();
                 if (insert_role == "success")
                 {
                     Panel4.Visible = true;
+                    this.role();
+                    this.role2();
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "toggle", "showrole();", true);
                 }
 
             }
@@ -52,10 +67,27 @@ public partial class Admin_change_password : System.Web.UI.Page
             { Panel4.Visible = false; }
             try
             {
-                update_user = Request.QueryString["update_user"].ToString();
+                insert_role = (Request.QueryString["insert_role"] ?? "").ToString();
+                if (insert_role == "deletesuccess")
+                {
+                    // Panel4.Visible = true;
+                    this.role();
+                    this.role2();
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "toggle", "showrole();", true);
+                }
+
+            }
+            catch (Exception ex)
+            { Panel4.Visible = false; }
+            try
+            {
+                update_user = (Request.QueryString["update_user"] ?? "").ToString();
                 if (update_user == "success")
                 {
+                    //this.role();
+                    //this.role2();
                     Panel5.Visible = true;
+
                 }
 
             }
@@ -80,7 +112,8 @@ public partial class Admin_change_password : System.Web.UI.Page
                     this.role2();
                 }
             }
-            else {
+            else
+            {
                 Response.Redirect("../access_denied.aspx");
 
             }
@@ -107,7 +140,7 @@ public partial class Admin_change_password : System.Web.UI.Page
     {
         SqlCommand cmd = new SqlCommand("select * from tbl_admin_user order by au_id desc", conn);
         SqlDataAdapter adapt = new SqlDataAdapter(cmd);
-        DataTable dt = new DataTable();        adapt.Fill(dt);
+        DataTable dt = new DataTable(); adapt.Fill(dt);
         if (dt.Rows.Count > 0)
         {
             Repeater3.DataSource = dt;
@@ -152,6 +185,24 @@ public partial class Admin_change_password : System.Web.UI.Page
         }
 
     }
+    public void role3(string rol)
+    {
+        SqlCommand cmd1 = new SqlCommand("select * from tbl_admin_role where ar_name!=@arname", conn);
+        cmd1.Parameters.AddWithValue("@arname", rol);
+        SqlDataAdapter adapt3 = new SqlDataAdapter(cmd1);
+        DataTable dt3 = new DataTable();
+        adapt3.Fill(dt3);
+        if (dt3.Rows.Count > 0)
+        {
+            Dd_role2.DataSource = dt3;
+
+            Dd_role2.DataTextField = "ar_name";
+            Dd_role2.DataValueField = "ar_id";
+            Dd_role2.DataBind();
+            Dd_role2.SelectedItem.Text = rol;
+        }
+
+    }
     protected void Button3_Click(object sender, EventArgs e)
     {
         SqlCommand cmd1 = new SqlCommand("Select * from tbl_admin_role where ar_name='" + Txt_role_name.Text.Trim() + "' ", conn);
@@ -159,7 +210,7 @@ public partial class Admin_change_password : System.Web.UI.Page
         SqlDataAdapter adapt1 = new SqlDataAdapter(cmd1);
         DataTable dt1 = new DataTable();
         adapt1.Fill(dt1);
-        
+
         if (dt1.Rows.Count > 0)
         {
             Lbl_message1.Text = "Role Already Exist!!!";
@@ -173,8 +224,8 @@ public partial class Admin_change_password : System.Web.UI.Page
             conn.Open();
             cmd.ExecuteNonQuery();
             conn.Close();
-            Response.Redirect("change_password.aspx?insert_role=success");
-            
+            Response.Redirect("change_password.aspx?insert_role=deletesuccess");
+
         }
     }
 
@@ -186,7 +237,7 @@ public partial class Admin_change_password : System.Web.UI.Page
         SqlDataAdapter adapt1 = new SqlDataAdapter(cmd1);
         DataTable dt1 = new DataTable();
         adapt1.Fill(dt1);
-        
+
         if (dt1.Rows.Count > 0)
         {
             Lbl_message2.Text = "User Already Exist!!!";
@@ -197,7 +248,7 @@ public partial class Admin_change_password : System.Web.UI.Page
             SqlDataAdapter adapt2 = new SqlDataAdapter(cmd2);
             DataTable dt2 = new DataTable();
             adapt2.Fill(dt2);
-            
+
             if (dt2.Rows.Count > 0)
             {
                 Lbl_message2.Text = "User Already Exist!!!";
@@ -213,7 +264,7 @@ public partial class Admin_change_password : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 conn.Close();
                 Response.Redirect("change_password.aspx?insert=success");
-                
+
             }
         }
     }
@@ -226,7 +277,7 @@ public partial class Admin_change_password : System.Web.UI.Page
         SqlDataAdapter adapt1 = new SqlDataAdapter(cmd1);
         DataTable dt1 = new DataTable();
         adapt1.Fill(dt1);
-        
+
         if (dt1.Rows.Count <= 0)
         {
             Lbl_message.Text = "Wrong Password!!!";
@@ -257,7 +308,7 @@ public partial class Admin_change_password : System.Web.UI.Page
                 lbl_role.Text = dt.Rows[0]["au_role"].ToString();
                 lbl_email.Text = dt.Rows[0]["au_email"].ToString();
                 lbl_password.Text = dt.Rows[0]["au_password"].ToString();
-               
+
             }
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Modal", "ShowModel();", true);
         }
@@ -265,7 +316,7 @@ public partial class Admin_change_password : System.Web.UI.Page
         {
             //get data
             string CarrierName = e.CommandArgument.ToString();
-            SqlCommand cmd = new SqlCommand("select * from tbl_admin_user where au_id='" + CarrierName + "'", conn);
+            SqlCommand cmd = new SqlCommand("select au_id,au_name,au_role as ar_name,au_email,au_password from tbl_admin_user where au_id='" + CarrierName + "'", conn);
             SqlDataAdapter adapt = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
             adapt.Fill(dt);
@@ -273,10 +324,13 @@ public partial class Admin_change_password : System.Web.UI.Page
             {
                 Txt_id.Value = dt.Rows[0]["au_id"].ToString();
                 Txt_user2.Text = dt.Rows[0]["au_name"].ToString();
-                Dd_role2.SelectedItem.Text = dt.Rows[0]["au_role"].ToString();
+                string rol = dt.Rows[0]["ar_name"].ToString();
+                role3(rol);
+
+
                 Txt_email2.Text = dt.Rows[0]["au_email"].ToString();
                 Txt_password2.Text = dt.Rows[0]["au_password"].ToString();
-               
+
             }
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Modal", "ShowModel2();", true);
         }
@@ -292,21 +346,77 @@ public partial class Admin_change_password : System.Web.UI.Page
             conn.Open();
             cmd.ExecuteNonQuery();
             conn.Close();
-        
+
         }
-       this.FillRepeater2();
+        this.FillRepeater2();
+
     }
     protected void DeleteRole(object sender, EventArgs e)
     {
+        string aurole = "";
         int bankId = int.Parse(((sender as LinkButton).NamingContainer.FindControl("lbl_id") as Label).Text);
 
-        using (SqlCommand cmd = new SqlCommand("DELETE FROM tbl_admin_role WHERE ar_id = @b_id", conn))
+        SqlCommand cmd34 = new SqlCommand("select * from tbl_admin_role where  ar_id=@au_id ", conn);
+        SqlDataAdapter adapt34 = new SqlDataAdapter(cmd34);
+        cmd34.Parameters.AddWithValue("@au_id", bankId);
+        DataTable dt34 = new DataTable();
+        adapt34.Fill(dt34);
+
+        if (dt34.Rows.Count > 0)
         {
-            cmd.Parameters.AddWithValue("@b_id", bankId);
-            conn.Open();
-            cmd.ExecuteNonQuery();
-            conn.Close();
+            aurole = dt34.Rows[0]["ar_name"].ToString();
+
         }
+
+
+        //SqlCommand cmd22 = new SqlCommand("select * from tbl_admin_role where ar_name=@ar_name", conn);
+        //SqlDataAdapter adapt22 = new SqlDataAdapter(cmd22);
+        //cmd22.Parameters.AddWithValue("@ar_name", ar_name);
+        //DataTable dt22 = new DataTable();
+        //adapt22.Fill(dt22);
+        //if (dt22.Rows.Count > 0)
+        //{
+        //    productname = dt22.Rows[0]["p_name"].ToString();
+        //}
+
+
+
+
+        SqlCommand cmd33 = new SqlCommand("select * from tbl_admin_user where  au_role=@au_role ", conn);
+        SqlDataAdapter adapt33 = new SqlDataAdapter(cmd33);
+        cmd33.Parameters.AddWithValue("@au_role", aurole);
+        DataTable dt33 = new DataTable();
+        adapt33.Fill(dt33);
+        if (dt33.Rows.Count == 0)
+        {
+            using (SqlCommand cmd = new SqlCommand("DELETE FROM tbl_admin_role WHERE ar_id = @b_id", conn))
+            {
+                cmd.Parameters.AddWithValue("@b_id", bankId);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+            Response.Redirect("change_password.aspx?insert_role=success");
+
+            this.FillRepeater();
+        }
+        else
+        {
+
+            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Unable to delete,Role is in used..!');", true);
+        }
+
+
+
+
+
+        //using (SqlCommand cmd = new SqlCommand("DELETE FROM tbl_admin_role WHERE ar_id = @b_id", conn))
+        //{
+        //    cmd.Parameters.AddWithValue("@b_id", bankId);
+        //    conn.Open();
+        //    cmd.ExecuteNonQuery();
+        //    conn.Close();
+        //}
 
 
         this.FillRepeater();
@@ -316,7 +426,7 @@ public partial class Admin_change_password : System.Web.UI.Page
     {
         try
         {
-            SqlCommand cmd = new SqlCommand("UPDATE tbl_admin_user SET au_name='" + Txt_user2.Text.Trim() + "',au_role='" + Dd_role2.SelectedItem.Text.Trim() + "',au_email='" + Txt_email2.Text.Trim() + "',au_password='" + Txt_password2.Text.Trim() + "' WHERE au_id='" + Txt_id.Value.Trim() + "'", conn);
+            SqlCommand cmd = new SqlCommand("UPDATE tbl_admin_user SET au_name='" + Txt_user2.Text.Trim() + "',au_role='" + Dd_role2.SelectedItem.Text + "',au_email='" + Txt_email2.Text.Trim() + "',au_password='" + Txt_password2.Text.Trim() + "' WHERE au_id='" + Txt_id.Value.Trim() + "'", conn);
 
             conn.Open();
             cmd.ExecuteNonQuery();
@@ -328,5 +438,13 @@ public partial class Admin_change_password : System.Web.UI.Page
 
         }
 
+    }
+
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+        Dd_role.SelectedValue = "--Select--";
+        Txt_full_name.Text = "";
+        Txt_email.Text = "";
+        Txt_password.Text = "";
     }
 }

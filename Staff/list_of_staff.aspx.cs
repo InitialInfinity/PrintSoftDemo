@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
-
+using System.Globalization;
 
 public partial class Staff_list_of_staff : System.Web.UI.Page
 {
@@ -106,7 +106,18 @@ public partial class Staff_list_of_staff : System.Web.UI.Page
                 lbl_salary.Text = dt.Rows[0]["st_salary"].ToString();
                 lbl_balance.Text = dt.Rows[0]["st_balance"].ToString();
                 lbl_joining_date.Text = Convert.ToDateTime(dt.Rows[0]["st_joining_date"]).ToString("MM/dd/yyyy");
-                lbl_left_date.Text = Convert.ToDateTime(dt.Rows[0]["st_left_date"]).ToString("MM/dd/yyyy");
+                //lbl_left_date.Text = Convert.ToDateTime(dt.Rows[0]["st_left_date"]).ToString("MM/dd/yyyy");
+                string a = dt.Rows[0]["st_left_date"].ToString();
+
+                if (a == "")
+                {
+                    lbl_left_date.Text = "yyyy-mm-dd";
+                    lbl_left_date.Text = dt.Rows[0]["st_left_date"].ToString();
+                }
+                else
+                {
+                    lbl_left_date.Text = Convert.ToDateTime(dt.Rows[0]["st_left_date"]).ToString("yyyy/MM/dd");
+                }
 
             }
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Modal", "ShowModel();", true);
@@ -125,27 +136,85 @@ public partial class Staff_list_of_staff : System.Web.UI.Page
                 Txt_name.Text = dt.Rows[0]["st_staff_name"].ToString();
                 Txt_address.Text = dt.Rows[0]["st_address"].ToString();
                 Txt_contact.Text = dt.Rows[0]["st_contact"].ToString();
-                Txt_dob.Text = Convert.ToDateTime(dt.Rows[0]["st_dob"]).ToString("yyyy/MM/dd");
-                Dd_gender.SelectedItem.Text = dt.Rows[0]["st_gender"].ToString();
-             
+
+
+
+                string dobDate = dt.Rows[0]["st_dob"].ToString();
+                if (!string.IsNullOrEmpty(dobDate))
+                {
+                    DateTime dateValue = Convert.ToDateTime(dobDate);
+                    string formattedDate = dateValue.ToString("yyyy-MM-dd");
+                    Txt_dob.Text = formattedDate;
+                }
+
+
+                // Txt_dob.Text = Convert.ToDateTime(dt.Rows[0]["st_dob"]).ToString("yyyy/MM/dd");//, new CultureInfo("en-US")
+                // Dd_gender.SelectedItem.Value = dt.Rows[0]["st_gender"].ToString();
+
+
+                Dd_gender.SelectedValue = dt.Rows[0]["st_gender"].ToString();
                 Txt_designation.Text = dt.Rows[0]["st_designation"].ToString();
                 Txt_salary.Text = dt.Rows[0]["st_salary"].ToString();
                 Txt_balance.Text = dt.Rows[0]["st_balance"].ToString();
-                Txt_joining_date.Text = Convert.ToDateTime(dt.Rows[0]["st_joining_date"]).ToString("yyyy/MM/dd");
-                Txt_left_date.Text = Convert.ToDateTime(dt.Rows[0]["st_left_date"]).ToString("yyyy/MM/dd");
+
+
+                string originalDate = dt.Rows[0]["st_joining_date"].ToString();
+                if (!string.IsNullOrEmpty(originalDate))
+                {
+                    DateTime dateValue = Convert.ToDateTime(originalDate);
+                    string formattedDate = dateValue.ToString("yyyy-MM-dd");
+                    Txt_joining_date.Text = formattedDate;
+                }
+
+
+
+                //Txt_joining_date.Text = Convert.ToDateTime(dt.Rows[0]["st_joining_date"]).ToString("yyyy/MM/dd");//, new CultureInfo("en-US")
+                string leftdate = dt.Rows[0]["st_left_date"].ToString();
+
+
+                if (leftdate == "")
+                {
+                    Txt_left_date.Text = "yyyy-mm-dd";
+                    Txt_left_date.Text = dt.Rows[0]["st_left_date"].ToString();
+                }
+                else
+                {
+                    DateTime dateValue = Convert.ToDateTime(leftdate);
+                    string formattedDate = dateValue.ToString("yyyy-MM-dd");
+                    Txt_left_date.Text = formattedDate;
+                    // Txt_left_date.Text = Convert.ToDateTime(dt.Rows[0]["st_left_date"]).ToString("yyyy/MM/dd");
+                }
+
+
+
             }
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Modal", "ShowModel2();", true);
         }
+       
     }
-   protected void Button1_Click(object sender, EventArgs e)
+    protected void Button1_Click(object sender, EventArgs e)
     {
-        SqlCommand cmd = new SqlCommand("UPDATE tbl_staff SET st_staff_name='" + Txt_name.Text.Trim() + "',st_address='" + Txt_address.Text.Trim() + "',st_contact='" + Txt_contact.Text.Trim() + "',st_dob='" + Txt_dob.Text + "',st_gender='" + Dd_gender.SelectedItem.Text.Trim() + "',st_designation='" + Txt_designation.Text.Trim() + "',st_salary='" + Txt_salary.Text.Trim() + "',st_balance='" + Txt_balance.Text.Trim() + "',st_joining_date='" + Txt_joining_date.Text + "',st_left_date='" + Txt_left_date.Text + "' WHERE st_id='" + Txt_id.Value.Trim() + "'", conn);
 
-        conn.Open();
-        cmd.ExecuteNonQuery();
-        conn.Close();
-     
-        Response.Redirect("list_of_staff.aspx?update=success");
+        SqlCommand cmd1 = new SqlCommand("Select * from tbl_staff where st_contact='" + Txt_contact.Text.Trim() + "'", conn);
+
+        SqlDataAdapter adapt1 = new SqlDataAdapter(cmd1);
+        DataTable dt1 = new DataTable();
+        adapt1.Fill(dt1);
+
+            if (Txt_left_date.Text == "")
+            {
+                Txt_left_date.Text = null;
+            }
+
+
+            SqlCommand cmd = new SqlCommand("UPDATE tbl_staff SET st_staff_name='" + Txt_name.Text.Trim() + "',st_address='" + Txt_address.Text.Trim() + "',st_contact='" + Txt_contact.Text.Trim() + "',st_dob='" + Txt_dob.Text + "',st_gender='" + Dd_gender.SelectedValue + "',st_designation='" + Txt_designation.Text.Trim() + "',st_salary='" + Txt_salary.Text.Trim() + "',st_balance='" + Txt_balance.Text.Trim() + "',st_joining_date='" + Txt_joining_date.Text + "',st_left_date='" + Txt_left_date.Text + "' WHERE st_id='" + Txt_id.Value.Trim() + "'", conn);
+
+            conn.Open();
+            cmd.ExecuteNonQuery();
+            conn.Close();
+
+            Response.Redirect("list_of_staff.aspx?update=success");
+        
     }
     protected void DeleteStaff(object sender, EventArgs e)
     {

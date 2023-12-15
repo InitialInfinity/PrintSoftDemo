@@ -121,6 +121,9 @@ public partial class Reports_datewise_pymnt_mode : System.Web.UI.Page
                 lbl_total_invoice.Text = "0";
                 lbl_total_invoice_amount.Text = "0";
                 Lbl_balance.Text = "0";
+                lbl_Advance.Text = "0";
+                lblTBalance.Text = "0";
+                lblTInvoiceAmount.Text = "0";
             }
         }
         else if (Txt_date1.Text != "" && Txt_date1.Text != "" && Dd_customer.SelectedItem.Text == "-Select-")
@@ -150,6 +153,9 @@ public partial class Reports_datewise_pymnt_mode : System.Web.UI.Page
                 lbl_total_invoice.Text = "0";
                 lbl_total_invoice_amount.Text = "0";
                 Lbl_balance.Text = "0";
+                lbl_Advance.Text = "0";
+                lblTBalance.Text = "0";
+                lblTInvoiceAmount.Text = "0";
             }
         }
         else if (Txt_date1.Text != "" && Txt_date1.Text != "" && Dd_customer.SelectedItem.Text != "-Select--")
@@ -179,6 +185,9 @@ public partial class Reports_datewise_pymnt_mode : System.Web.UI.Page
                 lbl_total_invoice.Text = "0";
                 lbl_total_invoice_amount.Text = "0";
                 Lbl_balance.Text = "0";
+                lbl_Advance.Text= "0";
+                lblTBalance.Text = "0";
+                lblTInvoiceAmount.Text = "0";
             }
         }
 

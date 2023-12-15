@@ -153,7 +153,7 @@
       <th scope="col">Qty</th>
       
       <th scope="col">Rate</th>
-      <th scope="col">STotal</th>
+      <th scope="col">Total</th>
       <th scope="col">CGST</th>
       
       <th scope="col">SGST</th>

@@ -157,25 +157,36 @@ public partial class Reports_sale_monthly : System.Web.UI.Page
             var dt = new DataTable();
             da.Fill(dt);
 
-            GridView1.DataSource = dt;
-            GridView1.DataBind();
-            Response.Clear();
-            Response.Charset = "";
-            Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            Response.ContentType = "application/vnd.xls";
-            Response.AddHeader("content-disposition", "attachment;filename=List of Monthly Sale Invoice-" + date + ".xls");
+            if (dt.Rows.Count == 0)
+            {
+                System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('No data to export');", true);
+            }
 
-            System.IO.StringWriter sw = new System.IO.StringWriter();
-            HtmlTextWriter htw = new HtmlTextWriter(sw);
-            GridView1.RenderControl(htw);
-            System.Text.StringBuilder sb1 = new System.Text.StringBuilder();
-            sb1 = sb1.Append("<table cellspacing='0' cellpadding='0' width='100 % ' align='center' border='1'>" + sw.ToString() + "</table>");
-            sw = null;
-            htw = null;
-            Response.Write(sb1.ToString());
-            sb1.Remove(0, sb1.Length);
-            Response.Flush();
-            Response.End();
+            else
+            {
+
+
+
+                GridView1.DataSource = dt;
+                GridView1.DataBind();
+                Response.Clear();
+                Response.Charset = "";
+                Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                Response.ContentType = "application/vnd.xls";
+                Response.AddHeader("content-disposition", "attachment;filename=List of Monthly Sale Invoice-" + date + ".xls");
+
+                System.IO.StringWriter sw = new System.IO.StringWriter();
+                HtmlTextWriter htw = new HtmlTextWriter(sw);
+                GridView1.RenderControl(htw);
+                System.Text.StringBuilder sb1 = new System.Text.StringBuilder();
+                sb1 = sb1.Append("<table cellspacing='0' cellpadding='0' width='100 % ' align='center' border='1'>" + sw.ToString() + "</table>");
+                sw = null;
+                htw = null;
+                Response.Write(sb1.ToString());
+                sb1.Remove(0, sb1.Length);
+                Response.Flush();
+                Response.End();
+            }
         }
         catch (Exception ex)
         {
@@ -191,28 +202,36 @@ public partial class Reports_sale_monthly : System.Web.UI.Page
         var dt = new DataTable();
         da.Fill(dt);
 
-
-        GridView1.DataSource = dt;
-        GridView1.DataBind();
-
-
-        using (StringWriter sw = new StringWriter())
+        if (dt.Rows.Count == 0)
         {
-            using (HtmlTextWriter hw = new HtmlTextWriter(sw))
-            {
-                GridView1.RenderControl(hw);
-                StringReader sr = new StringReader(sw.ToString());
-                Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
-                PdfWriter writer = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
-                pdfDoc.Open();
+            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('No data to export');", true);
+        }
 
-                XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, sr);
-                pdfDoc.Close();
-                Response.ContentType = "application/pdf";
-                Response.AddHeader("content-disposition", "attachment;filename=List of Monthly Sale Invoice-" + date + ".pdf");
-                Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                Response.Write(pdfDoc);
-                Response.End();
+        else
+        {
+
+            GridView1.DataSource = dt;
+            GridView1.DataBind();
+
+
+            using (StringWriter sw = new StringWriter())
+            {
+                using (HtmlTextWriter hw = new HtmlTextWriter(sw))
+                {
+                    GridView1.RenderControl(hw);
+                    StringReader sr = new StringReader(sw.ToString());
+                    Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
+                    PdfWriter writer = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
+                    pdfDoc.Open();
+
+                    XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, sr);
+                    pdfDoc.Close();
+                    Response.ContentType = "application/pdf";
+                    Response.AddHeader("content-disposition", "attachment;filename=List of Monthly Sale Invoice-" + date + ".pdf");
+                    Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                    Response.Write(pdfDoc);
+                    Response.End();
+                }
             }
         }
 

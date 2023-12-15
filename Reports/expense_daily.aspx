@@ -98,9 +98,9 @@
                    
                  
                   <td class="no-print">
-                  <asp:LinkButton ID="LinkButton1" runat="server" OnClientClick="return confirm('Do you want to delete this Expense Invoice?');" OnClick="DeleteSale"><i  class="fa fa-trash-o"></i></asp:LinkButton>
+                  <asp:LinkButton ID="LinkButton1" runat="server" style="display:none" OnClientClick="return confirm('Do you want to delete this Expense Invoice?');" OnClick="DeleteSale"><i  class="fa fa-trash-o"></i></asp:LinkButton>
                  <asp:LinkButton ID="LinkButton2" runat="server"  CommandName="showid" CommandArgument='<%# Eval("e_id") %>'><i style="padding-left:10px" class="fa fa-eye"></i></asp:LinkButton>
-                  <asp:LinkButton ID="LinkButton3" runat="server" CommandName="editid" CommandArgument='<%# Eval("e_id") %>'><i style="padding-left:10px" class="fa fa-edit"></i></asp:LinkButton>
+                  <asp:LinkButton ID="LinkButton3" runat="server" style="display:none" CommandName="editid" CommandArgument='<%# Eval("e_id") %>'><i style="padding-left:10px" class="fa fa-edit"></i></asp:LinkButton>
                      
                   </td>
 

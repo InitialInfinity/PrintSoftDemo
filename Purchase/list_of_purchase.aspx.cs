@@ -16,7 +16,7 @@ public partial class admin_panel_Purchase_list_of__purchase : System.Web.UI.Page
 {
     SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["String"].ConnectionString);
     decimal balance, bal, qty;
-    int del_inv,v_id;
+    int del_inv,v_id, materialId;
     string insert;
     string admin_email,product_name;
     protected void Page_Load(object sender, EventArgs e)
@@ -26,7 +26,7 @@ public partial class admin_panel_Purchase_list_of__purchase : System.Web.UI.Page
             if (Page.IsPostBack) return;
             try
             {
-                insert = Request.QueryString["insert"].ToString();
+                insert = (Request.QueryString["insert"]??"").ToString();
                 if (insert == "success")
                 {
                     Panel2.Visible = true;
@@ -101,20 +101,37 @@ public partial class admin_panel_Purchase_list_of__purchase : System.Web.UI.Page
         {
             String invoiceno = ((sender as LinkButton).NamingContainer.FindControl("lbl_invoice") as Label).Text;
 
-        using (SqlCommand cmd2 = new SqlCommand("select * from tbl_purchase where pu_invoice_no='" + invoiceno + "'", conn))
+        using (SqlCommand cmd2 = new SqlCommand("select * from tbl_purchase_invoice where pc_invoice_no='" + invoiceno + "'", conn))
         {
             SqlDataAdapter adapt2 = new SqlDataAdapter(cmd2);
             DataTable dt2 = new DataTable();
             adapt2.Fill(dt2);
             if (dt2.Rows.Count > 0)
             {
-                bal = Convert.ToDecimal(dt2.Rows[0]["pu_balance"]);
-                v_id = Convert.ToInt32(dt2.Rows[0]["v_id"]);
-                qty = Convert.ToDecimal(dt2.Rows[0]["pu_total_quantity"]);
-                    product_name = Convert.ToString(dt2.Rows[0]["pu_product_name"]);
+                    foreach (DataRow row in dt2.Rows)
+                    {
 
-            }
+                        bal = Convert.ToDecimal(row["pc_balance"]);
+                        v_id = Convert.ToInt32(row["v_id"]);
+                        qty = Convert.ToDecimal(row["pc_quantity"]);
+                        product_name = Convert.ToString(row["pc_product_name"]);
+                       // materialId = Convert.ToInt32(row["es_material"]);
+
+                        SqlCommand cmd33 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock = p_stock - @Quantity WHERE p_name = @ProductName AND p_id = (SELECT TOP 1 p_id FROM tbl_purchase_product WHERE p_name = @ProductName)", conn);
+                        cmd33.Parameters.AddWithValue("@Quantity", qty);
+                        cmd33.Parameters.AddWithValue("@ProductName", Convert.ToString(product_name));
+
+
+                        conn.Open();
+                        cmd33.ExecuteNonQuery();
+                        conn.Close();
+
+
+                    }
+
+                }
         }
+
         using (SqlCommand cmd3 = new SqlCommand("update tbl_vendor set v_opening_balance=v_opening_balance - '"+bal+"' where v_id='" + v_id + "'", conn))
         {
             conn.Open();
@@ -126,11 +143,15 @@ public partial class admin_panel_Purchase_list_of__purchase : System.Web.UI.Page
             //stock start here
            
 
-            SqlCommand cmd33 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock=p_stock-('" + qty + "') WHERE p_name='" + Convert.ToString(product_name) + "'", conn);
+            //SqlCommand cmd33 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock=p_stock-('" + qty + "') WHERE p_name='" + Convert.ToString(product_name) + "'", conn);
 
-            conn.Open();
-            cmd33.ExecuteNonQuery();
-            conn.Close();
+            //conn.Open();
+            //cmd33.ExecuteNonQuery();
+            //conn.Close();
+
+
+          
+
 
             //stock end here
             using (SqlCommand cmd4 = new SqlCommand("DELETE FROM tbl_purchase_invoice WHERE pc_invoice_no = @pc_invoice_no", conn))

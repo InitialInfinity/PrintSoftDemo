@@ -123,10 +123,10 @@
                        
                        <td><asp:Label ID="lbl_total" runat="server" Text='<%# Eval("pu_total") %>'></asp:Label></td>
                   <td class="no-print">
-                  <asp:LinkButton ID="LinkButton1" runat="server" OnClientClick="return confirm('Do you want to delete this Sale Invoice?');" OnClick="DeleteSale"><i  class="fa fa-trash-o"></i></asp:LinkButton>
-                 <a href="../Purchase/bill.aspx?invoice=<%# Eval("pu_invoice_no") %>"><i style="padding-left:10px" class="fa fa-eye"></i></i></a>
-                  <a href="../Purchase/edit_bill.aspx?invoice=<%# Eval("pu_invoice_no") %>"> <i style="padding-left:10px" class="fa fa-edit"></i></a>
-                     
+                 <asp:LinkButton ID="LinkButton1" runat="server" style="display:none" OnClientClick="return confirm('Do you want to delete this Sale Invoice?');" OnClick="DeleteSale"><i  class="fa fa-trash-o"></i></asp:LinkButton>
+                
+                  <a href="../Purchase/edit_bill.aspx?invoice=<%# Eval("pu_invoice_no") %>" style="display:none"> <i style="padding-left:10px" class="fa fa-edit"></i></a>
+                      <a href="../Purchase/bill.aspx?invoice=<%# Eval("pu_invoice_no") %>"><i style="padding-left:10px" class="fa fa-eye"></i></i></a>
                   </td>
 
                    </tr>

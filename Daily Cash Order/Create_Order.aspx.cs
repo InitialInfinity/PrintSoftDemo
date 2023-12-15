@@ -16,7 +16,7 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
 {
     SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["String"].ConnectionString);
     decimal total_amount = 0, final_total = 0;
-    decimal totalvalue = 0, totalcgst = 0, totalsgst = 0, totaligst = 0, totalgst = 0, totalqty, finaltotal;
+    decimal totalvalue = 0, totalcgst = 0, totalsgst = 0, totaligst = 0, totalgst = 0, totalqty, finaltotal, design, advanced, discount, pasting, fitting, transport;
     string key, country, senderid, route, email, password, port, subject, smtp, com_email;
     int sms, mail2;
     protected void Page_Load(object sender, EventArgs e)
@@ -49,6 +49,12 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
 
                     ViewState["Details"] = dataTable;
                 }
+                Txt_Pasting.Text = "0";
+                Txt_TransportCharges.Text = "0";
+                Txt_Dtp_charges.Text = "0";
+                Txt_Fitting.Text = "0";
+                Txt_discount.Text = "0";
+                Txt_advance.Text = "0";
             }
         }
         else
@@ -57,7 +63,7 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
         }
     }
 
-  
+
     public void product()
     {
         string query = "select * from tbl_product ORDER BY p_name asc";
@@ -79,10 +85,12 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
 
     }
 
-    
+
 
     protected void Btn_cart_Click(object sender, EventArgs e)
     {
+
+        GridView1.Visible = true;
 
         string str = Dd_enter_product.SelectedItem.Text;
 
@@ -119,9 +127,6 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
 
         //string final = txt_final_amt.Text;
         string desc = Txt_description.Text;
-
-        //Txt_advance.Text = "0";
-        //Txt_discount.Text = "0";
 
 
 
@@ -300,6 +305,22 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
                 c = c + a; //storing total qty into variable 
             }
         }
+        Txt_description.Text = "";
+        txt_height.Text = "0";
+        txt_height2.Text = "0";
+        txt_width.Text = "0";
+        txt_width2.Text = "0";
+        txt_sqrft.Text = "0";
+        txt_sqrft2.Text = "0";
+        txt_quantity.Text = "0";
+        txt_quantity2.Text = "0";
+        txt_amount.Text = "0";
+        txt_amount2.Text = "0";
+        product();
+        txt_rate.Text = "0";
+        txt_rate2.Text = "0";
+        txt_total_amt.Text = "0";
+        txt_total_amt2.Text = "0";
     }
     protected void GridView1_DataBound(object sender, EventArgs e)
     {
@@ -336,9 +357,39 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
             //Assign the total value to footer label control
             lbl_subtotal.Text = totalvalue.ToString();
             lbl_subtotal2.Value = totalvalue.ToString();
+            //lbl_total.Text = totalvalue.ToString();
 
+            // hide_total.Text = totalvalue.ToString();
             //Assign the total value to footer label control
+            if (Txt_advance.Text != "" && Txt_Pasting.Text != "" && Txt_Fitting.Text != "" && Txt_TransportCharges.Text != "" && Txt_Dtp_charges.Text != "")
+            {
 
+                pasting = Convert.ToDecimal(Txt_Pasting.Text);
+                transport = Convert.ToDecimal(Txt_TransportCharges.Text);
+                design = Convert.ToDecimal(Txt_Dtp_charges.Text);
+                fitting = Convert.ToDecimal(Txt_Fitting.Text);
+                discount = Convert.ToDecimal(Txt_discount.Text);
+                advanced = Convert.ToDecimal(Txt_advance.Text);
+                decimal total1 = (totalvalue + pasting + transport + design + fitting - discount - advanced);
+                decimal final = (totalvalue + pasting + transport + design + fitting);
+                lbl_final.Text = final.ToString();
+                lbl_total.Text = total1.ToString();
+                hide_total.Text = final.ToString();
+            }
+            else
+            {
+                fitting = 0;
+                discount = 0;
+                advanced = 0;
+                pasting = 0;
+                transport = 0;
+                design = 0;
+                decimal total1 = (totalvalue + pasting + transport + design + fitting - discount - advanced);
+                decimal final = (totalvalue + pasting + transport + design + fitting);
+                lbl_final.Text = final.ToString();
+                lbl_total.Text = total1.ToString();
+                hide_total.Text = final.ToString();
+            }
             lbl_totalqty.Text = totalqty.ToString();
         }
 
@@ -357,7 +408,7 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
         if (dt.Rows.Count > 0)
         {
             //customer wise rate system code here 
-     
+
 
             //end hrere
 
@@ -377,6 +428,9 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
                 txt_rate2.Text = rate;
                 txt_quantity2.Text = "0";
                 txt_sqrft2.Text = "0";
+                txt_width2.Text = "0";
+
+                txt_height2.Text = "0";
 
             }
             else if (unit == "Ltr")
@@ -386,6 +440,9 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
                 txt_rate2.Text = rate;
                 txt_quantity2.Text = "0";
                 txt_sqrft2.Text = "0";
+                txt_width2.Text = "0";
+
+                txt_height2.Text = "0";
             }
             //packet
             else if (unit == "Packet")
@@ -395,6 +452,9 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
                 txt_rate2.Text = rate;
                 txt_quantity2.Text = "0";
                 txt_sqrft2.Text = "0";
+                txt_width2.Text = "0";
+
+                txt_height2.Text = "0";
             }
             //copy
             else if (unit == "Copy")
@@ -430,9 +490,9 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
             lbl_product_hsn.Value = hsn;
 
             lbl_unit.Value = unit;
-            
-            
-           
+
+
+
 
         }
     }
@@ -512,7 +572,7 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
         {
             decimal new_balance;
             finaltotal = Math.Round(Convert.ToDecimal(hide_total.Text));
-            new_balance = finaltotal - Convert.ToDecimal(Txt_advance.Text) - Convert.ToDecimal(Txt_discount.Text); 
+            new_balance = finaltotal - Convert.ToDecimal(Txt_advance.Text) - Convert.ToDecimal(Txt_discount.Text);
             if (GridView1.Rows.Count == 0)
             {
                 System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Please Add Products First !!!');", true);
@@ -520,235 +580,311 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
             else
             {
 
+                SqlCommand cmd22 = new SqlCommand("Select * from tbl_order where quw_no=@quw_no", conn);
+                cmd22.Parameters.AddWithValue("@quw_no", Convert.ToString(Hid_inv_id.Value));
+                SqlDataAdapter adapt22 = new SqlDataAdapter(cmd22);
+                DataTable dt22 = new DataTable();
+                adapt22.Fill(dt22);
 
-                int rowscount = GridView1.Rows.Count;
-                for (int i = 0; i < rowscount; i++)
+                if (dt22.Rows.Count == 0)
                 {
-                    if (GridView1.Rows[i].Cells[2].Text == "&nbsp;")
+
+                    int rowscount = GridView1.Rows.Count;
+                    for (int i = 0; i < rowscount; i++)
                     {
-                        SqlCommand cmd = new SqlCommand("insert into tbl_order_details values(@quw_no,@qw_date,@qw_product_name,@qw_quantity,@qw_total_quantity,@qw_rate,@qw_discount,@qw_sub_total,@qw_shipping_charges,@qw_adjustment,@qw_total,@qw_hsn,@qw_unit,@qw_stotal,@qw_desc,@qw_height,@qw_width,@qw_size,@qw_samount,@qw_name,@qw_phone,@qw_balance,@qw_dtp_charges,@qw_fitting_charges,@qw_payment_method,@qw_pasting_charges)", conn);
-                        cmd.Parameters.AddWithValue("@quw_no", Convert.ToString(Hid_inv_id.Value));
-                        cmd.Parameters.AddWithValue("@qw_date", Convert.ToDateTime(DateTime.Now.ToShortDateString()).ToString("MM/dd/yyyy"));
-                   //     cmd.Parameters.AddWithValue("@c_id", Convert.ToString(Dd_customer.SelectedValue));
-                   //     cmd.Parameters.AddWithValue("@qw_order_no", Convert.ToString(Txt_order_no.Text));
-                     //   cmd.Parameters.AddWithValue("@qw_quotation_date", Convert.ToDateTime(Txt_invoice_date.Text).ToString("MM/dd/yyyy"));
-                   //     cmd.Parameters.AddWithValue("@qw_valid_date", Convert.ToDateTime(Txt_due_date.Text).ToString("MM/dd/yyyy"));
-                        cmd.Parameters.AddWithValue("@qw_product_name", Convert.ToString(GridView1.Rows[i].Cells[0].Text));
-                        cmd.Parameters.AddWithValue("@qw_quantity", Convert.ToDecimal(GridView1.Rows[i].Cells[7].Text));
-                        cmd.Parameters.AddWithValue("@qw_unit", Convert.ToString(GridView1.Rows[i].Cells[10].Text));
-                        cmd.Parameters.AddWithValue("@qw_total_quantity", Convert.ToDecimal(lbl_totalqty.Text));
-                        cmd.Parameters.AddWithValue("@qw_rate", Convert.ToDecimal(GridView1.Rows[i].Cells[5].Text));
-                        cmd.Parameters.AddWithValue("@qw_discount", Convert.ToDecimal(Txt_discount.Text));
-
-
-                        cmd.Parameters.AddWithValue("@qw_sub_total", Convert.ToDecimal(lbl_subtotal.Text));
-
-                        if (Txt_TransportCharges.Text == "")
+                        if (GridView1.Rows[i].Cells[2].Text == "&nbsp;")
                         {
-                            cmd.Parameters.AddWithValue("@qw_shipping_charges", "0");
+                            SqlCommand cmd = new SqlCommand("insert into tbl_order_details values(@quw_no,@qw_date,@qw_product_name,@qw_quantity,@qw_total_quantity,@qw_rate,@qw_discount,@qw_sub_total,@qw_shipping_charges,@qw_adjustment,@qw_total,@qw_hsn,@qw_unit,@qw_stotal,@qw_desc,@qw_height,@qw_width,@qw_size,@qw_samount,@qw_name,@qw_phone,@qw_balance,@qw_dtp_charges,@qw_fitting_charges,@qw_payment_method,@qw_pasting_charges)", conn);
+                            cmd.Parameters.AddWithValue("@quw_no", Convert.ToString(Hid_inv_id.Value));
+                            cmd.Parameters.AddWithValue("@qw_date", Convert.ToDateTime(DateTime.Now.ToShortDateString()).ToString("MM/dd/yyyy"));
+                            //     cmd.Parameters.AddWithValue("@c_id", Convert.ToString(Dd_customer.SelectedValue));
+                            //     cmd.Parameters.AddWithValue("@qw_order_no", Convert.ToString(Txt_order_no.Text));
+                            //   cmd.Parameters.AddWithValue("@qw_quotation_date", Convert.ToDateTime(Txt_invoice_date.Text).ToString("MM/dd/yyyy"));
+                            //     cmd.Parameters.AddWithValue("@qw_valid_date", Convert.ToDateTime(Txt_due_date.Text).ToString("MM/dd/yyyy"));
+                            cmd.Parameters.AddWithValue("@qw_product_name", Convert.ToString(GridView1.Rows[i].Cells[0].Text));
+                            cmd.Parameters.AddWithValue("@qw_quantity", Convert.ToDecimal(GridView1.Rows[i].Cells[7].Text));
+                            cmd.Parameters.AddWithValue("@qw_unit", Convert.ToString(GridView1.Rows[i].Cells[10].Text));
+                            cmd.Parameters.AddWithValue("@qw_total_quantity", Convert.ToDecimal(lbl_totalqty.Text));
+                            cmd.Parameters.AddWithValue("@qw_rate", Convert.ToDecimal(GridView1.Rows[i].Cells[5].Text));
+                            cmd.Parameters.AddWithValue("@qw_discount", Convert.ToDecimal(Txt_discount.Text));
+
+
+                            cmd.Parameters.AddWithValue("@qw_sub_total", Convert.ToDecimal(lbl_subtotal.Text));
+
+                            if (Txt_TransportCharges.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@qw_shipping_charges", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@qw_shipping_charges", Convert.ToDecimal(Txt_TransportCharges.Text));
+                            }
+
+
+                            cmd.Parameters.AddWithValue("@qw_adjustment", Txt_advance.Text);
+                            cmd.Parameters.AddWithValue("@qw_total", Convert.ToDecimal(hide_total.Text));
+                            cmd.Parameters.AddWithValue("@qw_stotal", Convert.ToDecimal(GridView1.Rows[i].Cells[8].Text));
+                            cmd.Parameters.AddWithValue("@qw_hsn", Convert.ToString(GridView1.Rows[i].Cells[1].Text));
+                            cmd.Parameters.AddWithValue("@qw_desc", Convert.ToString(GridView1.Rows[i].Cells[9].Text));
+                            cmd.Parameters.AddWithValue("@qw_height", "");
+                            cmd.Parameters.AddWithValue("@qw_width", "");
+                            cmd.Parameters.AddWithValue("@qw_size", "");
+                            cmd.Parameters.AddWithValue("@qw_samount", "");
+                            cmd.Parameters.AddWithValue("@qw_name", Txt_name.Text);
+                            cmd.Parameters.AddWithValue("@qw_phone", Txt_phone.Text);
+                            cmd.Parameters.AddWithValue("@qw_balance", Convert.ToDecimal(new_balance));
+
+                            if (Txt_Dtp_charges.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@qw_dtp_charges", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@qw_dtp_charges", Convert.ToDecimal(Txt_Dtp_charges.Text));
+                            }
+
+                            if (Txt_Fitting.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@qw_fitting_charges", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@qw_fitting_charges", Convert.ToDecimal(Txt_Fitting.Text));
+                            }
+
+
+                            cmd.Parameters.AddWithValue("@qw_payment_method", Convert.ToString(drp_payment.SelectedItem.Text));
+
+
+                            if (Txt_Pasting.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@qw_pasting_charges", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@qw_pasting_charges", Convert.ToDecimal(Txt_Pasting.Text));
+                            }
+
+                            conn.Open();
+                            cmd.ExecuteNonQuery();
+
+                            conn.Close();
+
+
+
+                            decimal Qty_total = Convert.ToDecimal(GridView1.Rows[i].Cells[7].Text);
+
+                            SqlCommand cmd33 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock=p_stock-('" + Qty_total + "') WHERE p_name='" + Convert.ToString(GridView1.Rows[i].Cells[0].Text) + "'", conn);
+
+                            conn.Open();
+                            cmd33.ExecuteNonQuery();
+                            conn.Close();
+
+
+
+                            //used stock material
+
+                            SqlCommand cmd44 = new SqlCommand("insert into tbl_used_stock values(@p_name,@date,@sqrft,@quantity)", conn);
+                            cmd44.Parameters.AddWithValue("@p_name", Convert.ToString(GridView1.Rows[i].Cells[0].Text));
+                            cmd44.Parameters.AddWithValue("@date", Convert.ToDateTime(DateTime.Now.ToShortDateString()).ToString("MM/dd/yyyy"));
+                            cmd44.Parameters.AddWithValue("@sqrft", Qty_total);
+                            cmd44.Parameters.AddWithValue("@quantity", Convert.ToDecimal(GridView1.Rows[i].Cells[7].Text));
+
+                            conn.Open();
+                            cmd44.ExecuteNonQuery();
+                            conn.Close();
                         }
                         else
                         {
-                            cmd.Parameters.AddWithValue("@qw_shipping_charges", Convert.ToDecimal(Txt_TransportCharges.Text));
-                        }
 
-                        
-                        cmd.Parameters.AddWithValue("@qw_adjustment", Txt_advance.Text);
-                        cmd.Parameters.AddWithValue("@qw_total", Convert.ToDecimal(hide_total.Text));
-                        cmd.Parameters.AddWithValue("@qw_stotal", Convert.ToDecimal(GridView1.Rows[i].Cells[8].Text));
-                        cmd.Parameters.AddWithValue("@qw_hsn", Convert.ToString(GridView1.Rows[i].Cells[1].Text));
-                        cmd.Parameters.AddWithValue("@qw_desc", Convert.ToString(GridView1.Rows[i].Cells[9].Text));
-                        cmd.Parameters.AddWithValue("@qw_height", "");
-                        cmd.Parameters.AddWithValue("@qw_width", "");
-                        cmd.Parameters.AddWithValue("@qw_size", "");
-                        cmd.Parameters.AddWithValue("@qw_samount", "");
-                        cmd.Parameters.AddWithValue("@qw_name", Txt_name.Text);
-                        cmd.Parameters.AddWithValue("@qw_phone", Txt_phone.Text);
-                        cmd.Parameters.AddWithValue("@qw_balance", Convert.ToDecimal(new_balance));
+                            SqlCommand cmd = new SqlCommand("insert into tbl_order_details values(@quw_no,@qw_date,@qw_product_name,@qw_quantity,@qw_total_quantity,@qw_rate,@qw_discount,@qw_sub_total,@qw_shipping_charges,@qw_adjustment,@qw_total,@qw_hsn,@qw_unit,@qw_stotal,@qw_desc,@qw_height,@qw_width,@qw_size,@qw_samount,@qw_name,@qw_phone,@qw_balance,@qw_dtp_charges,@qw_fitting_charges,@qw_payment_method,@qw_pasting_charges)", conn);
+                            cmd.Parameters.AddWithValue("@quw_no", Convert.ToString(Hid_inv_id.Value));
+                            cmd.Parameters.AddWithValue("@qw_date", Convert.ToDateTime(DateTime.Now.ToShortDateString()).ToString("MM/dd/yyyy"));
+                            //     cmd.Parameters.AddWithValue("@c_id", Convert.ToString(Dd_customer.SelectedValue));
+                            //      cmd.Parameters.AddWithValue("@qw_order_no", Convert.ToString(Txt_order_no.Text));
+                            //       cmd.Parameters.AddWithValue("@qw_quotation_date", Convert.ToDateTime(Txt_invoice_date.Text).ToString("MM/dd/yyyy"));
+                            //       cmd.Parameters.AddWithValue("@qw_valid_date", Convert.ToDateTime(Txt_due_date.Text).ToString("MM/dd/yyyy"));
+                            cmd.Parameters.AddWithValue("@qw_product_name", Convert.ToString(GridView1.Rows[i].Cells[0].Text));
+                            cmd.Parameters.AddWithValue("@qw_quantity", Convert.ToDecimal(GridView1.Rows[i].Cells[7].Text));
+                            cmd.Parameters.AddWithValue("@qw_unit", Convert.ToString(GridView1.Rows[i].Cells[10].Text));
+                            cmd.Parameters.AddWithValue("@qw_total_quantity", Convert.ToDecimal(lbl_totalqty.Text));
+                            cmd.Parameters.AddWithValue("@qw_rate", Convert.ToDecimal(GridView1.Rows[i].Cells[5].Text));
+                            cmd.Parameters.AddWithValue("@qw_discount", Convert.ToDecimal(Txt_discount.Text));
 
-                        if (Txt_Dtp_charges.Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@qw_dtp_charges", "0");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@qw_dtp_charges", Convert.ToDecimal(Txt_Dtp_charges.Text));
-                        }
 
-                        if (Txt_Fitting.Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@qw_fitting_charges", "0");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@qw_fitting_charges", Convert.ToDecimal(Txt_Fitting.Text));
-                        }
+                            cmd.Parameters.AddWithValue("@qw_sub_total", Convert.ToDecimal(lbl_subtotal.Text));
 
-                
-                        cmd.Parameters.AddWithValue("@qw_payment_method", Convert.ToString(drp_payment.SelectedItem.Text));                                    
-                       
 
-                        if (Txt_Pasting.Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@qw_pasting_charges", "0");
+
+                            if (Txt_TransportCharges.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@qw_shipping_charges", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@qw_shipping_charges", Convert.ToDecimal(Txt_TransportCharges.Text));
+                            }
+
+                            cmd.Parameters.AddWithValue("@qw_adjustment", Txt_advance.Text);
+                            cmd.Parameters.AddWithValue("@qw_total", Convert.ToDecimal(hide_total.Text));
+                            cmd.Parameters.AddWithValue("@qw_stotal", Convert.ToDecimal(GridView1.Rows[i].Cells[8].Text));
+                            cmd.Parameters.AddWithValue("@qw_hsn", Convert.ToString(GridView1.Rows[i].Cells[1].Text));
+                            cmd.Parameters.AddWithValue("@qw_desc", Convert.ToString(GridView1.Rows[i].Cells[9].Text));
+                            cmd.Parameters.AddWithValue("@qw_height", Convert.ToDecimal(GridView1.Rows[i].Cells[2].Text));
+                            cmd.Parameters.AddWithValue("@qw_width", Convert.ToDecimal(GridView1.Rows[i].Cells[3].Text));
+                            cmd.Parameters.AddWithValue("@qw_size", Convert.ToDecimal(GridView1.Rows[i].Cells[4].Text));
+                           // cmd.Parameters.AddWithValue("@qw_samount", Convert.ToDecimal(GridView1.Rows[i].Cells[6].Text));
+                            cmd.Parameters.AddWithValue("@qw_name", Txt_name.Text);
+                            cmd.Parameters.AddWithValue("@qw_phone", Txt_phone.Text);
+                            cmd.Parameters.AddWithValue("@qw_balance", Convert.ToDecimal(new_balance));
+
+                            if (Txt_Dtp_charges.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@qw_dtp_charges", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@qw_dtp_charges", Convert.ToDecimal(Txt_Dtp_charges.Text));
+                            }
+                            if (GridView1.Rows[i].Cells[6].Text == "&nbsp;")
+                            {
+                                cmd.Parameters.AddWithValue("@qw_samount", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@qw_samount", Convert.ToDecimal(GridView1.Rows[i].Cells[6].Text));
+                            }
+                            if (Txt_Fitting.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@qw_fitting_charges", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@qw_fitting_charges", Convert.ToDecimal(Txt_Fitting.Text));
+                            }
+
+                            cmd.Parameters.AddWithValue("@qw_payment_method", Convert.ToString(drp_payment.SelectedItem.Text));
+
+                            if (Txt_Pasting.Text == "")
+                            {
+                                cmd.Parameters.AddWithValue("@qw_pasting_charges", "0");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@qw_pasting_charges", Convert.ToDecimal(Txt_Pasting.Text));
+                            }
+
+
+                            conn.Open();
+                            cmd.ExecuteNonQuery();
+                            conn.Close();
+
+                            decimal Qty_total = Convert.ToDecimal(GridView1.Rows[i].Cells[7].Text);
+
+                            SqlCommand cmd33 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock=p_stock-('" + Qty_total + "') WHERE p_name='" + Convert.ToString(GridView1.Rows[i].Cells[0].Text) + "'", conn);
+
+                            conn.Open();
+                            cmd33.ExecuteNonQuery();
+                            conn.Close();
+
+
+
+                            //used stock material
+
+                            SqlCommand cmd44 = new SqlCommand("insert into tbl_used_stock values(@p_name,@date,@sqrft,@quantity)", conn);
+                            cmd44.Parameters.AddWithValue("@p_name", Convert.ToString(GridView1.Rows[i].Cells[0].Text));
+                            cmd44.Parameters.AddWithValue("@date", Convert.ToDateTime(DateTime.Now.ToShortDateString()).ToString("MM/dd/yyyy"));
+                            cmd44.Parameters.AddWithValue("@sqrft", Qty_total);
+                            cmd44.Parameters.AddWithValue("@quantity", Convert.ToDecimal(GridView1.Rows[i].Cells[7].Text));
+
+                            conn.Open();
+                            cmd44.ExecuteNonQuery();
+                            conn.Close();
                         }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@qw_pasting_charges", Convert.ToDecimal(Txt_Pasting.Text));
-                        }
+                    }
+                    SqlCommand cmd2 = new SqlCommand("insert into tbl_order values(@quw_no,@quw_date,@quw_total_quantity,@quw_discount,@quw_sub_total,@quw_shipping_charges,@quw_adjustment,@quw_total,@quw_name,@quw_phone,@quw_balance,@quw_dtp_charges,@quw_fitting_charges,@quw_payment_method,@quw_pasting_charges)", conn);
+                    cmd2.Parameters.AddWithValue("@quw_no", Convert.ToString(Hid_inv_id.Value));
+                    cmd2.Parameters.AddWithValue("@quw_date", Convert.ToDateTime(DateTime.Now.ToShortDateString()).ToString("MM/dd/yyyy"));
+                    //         cmd2.Parameters.AddWithValue("@c_id", Convert.ToString(Dd_customer.SelectedValue));
+                    //         cmd2.Parameters.AddWithValue("@quw_order_no", Convert.ToString(Txt_order_no.Text));
+                    //         cmd2.Parameters.AddWithValue("@quw_invoice_date", Convert.ToDateTime(Txt_invoice_date.Text).ToString("MM/dd/yyyy"));
+                    //        cmd2.Parameters.AddWithValue("@quw_due_date", Convert.ToDateTime(Txt_due_date.Text).ToString("MM/dd/yyyy"));
 
-                        conn.Open();
-                        cmd.ExecuteNonQuery();
+                    cmd2.Parameters.AddWithValue("@quw_total_quantity", Convert.ToDecimal(lbl_totalqty.Text));
 
-                        conn.Close();
+                    cmd2.Parameters.AddWithValue("@quw_discount", Convert.ToDecimal(Txt_discount.Text));
+
+
+                    cmd2.Parameters.AddWithValue("@quw_sub_total", Convert.ToDecimal(lbl_subtotal.Text));
+
+                    if (Txt_TransportCharges.Text == "")
+                    {
+                        cmd2.Parameters.AddWithValue("@quw_shipping_charges", "0");
                     }
                     else
                     {
-
-                        SqlCommand cmd = new SqlCommand("insert into tbl_order_details values(@quw_no,@qw_date,@qw_product_name,@qw_quantity,@qw_total_quantity,@qw_rate,@qw_discount,@qw_sub_total,@qw_shipping_charges,@qw_adjustment,@qw_total,@qw_hsn,@qw_unit,@qw_stotal,@qw_desc,@qw_height,@qw_width,@qw_size,@qw_samount,@qw_name,@qw_phone,@qw_balance,@qw_dtp_charges,@qw_fitting_charges,@qw_payment_method,@qw_pasting_charges)", conn);
-                        cmd.Parameters.AddWithValue("@quw_no", Convert.ToString(Hid_inv_id.Value));
-                        cmd.Parameters.AddWithValue("@qw_date", Convert.ToDateTime(DateTime.Now.ToShortDateString()).ToString("MM/dd/yyyy"));
-                   //     cmd.Parameters.AddWithValue("@c_id", Convert.ToString(Dd_customer.SelectedValue));
-                  //      cmd.Parameters.AddWithValue("@qw_order_no", Convert.ToString(Txt_order_no.Text));
-                 //       cmd.Parameters.AddWithValue("@qw_quotation_date", Convert.ToDateTime(Txt_invoice_date.Text).ToString("MM/dd/yyyy"));
-                 //       cmd.Parameters.AddWithValue("@qw_valid_date", Convert.ToDateTime(Txt_due_date.Text).ToString("MM/dd/yyyy"));
-                        cmd.Parameters.AddWithValue("@qw_product_name", Convert.ToString(GridView1.Rows[i].Cells[0].Text));
-                        cmd.Parameters.AddWithValue("@qw_quantity", Convert.ToDecimal(GridView1.Rows[i].Cells[7].Text));
-                        cmd.Parameters.AddWithValue("@qw_unit", Convert.ToString(GridView1.Rows[i].Cells[10].Text));
-                        cmd.Parameters.AddWithValue("@qw_total_quantity", Convert.ToDecimal(lbl_totalqty.Text));
-                        cmd.Parameters.AddWithValue("@qw_rate", Convert.ToDecimal(GridView1.Rows[i].Cells[5].Text));
-                        cmd.Parameters.AddWithValue("@qw_discount", Convert.ToDecimal(Txt_discount.Text));
-
-
-                        cmd.Parameters.AddWithValue("@qw_sub_total", Convert.ToDecimal(lbl_subtotal.Text));
-
-                       
-
-                        if (Txt_TransportCharges.Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@qw_shipping_charges", "0");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@qw_shipping_charges", Convert.ToDecimal(Txt_TransportCharges.Text));
-                        }
-
-                        cmd.Parameters.AddWithValue("@qw_adjustment", Txt_advance.Text);
-                        cmd.Parameters.AddWithValue("@qw_total", Convert.ToDecimal(hide_total.Text));
-                        cmd.Parameters.AddWithValue("@qw_stotal", Convert.ToDecimal(GridView1.Rows[i].Cells[8].Text));
-                        cmd.Parameters.AddWithValue("@qw_hsn", Convert.ToString(GridView1.Rows[i].Cells[1].Text));
-                        cmd.Parameters.AddWithValue("@qw_desc", Convert.ToString(GridView1.Rows[i].Cells[9].Text));
-                        cmd.Parameters.AddWithValue("@qw_height", Convert.ToDecimal(GridView1.Rows[i].Cells[2].Text));
-                        cmd.Parameters.AddWithValue("@qw_width", Convert.ToDecimal(GridView1.Rows[i].Cells[3].Text));
-                        cmd.Parameters.AddWithValue("@qw_size", Convert.ToDecimal(GridView1.Rows[i].Cells[4].Text));
-                        cmd.Parameters.AddWithValue("@qw_samount", Convert.ToDecimal(GridView1.Rows[i].Cells[6].Text));
-                        cmd.Parameters.AddWithValue("@qw_name", Txt_name.Text);
-                        cmd.Parameters.AddWithValue("@qw_phone", Txt_phone.Text);
-                        cmd.Parameters.AddWithValue("@qw_balance", Convert.ToDecimal(new_balance));
-
-                        if (Txt_Dtp_charges.Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@qw_dtp_charges", "0");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@qw_dtp_charges", Convert.ToDecimal(Txt_Dtp_charges.Text));
-                        }
-
-                        if (Txt_Fitting.Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@qw_fitting_charges", "0");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@qw_fitting_charges", Convert.ToDecimal(Txt_Fitting.Text));
-                        }
-
-                        cmd.Parameters.AddWithValue("@qw_payment_method", Convert.ToString(drp_payment.SelectedItem.Text));
-
-                        if (Txt_Pasting.Text == "")
-                        {
-                            cmd.Parameters.AddWithValue("@qw_pasting_charges", "0");
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@qw_pasting_charges", Convert.ToDecimal(Txt_Pasting.Text));
-                        }
-
-                        conn.Open();
-                        cmd.ExecuteNonQuery();
-                        conn.Close();
+                        cmd2.Parameters.AddWithValue("@quw_shipping_charges", Convert.ToDecimal(Txt_TransportCharges.Text));
                     }
+
+
+                    cmd2.Parameters.AddWithValue("@quw_adjustment", Txt_advance.Text);
+                    cmd2.Parameters.AddWithValue("@quw_total", Convert.ToDecimal(hide_total.Text));
+                    cmd2.Parameters.AddWithValue("@quw_name", Txt_name.Text);
+                    cmd2.Parameters.AddWithValue("@quw_phone", Txt_phone.Text);
+                    cmd2.Parameters.AddWithValue("@quw_balance", Convert.ToDecimal(new_balance));
+
+                    if (Txt_Dtp_charges.Text == "")
+                    {
+                        cmd2.Parameters.AddWithValue("@quw_dtp_charges", "0");
+                    }
+                    else
+                    {
+                        cmd2.Parameters.AddWithValue("@quw_dtp_charges", Convert.ToDecimal(Txt_Dtp_charges.Text));
+                    }
+
+                    if (Txt_Fitting.Text == "")
+                    {
+                        cmd2.Parameters.AddWithValue("@quw_fitting_charges", "0");
+                    }
+                    else
+                    {
+                        cmd2.Parameters.AddWithValue("@quw_fitting_charges", Convert.ToDecimal(Txt_Fitting.Text));
+                    }
+
+
+
+                    cmd2.Parameters.AddWithValue("@quw_payment_method", Convert.ToString(drp_payment.SelectedItem.Text));
+
+
+                    if (Txt_Pasting.Text == "")
+                    {
+                        cmd2.Parameters.AddWithValue("@quw_pasting_charges", "0");
+                    }
+                    else
+                    {
+                        cmd2.Parameters.AddWithValue("@quw_pasting_charges", Convert.ToDecimal(Txt_Pasting.Text));
+                    }
+
+                    conn.Open();
+                    cmd2.ExecuteNonQuery();
+                    conn.Close();
+
+
+                    isTrue = true;
+                    string redirectScript = " window.location.href = 'List_Of_Orders.aspx?insert=success';";
+                    System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('New Order Added Successfully!!!');" + redirectScript, true);
+
+
                 }
-                SqlCommand cmd2 = new SqlCommand("insert into tbl_order values(@quw_no,@quw_date,@quw_total_quantity,@quw_discount,@quw_sub_total,@quw_shipping_charges,@quw_adjustment,@quw_total,@quw_name,@quw_phone,@quw_balance,@quw_dtp_charges,@quw_fitting_charges,@quw_payment_method,@quw_pasting_charges)", conn);
-                cmd2.Parameters.AddWithValue("@quw_no", Convert.ToString(Hid_inv_id.Value));
-                cmd2.Parameters.AddWithValue("@quw_date", Convert.ToDateTime(DateTime.Now.ToShortDateString()).ToString("MM/dd/yyyy"));
-       //         cmd2.Parameters.AddWithValue("@c_id", Convert.ToString(Dd_customer.SelectedValue));
-       //         cmd2.Parameters.AddWithValue("@quw_order_no", Convert.ToString(Txt_order_no.Text));
-       //         cmd2.Parameters.AddWithValue("@quw_invoice_date", Convert.ToDateTime(Txt_invoice_date.Text).ToString("MM/dd/yyyy"));
-        //        cmd2.Parameters.AddWithValue("@quw_due_date", Convert.ToDateTime(Txt_due_date.Text).ToString("MM/dd/yyyy"));
 
-                cmd2.Parameters.AddWithValue("@quw_total_quantity", Convert.ToDecimal(lbl_totalqty.Text));
-
-                cmd2.Parameters.AddWithValue("@quw_discount", Convert.ToDecimal(Txt_discount.Text));
-
-
-                cmd2.Parameters.AddWithValue("@quw_sub_total", Convert.ToDecimal(lbl_subtotal.Text));
-
-                if (Txt_TransportCharges.Text == "")
-                {
-                    cmd2.Parameters.AddWithValue("@quw_shipping_charges", "0");
-                }
                 else
                 {
-                    cmd2.Parameters.AddWithValue("@quw_shipping_charges", Convert.ToDecimal(Txt_TransportCharges.Text));
+                    // System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert(' !!!');", true);
+                    string redirectScript = " window.location.href = 'List_Of_Orders.aspx?insert=success';";
+                    System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('New Order Added Successfully!!!');" + redirectScript, true);
                 }
 
-               
-                cmd2.Parameters.AddWithValue("@quw_adjustment", Txt_advance.Text);
-                cmd2.Parameters.AddWithValue("@quw_total", Convert.ToDecimal(hide_total.Text));
-                cmd2.Parameters.AddWithValue("@quw_name", Txt_name.Text);
-                cmd2.Parameters.AddWithValue("@quw_phone", Txt_phone.Text);
-                cmd2.Parameters.AddWithValue("@quw_balance", Convert.ToDecimal(new_balance));
 
-                if (Txt_Dtp_charges.Text == "")
-                {
-                    cmd2.Parameters.AddWithValue("@quw_dtp_charges", "0");
-                }
-                else
-                {
-                    cmd2.Parameters.AddWithValue("@quw_dtp_charges", Convert.ToDecimal(Txt_Dtp_charges.Text));
-                }
-
-                if (Txt_Fitting.Text == "")
-                {
-                    cmd2.Parameters.AddWithValue("@quw_fitting_charges", "0");
-                }
-                else
-                {
-                    cmd2.Parameters.AddWithValue("@quw_fitting_charges", Convert.ToDecimal(Txt_Fitting.Text));
-                }
-
-               
-                
-                cmd2.Parameters.AddWithValue("@quw_payment_method", Convert.ToString(drp_payment.SelectedItem.Text));
-                
-
-                if (Txt_Pasting.Text == "")
-                {
-                    cmd2.Parameters.AddWithValue("@quw_pasting_charges", "0");
-                }
-                else
-                {
-                    cmd2.Parameters.AddWithValue("@quw_pasting_charges", Convert.ToDecimal(Txt_Pasting.Text));
-                }
-
-                conn.Open();
-                cmd2.ExecuteNonQuery();
-                conn.Close();
-
-      
-                isTrue = true;
             }
         }
         catch (Exception ex)
@@ -761,31 +897,47 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
 
     protected void Btn_generate_pdf_Click(object sender, EventArgs e)
     {
-        bool isTrue = dataEntry();
-        if (isTrue == true)
+        if (GridView1.Rows.Count == 0)
         {
-            //Response.Redirect("List_Of_Orders.aspx?insert=success");
-            string redirectScript = " window.location.href = 'List_Of_Orders.aspx?insert=success';";
-            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('New Order Added Successfully!!!');" + redirectScript, true);
+            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Please Add Products First !!!');", true);
         }
         else
         {
+            bool isTrue = dataEntry();
+            if (isTrue == true)
+            {
+                //Response.Redirect("List_Of_Orders.aspx?insert=success");
+                string redirectScript = " window.location.href = 'List_Of_Orders.aspx?insert=success';";
+                System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('New Order Added Successfully!!!');" + redirectScript, true);
+            }
+            else
+            {
 
+            }
         }
     }
     protected void Btn_submit_payment_Click(object sender, EventArgs e)
     {
-        bool isTrue = dataEntry();
-        if (isTrue == true)
+        if (GridView1.Rows.Count == 0)
         {
-            string redirectScript = " window.location.href = List_Of_Orders.aspx";
-            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('New Order Added Successfully!!!');" + redirectScript, true);
-
+            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Please Add Products First !!!');", true);
         }
         else
         {
+            bool isTrue = dataEntry();
+            if (isTrue == true)
+            {
+                string redirectScript = " window.location.href = List_Of_Orders.aspx";
+                System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('New Order Added Successfully!!!');" + redirectScript, true);
 
+            }
+            else
+            {
+
+            }
         }
+
+
 
     }
 
@@ -798,13 +950,81 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
         ViewState["Details"] = dt;
         GridView1.DataSource = dt;
         GridView1.DataBind();
+        if (dt.Rows.Count > 0)
+        {
+            GridView1.Visible = true;
+            product();
+            txt_rate.Text = "0";
+            txt_rate2.Text = "0";
+            txt_amount.Text = "0";
+            txt_width.Text = "0";
+            txt_height.Text = "0";
+            txt_width2.Text = "0";
+            txt_height2.Text = "0";
+            txt_sqrft.Text = "0";
+            txt_sqrft2.Text = "0";
+            txt_quantity.Text = "0";
+            txt_quantity2.Text = "0";
+            Txt_desc.Text = "";
+
+        }
+        else
+        {
+            product();
+            txt_rate.Text = "0";
+            txt_rate2.Text = "0";
+            Txt_desc.Text = "";
+
+
+            txt_amount.Text = "0";
+            txt_width.Text = "0";
+            txt_height.Text = "0";
+            txt_width2.Text = "0";
+            txt_height2.Text = "0";
+            txt_sqrft.Text = "0";
+            txt_sqrft2.Text = "0";
+            txt_quantity.Text = "0";
+            txt_quantity2.Text = "0";
+
+            Txt_Dtp_charges.Text = "0";
+            Txt_Pasting.Text = "0";
+            Txt_Fitting.Text = "0";
+            Txt_TransportCharges.Text = "0";
+            Txt_advance.Text = "0";
+            Txt_discount.Text = "0";
+
+            lbl_subtotal.Text = "0";
+            lbl_subtotal2.Value = "0";
+            lbl_final.Text = "0";
+            lbl_total.Text = "0";
+            hide_total.Text = "0";
+            txt_total_amt.Text = "0";
+            txt_total_amt2.Text = "0";
+
+            GridView1.Visible = false;
+            //Chk_dtp.Checked = false;
+            //Chk_fitting.Checked = false;
+            //Chk_framing.Checked = false;
+            //Chk_install.Checked = false;
+            //Chk_trans.Checked = false;
+            //Chk_pasting.Checked = false;
+            //Txt_Dtp_charges.ReadOnly = true;
+            //Txt_Pasting.ReadOnly = true;
+            //Txt_Fitting.ReadOnly = true;
+            //Txt_TransportCharges.ReadOnly = true;
+
+        }
+
+
+
     }
 
 
- 
+
 
     protected void Button2_Click(object sender, EventArgs e)
     {
+        lbl_msg2.Text = "";
         string hsn;
         if (Txt_hsn.Text == string.Empty)
         {
@@ -844,6 +1064,21 @@ public partial class Daily_Cash_Order_Create_Order : System.Web.UI.Page
             product();
             lbl_msg2.ForeColor = System.Drawing.Color.Green;
             lbl_msg2.Text = "Product Added Successfully!!!";
+
+            Txt_product_name.Text = "";
+            Txt_hsn.Text = "";
+            Txt_ra.Text = "";
+            Txt_desc.Text = "";
+            Dd_unit.SelectedItem.Text = "Sqft";
+            //if (lbl_msg2.Text == "Product Added Successfully!!!")
+            //{
+            //    lbl_msg2.Text = "";
+
+            //}
+            //else
+            //{
+            //    lbl_msg2.Text = "Product Already Exist!!!";
+            //}
 
             //string redirectScript = " window.location.href = 'sale_invoice.aspx';";
             //System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('New Sale Product Added Successfully!!!');" + redirectScript, true);

@@ -11,12 +11,12 @@ using System.Data;
 public partial class Purchase_edit_roll_bill : System.Web.UI.Page
 {
     SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["String"].ConnectionString);
-    decimal total_amount = 0, final_total = 0;
-    decimal dPageTotal;
-    decimal totalvalue, totalcgst, totalsgst, totaligst, totalgst, totalqty, totaltaxable, Old_total, old_balance, paid, new_balance, new_total, rem;
+    decimal total_amount = 0, final_total = 0,quantity1, quantity2, StockQuantity;
+    decimal dPageTotal,finaltotal;
+    decimal totalvalue, totalcgst, totalsgst, totaligst, totalgst, totalqty, totaltaxable, Old_total, old_balance, paid, new_balance, new_total, rem, shipp, adjust, discount, totalofshipp, final;
     string invoice;
     int id;
-    string admin_email;
+    string admin_email, Productname, Productname2;
     protected void Page_Load(object sender, EventArgs e)
     {
 
@@ -47,6 +47,8 @@ public partial class Purchase_edit_roll_bill : System.Web.UI.Page
                     {
 
                     }
+
+                    Btn_cart.Visible = false;
                 }
             }
             else
@@ -82,8 +84,8 @@ public partial class Purchase_edit_roll_bill : System.Web.UI.Page
     }
     public void product()
     {
-        string query = "select * from tbl_purchase_product where p_unit='Mtr' order by p_name asc";
-        SqlDataAdapter adapt5 = new SqlDataAdapter(query, conn);
+        string query = "select * from tbl_purchase_product where p_unit = 'Inch' or p_unit = 'Sqft' Order By p_name asc";
+		SqlDataAdapter adapt5 = new SqlDataAdapter(query, conn);
         DataTable dt6 = new DataTable();
         adapt5.Fill(dt6);
         if (dt6.Rows.Count > 0)
@@ -100,7 +102,8 @@ public partial class Purchase_edit_roll_bill : System.Web.UI.Page
         }
 
     }
-    public void feet()
+	
+	public void feet()
     {
         string query = "select * from tbl_feet ORDER BY f_feet ASC";
         SqlDataAdapter adapt4 = new SqlDataAdapter(query, conn);
@@ -111,12 +114,33 @@ public partial class Purchase_edit_roll_bill : System.Web.UI.Page
             Dd_feet.DataSource = dt5;
             Dd_feet.DataBind();
             Dd_feet.DataTextField = "f_feet";
-            Dd_feet.DataValueField = "f_feet";
+            Dd_feet.DataValueField = "f_id";
             Dd_feet.DataBind();
             Dd_feet.Items.Insert(0, new ListItem("--Select--", "--Select--"));
 
             Dd_feet.SelectedItem.Selected = false;
             Dd_feet.Items.FindByText("--Select--").Selected = true;
+        }
+
+    }
+
+    public void feet1()
+    {
+        string query = "select * from tbl_feet ORDER BY f_feet ASC";
+        SqlDataAdapter adapt4 = new SqlDataAdapter(query, conn);
+        DataTable dt5 = new DataTable();
+        adapt4.Fill(dt5);
+        if (dt5.Rows.Count > 0)
+        {
+            Dd_feet.DataSource = dt5;
+            Dd_feet.DataBind();
+            Dd_feet.DataTextField = "f_feet";
+            Dd_feet.DataValueField = "f_id";
+            Dd_feet.DataBind();
+            //Dd_feet.Items.Insert(0, new ListItem("--Select--", "--Select--"));
+
+            //Dd_feet.SelectedItem.Selected = false;
+            //Dd_feet.Items.FindByText("--Select--").Selected = true;
         }
 
     }
@@ -145,7 +169,7 @@ public partial class Purchase_edit_roll_bill : System.Web.UI.Page
             lbl_total.Text = dt.Rows[0]["rpc_total"].ToString();
             hide_total.Text = dt.Rows[0]["rpc_total"].ToString();
             lbl_balance.Value = dt.Rows[0]["rpc_balance"].ToString();
-
+            Drp_payment_mode.Text = dt.Rows[0]["rpc_mode"].ToString();
             FillGRid();
 
         }
@@ -203,8 +227,10 @@ public partial class Purchase_edit_roll_bill : System.Web.UI.Page
             adapt25.Fill(dt22);
             if (dt22.Rows.Count > 0)
             {
-                GridView1.DataSource = dt22;
+				GridView1.Visible = true;
+				GridView1.DataSource = dt22;
                 GridView1.DataBind();
+
                 totalqty = Convert.ToDecimal(dt22.Compute("Sum(Qty)", ""));
                 totalvalue = Convert.ToDecimal(dt22.Compute("Sum(FINAL)", ""));
                 totalcgst = Convert.ToDecimal(dt22.Compute("Sum(CGST)", ""));
@@ -214,6 +240,13 @@ public partial class Purchase_edit_roll_bill : System.Web.UI.Page
 
 
 
+                shipp = Convert.ToDecimal(Txt_shipping.Text);
+                adjust = Convert.ToDecimal(Txt_adjustment.Text);
+                discount = Convert.ToDecimal(Txt_discount.Text);
+                totalofshipp = shipp + totalvalue ;
+                final = totalofshipp - adjust - discount;
+                lbl_total.Text = final.ToString();
+                hide_total.Text = totalofshipp.ToString();
 
 
                 totalgst = totalcgst + totalsgst + totaligst;
@@ -229,13 +262,65 @@ public partial class Purchase_edit_roll_bill : System.Web.UI.Page
                 lbl_total_sgst.Value = totalsgst.ToString();
                 lbl_total_igst.Value = totaligst.ToString();
                 lbl_total_taxable.Value = totaltaxable.ToString();
+                //Txt_roll_height.Text = "0";
+                //Txt_total_roll.Text = "0";
+                //Txt_total_roll_sq.Text = "0";
+                //txt_amount.Text = "0";
+                //txt_quantity.Text = "0";
+                //txt_total_amt.Text = "0";
+                //Txt_roll_height.Text = "0";
+                //Txt_total_roll.Text = "0";
+                //Txt_total_roll_sq.Text = "0";
+                //txt_amount.Text = "0";
+                //txt_quantity.Text = "0";
+                //txt_total_amt.Text = "0";
 
+                //txt_cgst.Text = "0";
+                //txt_igst.Text = "0";
+                //txt_sgst.Text = "0";
+                //txt_final_amt.Text = "0";
+                //txt_amount.Text = "0";
+                //txt_quantity.Text = "0";
+                //txt_cgst.Text = "0";
+                //txt_igst.Text = "0";
+                //txt_sgst.Text = "0";
+                //Txt_roll_height.Text = "0";
+                //Txt_total_roll.Text = "0";
+                //Txt_total_roll_sq.Text = "0";
+                //txt_amount.Text = "0";
+                //txt_quantity.Text = "0";
+                //txt_total_amt.Text = "0";
+
+                //txt_cgst.Text = "0";
+                //txt_igst.Text = "0";
+                //txt_sgst.Text = "0";
+
+                //Txt_roll_height.Text = "0";
+                //Txt_total_roll.Text = "0";
+                //Txt_total_roll_sq.Text = "0";
+                //txt_amount.Text = "0";
+                //txt_quantity.Text = "0";
+                //txt_total_amt.Text = "0";
+                //txt_final_amt.Text = "0";
 
             }
+          
             else
             {
                 GridView1.DataSource = null;
                 GridView1.DataBind();
+				GridView1.Visible = false;
+				lbl_total.Text = "0";
+                hide_total.Text = "0";
+                lbl_subtotal.Text = "0";
+                lbl_subtotal2.Value = "0";
+                lbl_gst.Text = "0";
+                Txt_shipping.Text = "0";
+                lbl_totalqty.Text = "0";
+                Txt_shipping.Text = "0";
+                //Txt_total_roll_sq.Text = "0";
+                Txt_adjustment.Text = "0";
+                Txt_discount.Text = "0";
             }
         }
         catch (Exception ex)
@@ -254,9 +339,9 @@ public partial class Purchase_edit_roll_bill : System.Web.UI.Page
 
     protected void Btn_cart_Click(object sender, EventArgs e)
     {
-
-        GetData();
-        string str = Dd_enter_product.SelectedItem.Text;
+		GridView1.Visible = true;
+		//GetData();
+		string str = Dd_enter_product.SelectedItem.Text;
 
         string str2 = txt_quantity.Text.Trim();
         string str3 = Txt_rate.Text.Trim();
@@ -328,6 +413,7 @@ public partial class Purchase_edit_roll_bill : System.Web.UI.Page
                 cmd.Parameters.AddWithValue("@s_stotal", Convert.ToDecimal(txt_total_amt.Text));
                 cmd.Parameters.AddWithValue("@s_hsn", Convert.ToString(lbl_product_hsn.Value));
                 cmd.Parameters.AddWithValue("@s_desc", Convert.ToString(Txt_description.Text));
+            //error
                 cmd.Parameters.AddWithValue("@s_heightft", Convert.ToDecimal(Dd_feet.SelectedValue));
                 cmd.Parameters.AddWithValue("@s_heightmtr", Convert.ToDecimal(Txt_roll_height.Text));
                 cmd.Parameters.AddWithValue("@s_roll_size", Convert.ToDecimal(Txt_roll_size.Text));
@@ -406,6 +492,15 @@ public partial class Purchase_edit_roll_bill : System.Web.UI.Page
             Txt_description.Text = desc;
             lbl_product_hsn.Value = hsn;
             lbl_unit.Value = unit;
+            feet();
+            //Txt_total_roll_sq.Text = "0";
+            Txt_roll_height.Text = "0";
+            Txt_total_roll.Text = "0";
+            Txt_total_roll_sq.Text = "0";
+            txt_amount.Text = "0";
+            txt_quantity.Text = "0";
+            txt_total_amt.Text = "0";
+            Txt_roll_size.Text = "0";
         }
 
     }
@@ -423,24 +518,130 @@ public partial class Purchase_edit_roll_bill : System.Web.UI.Page
         {
             try
             {
-                SqlCommand cmd4 = new SqlCommand("select * from tbl_roll_purchase_invoice where rpc_invoice_no='" + invoice + "'", conn);
-                SqlDataAdapter adapt4 = new SqlDataAdapter(cmd4);
-                DataTable dt4 = new DataTable();
-                adapt4.Fill(dt4);
-                if (dt4.Rows.Count > 0)
+                //SqlCommand cmd4 = new SqlCommand("select * from tbl_roll_purchase_invoice where rpc_invoice_no='" + invoice + "'", conn);
+                //SqlDataAdapter adapt4 = new SqlDataAdapter(cmd4);
+                //DataTable dt4 = new DataTable();
+                //adapt4.Fill(dt4);
+                //if (dt4.Rows.Count > 0)
+                //{
+                //    Old_total = Convert.ToDecimal(dt4.Rows[0]["rpc_total"]);
+                //    old_balance = Convert.ToDecimal(dt4.Rows[0]["rpc_balance"]);
+                //    paid = Old_total - old_balance;
+                //    new_total = Convert.ToDecimal(hide_total.Text);
+                //    new_balance = new_total - paid;
+                //    rem = new_total - Old_total;
+                //}
+
+                //            SqlCommand cmd33 = new SqlCommand("DELETE FROM tbl_purchase Where pu_invoice_no='" + invoice + "'", conn);
+                //            conn.Open();
+                //            cmd33.ExecuteNonQuery();
+                //            conn.Close();
+                //            finaltotal = Math.Round(Convert.ToDecimal(hide_total.Text));
+                //new_balance = finaltotal - Convert.ToDecimal(Txt_adjustment.Text) - Convert.ToDecimal(Txt_discount.Text);
+
+
+                SqlCommand cmd55 = new SqlCommand("select * FROM tbl_roll_purchase_invoice Where rpc_invoice_no='" + invoice + "'", conn);
+                SqlDataAdapter adapt55 = new SqlDataAdapter(cmd55);
+                DataTable dt55 = new DataTable();
+                adapt55.Fill(dt55);
+                int dtRowCount = dt55.Rows.Count;
+                int gridRowCount = GridView1.Rows.Count;
+                if (dt55.Rows.Count > 0)
                 {
-                    Old_total = Convert.ToDecimal(dt4.Rows[0]["rpc_total"]);
-                    old_balance = Convert.ToDecimal(dt4.Rows[0]["rpc_balance"]);
-                    paid = Old_total - old_balance;
-                    new_total = Convert.ToDecimal(hide_total.Text);
-                    new_balance = new_total - paid;
-                    rem = new_total - Old_total;
+
+
+                    for (int dtRow = 0; dtRow < dt55.Rows.Count; dtRow++)
+                    {
+                        string s_quantity = dt55.Rows[dtRow]["rpc_quantity"].ToString();
+                        quantity1 = Convert.ToDecimal(s_quantity);
+                        Productname = dt55.Rows[dtRow]["rpc_product_name"].ToString();
+
+                        int rowscount1 = GridView1.Rows.Count;
+
+
+                        if (dtRow < rowscount1)
+                        {
+                            Productname2 = Convert.ToString(GridView1.Rows[dtRow].Cells[0].Text);
+
+                            quantity2 = Convert.ToDecimal(GridView1.Rows[dtRow].Cells[9].Text);
+
+                            if (Productname == Productname2)
+                            {
+                                if (quantity1 != quantity2)
+                                {
+                                    if (quantity1 > quantity2)
+                                    {
+                                        StockQuantity = quantity1 - quantity2;
+                                        SqlCommand cmd33 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock=p_stock-('" + StockQuantity + "') WHERE p_name='" + Convert.ToString(GridView1.Rows[dtRow].Cells[0].Text) + "'", conn);
+
+                                        conn.Open();
+                                        cmd33.ExecuteNonQuery();
+                                        conn.Close();
+
+
+
+
+                                    }
+
+                                    else if (quantity1 < quantity2)
+                                    {
+                                        StockQuantity = quantity2 - quantity1;
+
+                                        SqlCommand cmd33 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock=p_stock+('" + StockQuantity + "') WHERE p_name='" + Convert.ToString(GridView1.Rows[dtRow].Cells[0].Text) + "'", conn);
+
+                                        conn.Open();
+                                        cmd33.ExecuteNonQuery();
+                                        conn.Close();
+
+
+
+                                    }
+
+
+
+                                }
+
+
+                            }
+
+                            if (Productname != Productname2)
+                            {
+                                SqlCommand cmd33 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock=p_stock-('" + quantity1 + "') WHERE p_name='" + Productname + "'", conn);
+
+                                conn.Open();
+                                cmd33.ExecuteNonQuery();
+                                conn.Close();
+
+
+                                SqlCommand cmd34 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock=p_stock+('" + quantity2 + "') WHERE p_name='" + Convert.ToString(GridView1.Rows[dtRow].Cells[0].Text) + "'", conn);
+
+                                conn.Open();
+                                cmd34.ExecuteNonQuery();
+                                conn.Close();
+
+
+                            }
+
+
+
+
+                        }
+
+
+
+
+
+                    }
+
+
+
+
+
                 }
 
-                //SqlCommand cmd33 = new SqlCommand("DELETE FROM tbl_purchase Where pu_invoice_no='" + invoice + "'", conn);
-                //conn.Open();
-                //cmd33.ExecuteNonQuery();
-                //conn.Close();
+                finaltotal = Math.Round(Convert.ToDecimal(hide_total.Text));
+                new_balance = finaltotal - Convert.ToDecimal(Txt_adjustment.Text) - Convert.ToDecimal(Txt_discount.Text);
+
 
                 SqlCommand cmd44 = new SqlCommand("DELETE FROM tbl_roll_purchase_invoice Where rpc_invoice_no='" + invoice + "'", conn);
                 conn.Open();
@@ -452,7 +653,7 @@ public partial class Purchase_edit_roll_bill : System.Web.UI.Page
                 {
 
 
-                    SqlCommand cmd = new SqlCommand("insert into tbl_roll_purchase_invoice values(@rpc_invoice_no,@rpc_date,@v_id,@rpc_order_no,@rpc_invoice_date,@rpc_due_date,@rpc_product_name,@rpc_quantity,@rpc_total_quantity,@rpc_rate,@rpc_discount,@rpc_cgstp,@rpc_cgsta,@rpc_sgstp,@rpc_sgsta,@rpc_igstp,@rpc_igsta,@rpc_amount,@rpc_sub_total,@rpc_total_gst,@rpc_shipping_charges,@rpc_adjustment,@rpc_total,@rpc_stotal,@rpc_hsn,@rpc_unit,@rpc_desc,@rpc_heightft,@rpc_heightmtr,@rpc_roll_size,@rpc_total_size,@rpc_size,@rpc_samount,@rpc_total_cgst,@rpc_total_sgst,@rpc_total_igst,@rpc_total_taxable,@rpc_balance)", conn);
+                    SqlCommand cmd = new SqlCommand("insert into tbl_roll_purchase_invoice values(@rpc_invoice_no,@rpc_date,@v_id,@rpc_order_no,@rpc_invoice_date,@rpc_due_date,@rpc_product_name,@rpc_quantity,@rpc_total_quantity,@rpc_rate,@rpc_discount,@rpc_cgstp,@rpc_cgsta,@rpc_sgstp,@rpc_sgsta,@rpc_igstp,@rpc_igsta,@rpc_amount,@rpc_sub_total,@rpc_total_gst,@rpc_shipping_charges,@rpc_adjustment,@rpc_total,@rpc_stotal,@rpc_hsn,@rpc_unit,@rpc_desc,@rpc_heightft,@rpc_heightmtr,@rpc_roll_size,@rpc_total_size,@rpc_size,@rpc_samount,@rpc_total_cgst,@rpc_total_sgst,@rpc_total_igst,@rpc_total_taxable,@rpc_balance,@rpc_mode)", conn);
                     cmd.Parameters.AddWithValue("@rpc_invoice_no", Convert.ToString(Txt_invoice.Text));
                     cmd.Parameters.AddWithValue("@rpc_date", DateTime.Now.ToShortDateString());
                     cmd.Parameters.AddWithValue("@v_id", Convert.ToString(Dd_customer.SelectedValue));
@@ -505,13 +706,14 @@ public partial class Purchase_edit_roll_bill : System.Web.UI.Page
                     cmd.Parameters.AddWithValue("@rpc_total_sgst", Convert.ToDecimal(lbl_total_sgst.Value));
                     cmd.Parameters.AddWithValue("@rpc_total_igst", Convert.ToDecimal(lbl_total_igst.Value));
                     cmd.Parameters.AddWithValue("@rpc_total_taxable", Convert.ToDecimal(lbl_total_taxable.Value));
-                    cmd.Parameters.AddWithValue("@rpc_balance", new_balance);
+                    cmd.Parameters.AddWithValue("@rpc_mode", Convert.ToString(Drp_payment_mode.SelectedItem.Text));
+                    cmd.Parameters.AddWithValue("@rpc_balance", Convert.ToDecimal(new_balance));
                     conn.Open();
                     cmd.ExecuteNonQuery();
 
                     conn.Close();
                 }
-                SqlCommand cmd2 = new SqlCommand("update tbl_roll_purchase SET rpu_invoice_no='" + Convert.ToString(Txt_invoice.Text) + "',rpu_date='" + Convert.ToDateTime(lbl_date.Value).ToString("MM/dd/yyyy") + "',v_id='" + Dd_customer.SelectedValue + "',rpu_order_no='" + Convert.ToString(Txt_order_no.Text) + "',rpu_invoice_date='" + Txt_invoice_date.Text + "',rpu_due_date='" + Txt_due_date.Text + "',rpu_total_quantity='" + Convert.ToDecimal(lbl_totalqty.Text) + "',rpu_discount='" + Convert.ToDecimal(Txt_discount.Text) + "',rpu_sub_total='" + Convert.ToDecimal(lbl_subtotal.Text) + "',rpu_total_gst='" + Convert.ToDecimal(lbl_gst.Text) + "',rpu_shipping_charges='" + Convert.ToDecimal(Txt_shipping.Text) + "',rpu_adjustment='" + Convert.ToDecimal(Txt_adjustment.Text) + "',rpu_total='" + Convert.ToDecimal(hide_total.Text) + "',rpu_total_cgst='" + Convert.ToDecimal(lbl_total_cgst.Value) + "',rpu_total_sgst='" + Convert.ToDecimal(lbl_total_sgst.Value) + "',rpu_total_igst='" + Convert.ToDecimal(lbl_total_igst.Value) + "',rpu_total_taxable='" + Convert.ToDecimal(lbl_total_taxable.Value) + "',rpu_balance='" + new_balance + "' where rpu_invoice_no='" + Txt_invoice.Text + "' ", conn);
+                SqlCommand cmd2 = new SqlCommand("update tbl_roll_purchase SET rpu_invoice_no='" + Convert.ToString(Txt_invoice.Text) + "',rpu_date='" + Convert.ToDateTime(lbl_date.Value).ToString("MM/dd/yyyy") + "',v_id='" + Dd_customer.SelectedValue + "',rpu_order_no='" + Convert.ToString(Txt_order_no.Text) + "',rpu_invoice_date='" + Txt_invoice_date.Text + "',rpu_due_date='" + Txt_due_date.Text + "',rpu_total_quantity='" + Convert.ToDecimal(lbl_totalqty.Text) + "',rpu_discount='" + Convert.ToDecimal(Txt_discount.Text) + "',rpu_sub_total='" + Convert.ToDecimal(lbl_subtotal.Text) + "',rpu_total_gst='" + Convert.ToDecimal(lbl_gst.Text) + "',rpu_shipping_charges='" + Convert.ToDecimal(Txt_shipping.Text) + "',rpu_adjustment='" + Convert.ToDecimal(Txt_adjustment.Text) + "',rpu_total='" + Convert.ToDecimal(hide_total.Text) + "',rpu_total_cgst='" + Convert.ToDecimal(lbl_total_cgst.Value) + "',rpu_total_sgst='" + Convert.ToDecimal(lbl_total_sgst.Value) + "',rpu_total_igst='" + Convert.ToDecimal(lbl_total_igst.Value) + "',rpu_total_taxable='" + Convert.ToDecimal(lbl_total_taxable.Value) + "',rpu_balance='" + Convert.ToDecimal(new_balance) + "' where rpu_invoice_no='" + Txt_invoice.Text + "' ", conn);
                 //cmd2.Parameters.AddWithValue("@pu_invoice_no", Convert.ToString(Txt_invoice.Text));
                 //cmd2.Parameters.AddWithValue("@pu_date", Convert.ToDateTime(lbl_date.Value).ToString("MM/dd/yyyy"));
                 //cmd2.Parameters.AddWithValue("@pu_customer_name", Convert.ToString(Dd_customer.SelectedItem.Text));
@@ -612,9 +814,22 @@ public partial class Purchase_edit_roll_bill : System.Web.UI.Page
 
     protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
     {
+        //feet1();
         Dd_enter_product.SelectedItem.Text = GridView1.SelectedRow.Cells[0].Text;
         lbl_product_hsn.Value = GridView1.SelectedRow.Cells[1].Text;
         Dd_feet.SelectedValue = GridView1.SelectedRow.Cells[2].Text;
+        //string feet = GridView1.SelectedRow.Cells[2].Text;
+        //SqlCommand cmd = new SqlCommand("select * from tbl_feet where f_id ='" + feet + "'", conn);
+        //SqlDataAdapter adapt = new SqlDataAdapter(cmd);
+        //DataTable dt = new DataTable();
+
+        //adapt.Fill(dt);
+        //if (dt.Rows.Count > 0)
+        //{
+        //    Dd_feet.SelectedItem.Text = dt.Rows[0]["f_feet"].ToString();
+
+        //}
+
         Txt_roll_height.Text = GridView1.SelectedRow.Cells[3].Text;
         Txt_roll_size.Text = GridView1.SelectedRow.Cells[4].Text;
         Txt_total_roll.Text = GridView1.SelectedRow.Cells[5].Text;
@@ -623,7 +838,7 @@ public partial class Purchase_edit_roll_bill : System.Web.UI.Page
         txt_amount.Text = GridView1.SelectedRow.Cells[8].Text;
         //txt_quantity.Text = GridView1.SelectedRow.Cells[9].Text;
         //txt_total_amt.Text = GridView1.SelectedRow.Cells[10].Text;
-
+        
         txt_final_amt.Text = GridView1.SelectedRow.Cells[14].Text;
         txt_cgst.Text = GridView1.SelectedRow.Cells[15].Text;
         txt_sgst.Text = GridView1.SelectedRow.Cells[16].Text;
@@ -646,9 +861,9 @@ public partial class Purchase_edit_roll_bill : System.Web.UI.Page
             decimal sgstamount = Convert.ToDecimal(txt_total_amt.Text) * Convert.ToDecimal(txt_sgst.Text) / 100;
             decimal igstamount = Convert.ToDecimal(txt_total_amt.Text) * Convert.ToDecimal(txt_igst.Text) / 100;
 
-            SqlCommand cmd6 = new SqlCommand("update tbl_temp_roll_purchase_invoice set rpc_product_name='" + Dd_enter_product.SelectedItem.Text + "',rpc_product_hsn='" + lbl_product_hsn.Value + "',rpc_heightft='" + Dd_feet.SelectedValue + "',rpc_heightmtr='" + Txt_roll_height.Text + "',rpc_roll_size='" + Txt_roll_size.Text + "',rpc_total_size='" + Txt_total_roll.Text + "',rpc_size='" + Txt_total_roll_sq.Text + "',rpc_rate='" + Txt_rate.Text + "',rpc_samount='" + txt_amount.Text + "',rpc_quantity='" + txt_quantity.Text + "',rpc_stotal='" + txt_total_amt.Text + "',rpc_cgsta='" + cgstamount + "',rpc_sgsta='" + sgstamount + "',rpc_igsta='" + igstamount + "',rpc_amount='" + txt_final_amt.Text + "',rpc_cgstp='" + txt_cgst.Text + "',rpc_sgstp='" + txt_sgst.Text + "',rpc_igstp='" + txt_igst.Text + "',rpc_desc='" + Txt_description.Text + "',rpc_unit='" + lbl_unit.Value + "' WHERE rpc_id='" + lbl_id.Value.Trim() + "'", conn);
+            SqlCommand cmd6 = new SqlCommand("update tbl_temp_roll_purchase_invoice set rpc_product_name='" + Dd_enter_product.SelectedItem.Text + "',rpc_product_hsn='" + lbl_product_hsn.Value + "',rpc_heightft='" + Dd_feet.SelectedItem.Value + "',rpc_heightmtr='" + Txt_roll_height.Text + "',rpc_roll_size='" + Txt_roll_size.Text + "',rpc_total_size='" + Txt_total_roll.Text + "',rpc_size='" + Txt_total_roll_sq.Text + "',rpc_rate='" + Txt_rate.Text + "',rpc_samount='" + txt_amount.Text + "',rpc_quantity='" + txt_quantity.Text + "',rpc_stotal='" + txt_total_amt.Text + "',rpc_cgsta='" + cgstamount + "',rpc_sgsta='" + sgstamount + "',rpc_igsta='" + igstamount + "',rpc_amount='" + txt_final_amt.Text + "',rpc_cgstp='" + txt_cgst.Text + "',rpc_sgstp='" + txt_sgst.Text + "',rpc_igstp='" + txt_igst.Text + "',rpc_desc='" + Txt_description.Text + "',rpc_unit='" + lbl_unit.Value + "' WHERE rpc_id='" + lbl_id.Value.Trim() + "'", conn);
 
-            conn.Open();
+            conn.Open(); 
             cmd6.ExecuteNonQuery();
 
             conn.Close();
@@ -658,15 +873,34 @@ public partial class Purchase_edit_roll_bill : System.Web.UI.Page
 
     protected void Button2_Click(object sender, EventArgs e)
     {
-        int i = Convert.ToInt32(GridView1.SelectedRow.Cells[18].Text);
+        int i = Convert.ToInt32(GridView1.SelectedRow.Cells[20].Text);
 
         SqlCommand cmd = new SqlCommand("Delete from tbl_temp_roll_purchase_invoice where rpc_id='" + i + "'", conn);
         conn.Open();
         cmd.ExecuteNonQuery();
         conn.Close();
         FillGRid();
+        product();
+        feet();
+		Txt_description.Text = "";
 
-    }
+		txt_amount.Text = "0";
+
+		txt_quantity.Text = "0";
+		txt_total_amt.Text = "0";
+
+		Txt_roll_height.Text = "0";
+		Txt_total_roll.Text = "0";
+		Txt_total_roll_sq.Text = "0";
+
+		txt_cgst.Text = "0";
+		txt_sgst.Text = "0";
+		txt_igst.Text = "0";
+		txt_final_amt.Text = "0";
+        Txt_roll_size.Text = "0";
+        Txt_rate.Text= "0";
+
+	}
 
     protected void Button3_Click(object sender, EventArgs e)
     {

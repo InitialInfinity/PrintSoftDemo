@@ -35,7 +35,8 @@ public partial class Reports_purchase_daily : System.Web.UI.Page
 
     public void FillRepeater()
     {
-        SqlCommand cmd = new SqlCommand("Select * From tbl_purchase inner join tbl_vendor on tbl_purchase.v_id=tbl_vendor.v_id WHERE pu_invoice_date >= DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE()), 0) AND pu_invoice_date <  DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE()) + 1, 0) Order By pu_id desc", conn);
+        SqlCommand cmd = new SqlCommand("Select tbl_purchase.pu_id,tbl_purchase.pu_invoice_no,CONVERT( varchar, tbl_purchase.pu_date, 105)as pu_date,tbl_purchase.v_id,tbl_purchase.pu_order_no,tbl_purchase.pu_invoice_date,tbl_purchase.pu_due_date,tbl_purchase.pu_total_quantity,tbl_purchase.pu_discount,tbl_purchase.pu_sub_total,tbl_purchase.pu_total_gst,tbl_purchase.pu_shipping_charges,tbl_purchase.pu_adjustment,tbl_purchase.pu_total,tbl_purchase.pu_total_cgst,tbl_purchase.pu_total_sgst,tbl_purchase.pu_total_igst,tbl_purchase.pu_total_taxable,tbl_purchase.pu_balance,tbl_purchase.pu_product_name,tbl_vendor.v_id,tbl_vendor.v_name,tbl_vendor.v_address,tbl_vendor.v_contact,tbl_vendor.v_gst_no,tbl_vendor.v_opening_balance,tbl_vendor.v_email,tbl_vendor.v_contact2 From tbl_purchase inner join tbl_vendor on tbl_purchase.v_id=tbl_vendor.v_id WHERE pu_invoice_date >= DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE()), 0) AND pu_invoice_date <  DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE()) + 1, 0) Order By pu_id desc", conn);
+        //SqlCommand cmd = new SqlCommand("Select * From tbl_purchase inner join tbl_vendor on tbl_purchase.v_id=tbl_vendor.v_id WHERE pu_invoice_date >= DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE()), 0) AND pu_invoice_date <  DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE()) + 1, 0) Order By pu_id desc", conn);
         SqlDataAdapter adapt = new SqlDataAdapter(cmd);
         DataTable dt = new DataTable();
         adapt.Fill(dt);
@@ -160,6 +161,14 @@ public partial class Reports_purchase_daily : System.Web.UI.Page
             var dt = new DataTable();
             da.Fill(dt);
 
+            if (dt.Rows.Count == 0)
+            {
+                System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('No data to export');", true);
+            }
+
+            else 
+            { 
+
             GridView1.DataSource = dt;
             GridView1.DataBind();
             Response.Clear();
@@ -180,7 +189,9 @@ public partial class Reports_purchase_daily : System.Web.UI.Page
             Response.Flush();
             Response.End();
         }
-        catch (Exception ex)
+
+		}
+		catch (Exception ex)
         {
 
         }
@@ -193,31 +204,38 @@ public partial class Reports_purchase_daily : System.Web.UI.Page
         var dt = new DataTable();
         da.Fill(dt);
 
-
-        GridView1.DataSource = dt;
-        GridView1.DataBind();
-
-
-        using (StringWriter sw = new StringWriter())
+        if (dt.Rows.Count == 0)
         {
-            using (HtmlTextWriter hw = new HtmlTextWriter(sw))
-            {
-                GridView1.RenderControl(hw);
-                StringReader sr = new StringReader(sw.ToString());
-                Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
-                PdfWriter writer = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
-                pdfDoc.Open();
-
-                XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, sr);
-                pdfDoc.Close();
-                Response.ContentType = "application/pdf";
-                Response.AddHeader("content-disposition", "attachment;filename=List of Daily Purchase Invoice-" + date + ".pdf");
-                Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                Response.Write(pdfDoc);
-                Response.End();
-            }
+            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('No data to export');", true);
         }
 
+        else
+        {
+
+            GridView1.DataSource = dt;
+            GridView1.DataBind();
+
+
+            using (StringWriter sw = new StringWriter())
+            {
+                using (HtmlTextWriter hw = new HtmlTextWriter(sw))
+                {
+                    GridView1.RenderControl(hw);
+                    StringReader sr = new StringReader(sw.ToString());
+                    Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
+                    PdfWriter writer = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
+                    pdfDoc.Open();
+
+                    XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, sr);
+                    pdfDoc.Close();
+                    Response.ContentType = "application/pdf";
+                    Response.AddHeader("content-disposition", "attachment;filename=List of Daily Purchase Invoice-" + date + ".pdf");
+                    Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                    Response.Write(pdfDoc);
+                    Response.End();
+                }
+            }
+        }
     }
 
 

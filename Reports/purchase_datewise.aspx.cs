@@ -53,25 +53,25 @@ public partial class Reports_purchase_datewise : System.Web.UI.Page
         SqlDataAdapter adapt = new SqlDataAdapter(cmd);
         DataTable dt = new DataTable();
         adapt.Fill(dt);
-        if (dt.Rows.Count > 0)
-        {
-            Repeater1.DataSource = dt;
-            Repeater1.DataBind();
+        //if (dt.Rows.Count > 0)
+        //{
+        //    Repeater1.DataSource = dt;
+        //    Repeater1.DataBind();
 
-            lbl_total_invoice_amount.Text = dt.Compute("Sum(pu_total)", string.Empty).ToString();
-            lbl_total_invoice.Text = dt.Compute("count(pu_id)", string.Empty).ToString();
-            Lbl_balance.Text = dt.Compute("Sum(pu_balance)", string.Empty).ToString();
+        //    lbl_total_invoice_amount.Text = dt.Compute("Sum(pu_total)", string.Empty).ToString();
+        //    lbl_total_invoice.Text = dt.Compute("count(pu_id)", string.Empty).ToString();
+        //    Lbl_balance.Text = dt.Compute("Sum(pu_balance)", string.Empty).ToString();
 
-            lblTBalance.Text = dt.Compute("Sum(pu_balance)", string.Empty).ToString();
-            lblTInvoiceAmount.Text = dt.Compute("Sum(pu_total)", string.Empty).ToString();
-        }
-        else
-        {
+        //    lblTBalance.Text = dt.Compute("Sum(pu_balance)", string.Empty).ToString();
+        //    lblTInvoiceAmount.Text = dt.Compute("Sum(pu_total)", string.Empty).ToString();
+        //}
+        //else
+        //{
             Panel1.Visible = false;
             lbl_total_invoice.Text = "0";
             lbl_total_invoice_amount.Text = "0";
             Lbl_balance.Text = "0";
-        }
+        //}
 
         //SqlCommand cmd2 = new SqlCommand("select sum(si_pay) from tbl_sale_invoice_payment  order by si_id desc", conn);
         //SqlDataAdapter adapt2 = new SqlDataAdapter(cmd2);
@@ -157,9 +157,32 @@ public partial class Reports_purchase_datewise : System.Web.UI.Page
   
     protected void Btn_search_Click(object sender, EventArgs e)
     {
-        if (Txt_date1.Text == "" || Txt_date1.Text == "" && Dd_customer.SelectedValue != "--Select--")
+        if (Txt_date1.Text == "" && Txt_date1.Text == "" && Dd_customer.SelectedValue == "--Select--")
         {
             SqlCommand cmd = new SqlCommand("select * from tbl_purchase inner join tbl_vendor on tbl_purchase.v_id=tbl_vendor.v_id where tbl_purchase.v_id = '" + 0 + "' Order By pu_id desc", conn);
+            SqlDataAdapter adapt = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            adapt.Fill(dt);
+            if (dt.Rows.Count == 0)
+            {
+                //Repeater1.DataSource = dt;
+                //Repeater1.DataBind();
+
+                //lbl_total_invoice_amount.Text = dt.Compute("Sum(pu_total)", string.Empty).ToString();
+                //lbl_total_invoice.Text = dt.Compute("count(pu_id)", string.Empty).ToString();
+                //Lbl_balance.Text = dt.Compute("Sum(pu_balance)", string.Empty).ToString();
+
+                //lblTBalance.Text = dt.Compute("Sum(pu_balance)", string.Empty).ToString();
+                //lblTInvoiceAmount.Text = dt.Compute("Sum(pu_total)", string.Empty).ToString();
+                System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Please select customer name or from date to date');", true);
+            }
+
+        }
+
+
+			else if (Txt_date1.Text == "" || Txt_date1.Text == "" && Dd_customer.SelectedValue != "--Select--")
+        {
+            SqlCommand cmd = new SqlCommand("select * from tbl_purchase inner join tbl_vendor on tbl_purchase.v_id=tbl_vendor.v_id where tbl_purchase.v_id = '" + Dd_customer.SelectedValue + "' Order By pu_id desc", conn);
             SqlDataAdapter adapt = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
             adapt.Fill(dt);
@@ -174,6 +197,7 @@ public partial class Reports_purchase_datewise : System.Web.UI.Page
 
                 lblTBalance.Text = dt.Compute("Sum(pu_balance)", string.Empty).ToString();
                 lblTInvoiceAmount.Text = dt.Compute("Sum(pu_total)", string.Empty).ToString();
+                //System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Please select customer name or from date to date');", true);
             }
             else
             {
@@ -183,7 +207,13 @@ public partial class Reports_purchase_datewise : System.Web.UI.Page
                 lbl_total_invoice.Text = "0";
                 lbl_total_invoice_amount.Text = "0";
                 Lbl_balance.Text = "0";
+                lblTBalance.Text = "0";
+                lblTInvoiceAmount.Text = "0";
             }
+
+
+
+            //System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Please select customer name or from date to date');", true);
         }
         else if (Txt_date1.Text != "" && Txt_date1.Text != "" && Dd_customer.SelectedValue == "--Select--")
         {
@@ -211,6 +241,8 @@ public partial class Reports_purchase_datewise : System.Web.UI.Page
                 lbl_total_invoice.Text = "0";
                 lbl_total_invoice_amount.Text = "0";
                 Lbl_balance.Text = "0";
+                lblTBalance.Text = "0";
+                lblTInvoiceAmount.Text = "0";
             }
         }
         else if (Txt_date1.Text != "" && Txt_date1.Text != "" && Dd_customer.SelectedValue != "--Select--")
@@ -239,6 +271,8 @@ public partial class Reports_purchase_datewise : System.Web.UI.Page
                 lbl_total_invoice.Text = "0";
                 lbl_total_invoice_amount.Text = "0";
                 Lbl_balance.Text = "0";
+                lblTBalance.Text = "0";
+                lblTInvoiceAmount.Text = "0";
             }
         }
 
@@ -267,9 +301,9 @@ public partial class Reports_purchase_datewise : System.Web.UI.Page
             else
             {
                 e.Item.FindControl("LinkButton1").Visible = true;
-            }
+                }
 
-            DataRowView drv = e.Item.DataItem as DataRowView;
+                DataRowView drv = e.Item.DataItem as DataRowView;
             decimal balance = Convert.ToDecimal(drv["pu_balance"]);
             decimal total = Convert.ToDecimal(drv["pu_total"]);
 

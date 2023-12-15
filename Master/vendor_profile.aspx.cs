@@ -11,7 +11,7 @@ using System.Data;
 public partial class admin_panel_Master_vendor_profile : System.Web.UI.Page
 {
     SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["String"].ConnectionString);
-    string admin_email, cust_update;
+    string admin_email, cust_update, gst_no, contact;
     int id;
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -22,7 +22,7 @@ public partial class admin_panel_Master_vendor_profile : System.Web.UI.Page
             {
                 try
                 {
-                    cust_update = Request.QueryString["cust_update"].ToString();
+                    cust_update = (Request.QueryString["cust_update"] ?? "").ToString();
                     if (cust_update == "success")
                     {
                         Panel5.Visible = true;
@@ -34,11 +34,11 @@ public partial class admin_panel_Master_vendor_profile : System.Web.UI.Page
 
                 Panel1.Visible = true;
                 Panel2.Visible = false;
-               
+
                 Panel4.Visible = false;
                 FillRepeater();
                 FillRepeater3();
-               
+
                 FillRepeater5();
             }
             else
@@ -47,12 +47,12 @@ public partial class admin_panel_Master_vendor_profile : System.Web.UI.Page
             }
         }
     }
- 
+
     protected void LinkButton1_Click(object sender, EventArgs e)
     {
         Panel1.Visible = true;
         Panel2.Visible = false;
-       
+
         Panel4.Visible = false;
     }
 
@@ -60,7 +60,7 @@ public partial class admin_panel_Master_vendor_profile : System.Web.UI.Page
     {
         Panel1.Visible = false;
         Panel2.Visible = true;
-        
+
         Panel4.Visible = false;
     }
 
@@ -69,7 +69,7 @@ public partial class admin_panel_Master_vendor_profile : System.Web.UI.Page
     {
         Panel1.Visible = false;
         Panel2.Visible = false;
-       
+
         Panel4.Visible = true;
     }
     public void FillRepeater()
@@ -99,6 +99,7 @@ public partial class admin_panel_Master_vendor_profile : System.Web.UI.Page
             Txt_name.Text = dt.Rows[0]["v_name"].ToString();
             Txt_address.Text = dt.Rows[0]["v_address"].ToString();
             Txt_contact.Text = dt.Rows[0]["v_contact"].ToString();
+           
             Txt_contact2.Text = dt.Rows[0]["v_contact2"].ToString();
             Txt_gst_no.Text = dt.Rows[0]["v_gst_no"].ToString();
             Txt_email.Text = dt.Rows[0]["v_email"].ToString();
@@ -109,7 +110,7 @@ public partial class admin_panel_Master_vendor_profile : System.Web.UI.Page
         }
 
     }
-   
+
     public void FillRepeater3()
     {
 
@@ -134,7 +135,7 @@ public partial class admin_panel_Master_vendor_profile : System.Web.UI.Page
         }
 
     }
-   
+
     public void FillRepeater5()
     {
 
@@ -157,7 +158,7 @@ public partial class admin_panel_Master_vendor_profile : System.Web.UI.Page
         }
 
     }
-  
+
     protected void Button1_Click(object sender, EventArgs e)
     {
         SqlCommand cmd1 = new SqlCommand("select * from tbl_admin_login", conn);
@@ -170,29 +171,94 @@ public partial class admin_panel_Master_vendor_profile : System.Web.UI.Page
         }
         if (admin_email.ToString() == Session["a_email"].ToString() || Session["admin_email"] != null)
         {
-            SqlCommand cmd = new SqlCommand("UPDATE tbl_vendor SET v_name=@v_name,v_address=@v_address,v_contact=@v_contact,v_gst_no=@v_gst_no,v_opening_balance=@v_opening_balance,v_email=@v_email,v_contact2=@v_contact2 WHERE v_id='" + id + "'", conn);
-            cmd.Parameters.AddWithValue("@v_name", Txt_name.Text.ToString());
-            cmd.Parameters.AddWithValue("@v_address", Txt_address.Text.ToString());
-            cmd.Parameters.AddWithValue("@v_contact", Txt_contact.Text.ToString());
-            cmd.Parameters.AddWithValue("@v_gst_no", Txt_gst_no.Text.ToString());
-            if (Txt_opening_balance.Text == "")
+
+            try
             {
-                cmd.Parameters.AddWithValue("@v_opening_balance", 0);
+                SqlCommand cmd2 = new SqlCommand("select * from tbl_vendor where v_id=" + id + "", conn);
+                SqlDataAdapter adapt = new SqlDataAdapter(cmd2);
+                DataTable dt = new DataTable();
+
+                adapt.Fill(dt);
+                if (dt.Rows.Count > 0)
+                {
+                    contact = dt.Rows[0]["v_contact"].ToString();
+                    gst_no = dt.Rows[0]["v_gst_no"].ToString();
+
+                }
+
+
+
+                SqlCommand cmd = new SqlCommand("UPDATE tbl_vendor SET v_name=@v_name,v_address=@v_address,v_contact=@v_contact,v_gst_no=@v_gst_no,v_opening_balance=@v_opening_balance,v_email=@v_email,v_contact2=@v_contact2 WHERE v_id='" + id + "'", conn);
+                cmd.Parameters.AddWithValue("@v_name", Txt_name.Text.ToString());
+                cmd.Parameters.AddWithValue("@v_address", Txt_address.Text.ToString());
+                cmd.Parameters.AddWithValue("@v_contact", Txt_contact.Text.ToString());
+                // cmd.Parameters.AddWithValue("@v_gst_no", Txt_gst_no.Text.ToString());
+                if (string.IsNullOrEmpty(Txt_gst_no.Text))
+                {
+
+                    Random random = new Random();
+                    int randomNumber = random.Next(1000, 9999);
+                    Txt_gst_no.Text = "N/A-" + randomNumber.ToString();
+                }
+
+                cmd.Parameters.AddWithValue("@v_gst_no", Txt_gst_no.Text.Trim());
+                //cmd.Parameters.AddWithValue("@v_gst_no", string.IsNullOrEmpty(Txt_gst_no.Text) ? DBNull.Value : (object)Txt_gst_no.Text);
+                if (Txt_opening_balance.Text == "")
+                {
+                    cmd.Parameters.AddWithValue("@v_opening_balance", 0);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@v_opening_balance", Convert.ToDecimal(Txt_opening_balance.Text));
+                }
+
+                cmd.Parameters.AddWithValue("@v_email", Txt_email.Text.ToString());
+                cmd.Parameters.AddWithValue("@v_contact2", Txt_contact2.Text.ToString());
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+
+                Response.Redirect("vendor_profile.aspx?id=" + id + "&cust_update=success");
+
+                
             }
-            else
+            catch (SqlException ex)
             {
-                cmd.Parameters.AddWithValue("@v_opening_balance", Convert.ToDecimal(Txt_opening_balance.Text));
+                if (ex.Number == 2601)
+                {
+                    // Check if the exception is related to a unique constraint violation
+                    if (ex.Message.Contains("IX_UniqueContact"))
+                    {
+                        // Show an alert indicating that the contact number is a duplicate
+                        string script = "alert('This contact number already exists.');";
+                        ClientScript.RegisterStartupScript(this.GetType(), "AlertContact", script, true);
+                        Txt_contact.Text = contact;
+                    }
+                    else if (ex.Message.Contains("IX_UniqueGST"))
+                    {
+
+                        string script = "alert('This GST number already exists.');";
+                        ClientScript.RegisterStartupScript(this.GetType(), "AlertGST", script, true);
+                        Txt_gst_no.Text = gst_no;
+
+                    }
+                    else
+                    {
+                        // Handle other SQL errors as needed
+                    }
+                }
+                else
+                {
+                    // Handle other SQL errors as needed
+                }
+
             }
 
-            cmd.Parameters.AddWithValue("@v_email", Txt_email.Text.ToString());
-            cmd.Parameters.AddWithValue("@v_contact2", Txt_contact2.Text.ToString());
-            conn.Open();
-        cmd.ExecuteNonQuery();
-        conn.Close();
-       
-        Response.Redirect("vendor_profile.aspx?id=" + id + "&cust_update=success");
-          
+
+
         }
+
+
         else
         {
             Response.Redirect("../access_denied.aspx");

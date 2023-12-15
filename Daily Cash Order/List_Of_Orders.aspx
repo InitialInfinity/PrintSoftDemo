@@ -66,6 +66,7 @@
         </div>
         
              <div class="col-md-9 exportbtn">
+                   <asp:TextBox ID="txtdate" runat="server" visible="false"></asp:TextBox>
            <a href="Create_Order.aspx"><button type="button" id="btn_mail"  title="Create New Estimate" class="btn btnsqr btn-primary4 btngap"> <i class="fa fa-plus"></i>Add Order</button></a>
           <%--<button type="button" id="btn_excel" title="Export to Excel" runat="server" class="btn btnsqr btn-primary3 btngap" onserverclick="excel_export"> <i class="fa fa-file-excel-o"></i> Excel</button>--%>
            
@@ -118,7 +119,7 @@
                   <asp:Panel ID="Panel1" runat="server">
                      
                         <td class="no-print" id="tbltextbox" runat="server">
-                  <asp:LinkButton ID="LinkButton1" runat="server" OnClientClick="return confirm('Do you want to delete this Estimate?');" OnClick="DeleteSale"><i  class="fa fa-trash-o"></i></asp:LinkButton>
+                  <asp:LinkButton ID="LinkButton1" runat="server" OnClientClick="return confirm('Do you want to delete this daily report?');" OnClick="DeleteSale"><i  class="fa fa-trash-o"></i></asp:LinkButton>
                  <%--<a href="wgst_bill.aspx?invoice=<%# Eval("est_invoice_no") %>"><i style="padding-left:10px" class="fa fa-eye"></i></a>--%>
                
                      

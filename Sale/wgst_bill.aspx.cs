@@ -26,7 +26,7 @@ public partial class Sale_wgst_bill : System.Web.UI.Page
         {
             try
             {
-                bill_update = Request.QueryString["bill_update"].ToString();
+                bill_update = (Request.QueryString["bill_update"]??"").ToString();
                 if (bill_update == "success")
                 {
                     Panel3.Visible = true;
@@ -57,9 +57,22 @@ public partial class Sale_wgst_bill : System.Web.UI.Page
     }
     protected void payment(object sender, EventArgs e)
     {
-        Response.Redirect("invoice_payment.aspx?invoice=" + invoice.ToString());
+        
+		
+			if (lbl_balance.Text != "0")
+			{
+			Response.Redirect("invoice_payment.aspx?invoice=" + invoice.ToString());
 
-    }
+		}
+			else
+			{
+
+				System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Payment is alredy done!!!');", true);
+			}
+
+		
+
+	}
     protected void print2(object sender, EventArgs e)
     {
         Response.Redirect("wgst_bill2.aspx?invoice=" + invoice.ToString());
@@ -125,7 +138,7 @@ public partial class Sale_wgst_bill : System.Web.UI.Page
             lbl_order_ref.Text = dt.Rows[0]["es_order_ref"].ToString();
             lbl_framing.Text = dt.Rows[0]["es_framing_charges"].ToString();
             lbl_install.Text = dt.Rows[0]["es_installation_charges"].ToString();
-
+            
 
             if (Convert.ToDecimal(dt.Rows[0]["es_balance"]) == Convert.ToDecimal(dt.Rows[0]["es_total"]))
             {

@@ -26,7 +26,7 @@ public partial class Purchase_list_of_roll_purchase : System.Web.UI.Page
             if (Page.IsPostBack) return;
             try
             {
-                insert = Request.QueryString["insert"].ToString();
+                insert = (Request.QueryString["insert"]??"").ToString();
                 if (insert == "success")
                 {
                     Panel2.Visible = true;
@@ -89,10 +89,31 @@ public partial class Purchase_list_of_roll_purchase : System.Web.UI.Page
                 adapt2.Fill(dt2);
                 if (dt2.Rows.Count > 0)
                 {
-                    bal = Convert.ToDecimal(dt2.Rows[0]["rpu_balance"]);
-                    v_id = Convert.ToInt32(dt2.Rows[0]["v_id"]);
-                    tsqft = Convert.ToDecimal(dt2.Rows[0]["rpu_size"]) ;
-                    product_name = Convert.ToString(dt2.Rows[0]["rpu_product_name"]);
+                    foreach (DataRow row in dt2.Rows)
+                    {
+
+                        bal = Convert.ToDecimal(row["rpu_balance"]);
+                        v_id = Convert.ToInt32(row["v_id"]);
+                        tsqft = Convert.ToDecimal(row["rpu_size"]);
+                        product_name = Convert.ToString(row["rpu_product_name"]);
+
+
+                        //stock start here
+                        //SqlCommand cmd33 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock=p_stock-('" + tsqft + "') WHERE p_name='" + Convert.ToString(product_name) + "'", conn);
+                        SqlCommand cmd33 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock = p_stock - @Quantity WHERE p_name = @ProductName AND p_id = (SELECT TOP 1 p_id FROM tbl_purchase_product WHERE p_name = @ProductName)", conn);
+
+
+                        cmd33.Parameters.AddWithValue("@Quantity", tsqft);
+                        cmd33.Parameters.AddWithValue("@ProductName", Convert.ToString(product_name));
+
+
+                        conn.Open();
+                        cmd33.ExecuteNonQuery();
+                        conn.Close();
+                        //stock end here
+                    }
+
+
                 }
             }
             using (SqlCommand cmd3 = new SqlCommand("update tbl_vendor set v_opening_balance=v_opening_balance - '" + bal + "' where v_id='" + v_id + "'", conn))
@@ -102,13 +123,7 @@ public partial class Purchase_list_of_roll_purchase : System.Web.UI.Page
 
                 conn.Close();
             }
-            //stock start here
-            SqlCommand cmd33 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock=p_stock-('" + tsqft + "') WHERE p_name='" + Convert.ToString(product_name) + "'", conn);
-
-            conn.Open();
-            cmd33.ExecuteNonQuery();
-            conn.Close();
-            //stock end here
+           
             using (SqlCommand cmd4 = new SqlCommand("DELETE FROM tbl_roll_purchase_invoice WHERE rpc_invoice_no = @pc_invoice_no", conn))
             {
 

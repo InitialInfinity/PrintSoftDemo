@@ -1,7 +1,35 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Sale/Sale.master" AutoEventWireup="true" CodeFile="edit_bill.aspx.cs" Inherits="admin_panel_Sale_edit_bill" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
-   
+    <script type="text/javascript">
+
+        var isSubmitted = false;
+
+        function preventMultipleSubmissions() {
+
+            if (!isSubmitted) {
+
+                $('#<%=Btn_generate_pdf.ClientID %>').val('Submitting.. Plz Wait..');
+
+                isSubmitted = true;
+
+                return true;
+
+            }
+
+            else {
+
+                return false;
+
+            }
+
+        }
+
+
+
+
+
+    </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
       <!-- Content Wrapper. Contains page content -->
@@ -82,11 +110,11 @@
 
                                 <div class="form-group row">
 
-                                    <div class="col-md-4">
-                                        <asp:Label ID="Label1" runat="server" Text="Product"></asp:Label>
+                                     <div class="col-md-4">
+                                        <asp:Label ID="Label1" runat="server" >Product<span style="color:red;">*</span></asp:Label>
                                     </div>
                                     <div class="col-md-4">
-                                        <asp:Label ID="Label3" runat="server" Text="Material"></asp:Label>
+                                        <asp:Label ID="Label3" runat="server" >Material<span style="color:red;">*</span></asp:Label>
                                     </div>
                                      <div class="col-md-4">
                                         <asp:Label ID="Label2" runat="server" Text="Description"></asp:Label>
@@ -96,7 +124,7 @@
                                 </div>
 
 
-                                <<div class="form-group row">
+                                <div class="form-group row">
 
                                     <div class="col-md-4">                                        
                                         <asp:DropDownList ID="Dd_enter_product" class="form-control" runat="server" AutoPostBack="True" OnSelectedIndexChanged="Dd_enter_product_SelectedIndexChanged"></asp:DropDownList>
@@ -128,12 +156,12 @@
                                     <thead>
                                         <tr>
 
-                                            <th scope="col">Height</th>
-                                            <th scope="col">Width</th>
+                                            <th scope="col">Height<span style="color:red;">*</span></th>
+                                            <th scope="col">Length<span style="color:red;">*</span></th>
                                             <th scope="col">Size</th>
                                             <th scope="col">Rate</th>
                                             <th scope="col">Amount</th>
-                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Quantity<span style="color:red;">*</span></th>
                                             <th scope="col">Total</th>
                                         </tr>
                                     </thead>
@@ -141,19 +169,19 @@
                                         <tr>
 
                                             <td>
-                                                <asp:TextBox ID="txt_height" OnkeyUp="sqrft(); rate();quan_amount(); gst();" onchange="sqrft(); rate();quan_amount(); gst();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>   
+                                                <asp:TextBox ID="txt_height" OnkeyUp="sqrft(); rate();quan_amount(); gst();" onchange="sqrft(); rate();quan_amount(); gst();" class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>   
                                             <td>
-                                                <asp:TextBox ID="txt_width" OnkeyUp="sqrft(); rate();quan_amount(); gst();" onchange="sqrft(); rate();quan_amount(); gst();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_width" OnkeyUp="sqrft(); rate();quan_amount(); gst();" onchange="sqrft(); rate();quan_amount(); gst();" class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_sqrft" OnkeyUp="sqrft(); rate();quan_amount(); gst();" onchange="sqrft(); rate();quan_amount(); gst();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_sqrft" onkeydown="javascript:return false" OnkeyUp="sqrft(); rate();quan_amount(); gst();" onchange="sqrft(); rate();quan_amount(); gst();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
                                             <td>
                                                 <asp:TextBox ID="txt_rate" Onkeyup="sqrft(); rate();quan_amount(); gst();" onchange="sqrft(); rate();quan_amount(); gst();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_amount" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_amount" onkeydown="javascript:return false"  class="form-control" runat="server" ></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_quantity" OnkeyUp="sqrft(); rate();quan_amount(); gst();" onchange="sqrft(); rate();quan_amount(); gst();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_quantity" OnkeyUp="sqrft(); rate();quan_amount(); gst();" onchange="sqrft(); rate();quan_amount(); gst();" class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_total_amt" onkeyup="gst();" onchange="gst();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_total_amt" onkeydown="javascript:return false" onkeyup="gst();" onchange="gst();" class="form-control" runat="server" ></asp:TextBox></td>
                                         </tr>
 
                                     </tbody>
@@ -162,12 +190,12 @@
                                     <thead>
                                         <tr>
 
-                                            <th scope="col">Height</th>
-                                            <th scope="col">Width</th>
+                                            <th scope="col">Height<span style="color:red;">*</span></th>
+                                            <th scope="col">Length<span style="color:red;">*</span></th>
                                             <th scope="col">Size</th>
                                             <th scope="col">Rate</th>
                                             <th scope="col">Amount</th>
-                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Quantity<span style="color:red;">*</span></th>
                                             <th scope="col">Total</th>
                                         </tr>
                                     </thead>
@@ -175,19 +203,19 @@
                                         <tr>
 
                                             <td>
-                                                <asp:TextBox ID="txt_height2"  disabled="true" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>   
+                                                <asp:TextBox ID="txt_height2"  disabled="true" class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>   
                                             <td>
-                                                <asp:TextBox ID="txt_width2" disabled="true" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_width2" disabled="true" class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_sqrft2" disabled="true"  class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_sqrft2" onkeydown="javascript:return false"  disabled="true"  class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
                                             <td>
                                                 <asp:TextBox ID="txt_rate2" Onkeyup="quan_amount2(); gst();" onchange="quan_amount2(); gst();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_amount2" disabled="true" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_amount2" onkeydown="javascript:return false" disabled="true" class="form-control" runat="server" ></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_quantity2" OnkeyUp="quan_amount2(); gst();" onchange="quan_amount2(); gst();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_quantity2" OnkeyUp="quan_amount2(); gst();" onchange="quan_amount2(); gst();" class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_total_amt2" onkeyup="gst();" onchange="gst();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_total_amt2" onkeydown="javascript:return false" onkeyup="gst();" onchange="gst();" class="form-control" runat="server" ></asp:TextBox></td>
                                         </tr>
 
                                     </tbody>
@@ -210,14 +238,14 @@
                                         <tr>
 
                                             <td>
-                                                <asp:TextBox ID="txt_cgst" class="form-control" OnkeyUp="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " onchange="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_cgst" class="form-control" OnkeyUp="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " onchange="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " runat="server" TextMode="Number" min="0"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_sgst" class="form-control" OnkeyUp="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " onchange="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_sgst" class="form-control" OnkeyUp="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " onchange="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " runat="server" TextMode="Number" min="0"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_igst" class="form-control" OnkeyUp="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " onchange="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " runat="server" TextMode="Number"></asp:TextBox></td>
+                                                <asp:TextBox ID="txt_igst" class="form-control" OnkeyUp="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " onchange="quan_amount2(); sqrft(); rate(); quan_amount(); gst(); " runat="server" TextMode="Number" min="0"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="txt_final_amt" class="form-control" runat="server"></asp:TextBox></td>
-                                            <td><asp:LinkButton ID="Btn_cart" Style="margin-right: 5px;" OnClick="Btn_cart_Click" runat="server"><i style="padding-left:10px; font-size:40px;" class="fa fa-plus-circle"></i></asp:LinkButton>
+                                                <asp:TextBox ID="txt_final_amt" onkeydown="javascript:return false" class="form-control" runat="server"></asp:TextBox></td>
+                                            <td><asp:LinkButton ID="Btn_cart" Style="margin-right: 5px;"      OnClick="Btn_cart_Click" runat="server"><i style="padding-left:10px; font-size:40px;" class="fa fa-plus-circle"></i></asp:LinkButton>
                                                 </td>
                                            
                                         </tr>
@@ -234,7 +262,7 @@
                                     <asp:Button ID="Button2" class="btn btn-primary" Style="margin-right: 5px; background-color:red !important;" runat="server" Text="Delete Entry" OnClick="Button2_Click" />    
                                     </div>
                                     <div class="col-md-4">
-                                    <asp:Button ID="Button1" class="btn btn-primary" Style="margin-right: 5px; background-color:green !important;" runat="server" Text="Edit / Update" OnClick="Button1_Click" />    
+                                    <asp:Button ID="Button1" class="btn btn-primary" Style="margin-right: 5px; background-color:green !important;" runat="server" Text="Edit / Update" OnClientClick="return JSFunctionValidate4();" OnClick="Button1_Click" />    
                                     </div>
                                     
                                     </div>
@@ -407,17 +435,17 @@
 
                                             
                                             <td>
-                                                <asp:TextBox ID="Txt_Dtp_charges" onkeyup="final_total();" class="form-control" runat="server" TabIndex="21" disabled="true"></asp:TextBox></td>
+                                                <asp:TextBox ID="Txt_Dtp_charges" onkeyup="final_total();" class="form-control" runat="server" TabIndex="21" disabled="true" TextMode="Number"  min="0"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="Txt_Pasting" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" disabled="true"></asp:TextBox></td>
+                                                <asp:TextBox ID="Txt_Pasting" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" disabled="true" TextMode="Number"  min="0"></asp:TextBox></td>
                                              <td>
-                                                <asp:TextBox ID="Txt_Framing" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" disabled="true"></asp:TextBox></td>
+                                                <asp:TextBox ID="Txt_Framing" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" disabled="true" TextMode="Number"  min="0"></asp:TextBox></td>
                                              <td>
-                                                <asp:TextBox ID="Txt_Fitting" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" disabled="true"></asp:TextBox></td>
+                                                <asp:TextBox ID="Txt_Fitting" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" disabled="true" TextMode="Number"  min="0"></asp:TextBox></td>
                                             <td>
-                                                <asp:TextBox ID="Txt_install" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" disabled="true"></asp:TextBox></td>
+                                                <asp:TextBox ID="Txt_install" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" disabled="true" TextMode="Number"  min="0"></asp:TextBox></td>
                                              <td>
-                                                 <asp:TextBox ID="Txt_TransportCharges" onkeyup="final_total();" class="form-control" runat="server" TabIndex="23" disabled="true"></asp:TextBox></td>
+                                                 <asp:TextBox ID="Txt_TransportCharges" onkeyup="final_total();" class="form-control" runat="server" TabIndex="23" disabled="true" TextMode="Number"  min="0"></asp:TextBox></td>
                                              
                                             <%--<td>
                                                  <asp:TextBox ID="Txt_advance" onkeyup="final_total();" onchange="final_total();" class="form-control" runat="server" TextMode="Number" TabIndex="24"></asp:TextBox>
@@ -465,12 +493,12 @@
                                            
                                             
                                             <td>
-                                           <asp:TextBox ID="Txt_advance" onkeyup="final_total();" onchange="final_total();" class="form-control" runat="server" TextMode="Number" TabIndex="24" disabled="true"></asp:TextBox>
+                                           <asp:TextBox ID="Txt_advance" onkeyup="final_total();" onchange="final_total();" class="form-control" runat="server" TextMode="Number" TabIndex="24" min="0" ></asp:TextBox>
                                                  <asp:RequiredFieldValidator ID="RequiredFieldValidatorAdvance" runat="server" ErrorMessage="Please Enter Advance.." ControlToValidate="Txt_advance" Display="Dynamic" ValidationGroup="g1"></asp:RequiredFieldValidator>
                                            </td>
 
                                             <td>
-                                                <asp:TextBox ID="Txt_discount" onkeyup="final_total();" onchange="final_total();" class="form-control" runat="server" TextMode="Number" TabIndex="25"></asp:TextBox>
+                                                <asp:TextBox ID="Txt_discount" onkeyup="final_total();" onchange="final_total();" class="form-control" runat="server" TextMode="Number" TabIndex="25" min="0"></asp:TextBox>
                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidatorDiscount" runat="server" ErrorMessage="Please Enter Discount.." ControlToValidate="Txt_discount" Display="Dynamic" ValidationGroup="g1"></asp:RequiredFieldValidator></td>
                                           <td>
                                                 <asp:TextBox ID="txt_UPIno"  class="form-control" runat="server" TabIndex="27" disabled="true"></asp:TextBox>
@@ -540,7 +568,7 @@
                                     <div class="col-lg-12">
                                         <asp:Label ID="Lbl_message"  runat="server" Text=""></asp:Label>
                                         
-                                        <asp:Button ID="Btn_generate_pdf" class="btn btn-primary pull-right" Style="margin-right: 5px;" runat="server" Text="Update Invoice" OnClick="Btn_generate_pdf_Click" />
+                                        <asp:Button ID="Btn_generate_pdf" class="btn btn-primary pull-right" Style="margin-right: 5px;" runat="server" Text="Update Invoice"   OnClientClick="return JSFunctionValidate();" OnClick="Btn_generate_pdf_Click" />
                                         
 
                                     </div>
@@ -569,6 +597,91 @@
 </style>
 
     <script type="text/javascript">
+        function JSFunctionValidate4() {
+
+            var quant2 = document.getElementById('<%=txt_quantity2.ClientID %>');
+               var quant = document.getElementById('<%=txt_quantity.ClientID %>');
+               var height = document.getElementById('<%=txt_height.ClientID %>');
+               var height2 = document.getElementById('<%=txt_height2.ClientID %>');
+            var width = document.getElementById('<%=txt_width.ClientID %>');
+            var width2 = document.getElementById('<%=txt_width2.ClientID %>');
+            <%--if (document.getElementById('<%=txt_height.ClientID%>').value == "0") {
+                alert("Height should not be 0  !!!");
+                return false;
+            }
+            if (document.getElementById('<%=txt_width.ClientID%>').value == "0") {
+                alert("Length should  not be 0 !!!");
+                return false;
+            }
+            if (document.getElementById('<%=txt_height2.ClientID%>').value == "0") {
+                alert("Height should not be 0  !!!");
+                return false;
+            }
+            if (document.getElementById('<%=txt_width2.ClientID%>').value == "0") {
+                alert("Length should  not be 0 !!!");
+                return false;
+            }--%>
+
+
+               //if (height2 != null) {
+               //    if (height2.value == "0") {
+               //        alert("Height Should NOT BE 0 !!!");
+               //        return false;
+               //    }
+               //}
+            if (document.getElementById('<%=Dd_customer.ClientID%>').value == "--Select--") {
+                alert("Please Select Customer !!!");
+                return false;
+            }
+           if (document.getElementById('<%=drp_designer.ClientID%>').value == "--Select Designer--") {
+                alert("Please Select Designer Name !!!");
+                return false;
+            }
+           <%-- if (document.getElementById('<%=Dd_enter_product.ClientID%>').value == "--Select--") {
+                alert("Please Select Product !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Dd_material.ClientID%>').value == "--Select--") {
+                alert("Please Select Material !!!");
+                return false;
+            }--%>
+            
+               if (width != null) {
+                   if (width.value == "0") {
+                       alert("Length should  not be 0 !!!");
+                       return false;
+                   }
+            }
+
+            if (height != null) {
+                if (height.value == "0") {
+                    alert("Height should not be 0  !!!");
+                    return false;
+                }
+            }
+               //if (width2 != null) {
+               //    if (height2.value == "0") {
+               //        alert("Length should  not be 0 !!!");
+               //        return false;
+               //    }
+               //}
+               if (quant2 != null) {
+                   if (quant2.value == "0") {
+                       alert("Please Enter Quantity !!!");
+                       return false;
+                   }
+               }
+               if (quant != null) {
+                   if (quant.value == "0") {
+                       alert("Please Enter Quantity !!!");
+                       return false;
+                   }
+               }
+
+
+
+               return true;
+           }
           function sqrft()
     {
         var first = document.getElementById('<%= txt_height.ClientID %>');
@@ -624,7 +737,7 @@
             }
             var total_amount = (parseFloat(amt.value) * parseFloat(quantity.value))
 
-            total.value = total_amount;
+            total.value = total_amount.toFixed(2);
 
         }
         function quan_amount2() {
@@ -643,7 +756,7 @@
             }
             var total_amount = (parseFloat(rate.value) * parseFloat(quantity.value))
 
-            total.value = total_amount;
+            total.value = total_amount.toFixed(2);
 
         }
 
@@ -684,7 +797,7 @@
             // var amt = total.value + rcgst.value + rsgst.value + rigst.value;
             var amt = parseFloat(rcgst) + parseFloat(rsgst) + parseFloat(rigst) + parseFloat(total_amount);
                   var amount = document.getElementById('<%= txt_final_amt.ClientID %>');
-                  amount.value = amt;
+              amount.value = amt.toFixed(2);
           }
          function gst2() {
             var cgst = document.getElementById('<%= txt_cgst.ClientID %>');
@@ -712,35 +825,605 @@
             // var amt = total.value + rcgst.value + rsgst.value + rigst.value;
             var amt = parseFloat(rcgst) + parseFloat(rsgst) + parseFloat(rigst) + parseFloat(total_amount);
                   var amount = document.getElementById('<%= txt_final_amt.ClientID %>');
-                  amount.value = amt;
+             amount.value = amt.toFixed(2);
           }
 
         function final_total() {
             var subtotal = document.getElementById('<%=lbl_subtotal2.ClientID %>');
-          
-           
-            var discount = document.getElementById('<%=Txt_discount.ClientID %>');
-           
-            var dtpcharges = document.getElementById('<%=Txt_Dtp_charges.ClientID %>');
-            var dtp_value = parseFloat(dtpcharges.value);
 
-            var transport_charges = document.getElementById('<%=Txt_TransportCharges.ClientID %>');
-            var transport_value = parseFloat(transport_charges.value);
+           var totalgst = document.getElementById('<%=lbl_gst.ClientID %>');
+
+           var discount = document.getElementById('<%=Txt_discount.ClientID %>');
+
+           var dtpcharges = document.getElementById('<%=Txt_Dtp_charges.ClientID %>');
+           var dtp_value = parseFloat(dtpcharges.value);
+
+           var transport_charges = document.getElementById('<%=Txt_TransportCharges.ClientID %>');
+           var transport_value = parseFloat(transport_charges.value);
+
+           var advance = document.getElementById('<%=Txt_advance.ClientID %>');
+
+           var fitting = document.getElementById('<%=Txt_Fitting.ClientID%>');
+           var fitting_value = parseFloat(fitting.value);
+
+           var install = document.getElementById('<%=Txt_install.ClientID%>');
+           var install_value = parseFloat(install.value);
+
+           var pasting = document.getElementById('<%=Txt_Pasting.ClientID%>');
+           var pasting_value = parseFloat(pasting.value);
+
+           var framing = document.getElementById('<%=Txt_Framing.ClientID%>');
+           var framing_value = parseFloat(framing.value);
+
+           var dtpvar, fittingvar, pastingvar;
+
+           if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+               //dtpvar = "0";
+               //fittingvar = "0";
+               //pastingvar = "0";
+               dtp_value = "0";
+               fitting_value = "0";
+               pasting_value = "0";
+               transport_value = "0";
+               install_value = "0";
+               framing_value = "0";
+           }
+
+           //1 column
+           else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                fitting_value = "0";
+                pasting_value = "0";
+                transport_value = "0";
+                framing_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                fitting_value = "0";
+                dtp_value = "0";
+                transport_value = "0";
+                framing_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                pasting_value = "0";
+                transport_value = "0";
+                framing_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                pasting_value = "0";
+                fitting_value = "0";
+                framing_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                pasting_value = "0";
+                fitting_value = "0";
+                transport_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                pasting_value = "0";
+                fitting_value = "0";
+                framing_value = "0";
+                transport_value = "0";
+            }
+
+            //2 column
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                transport_value = "0";
+                fitting_value = "0";
+                framing_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                transport_value = "0";
+                pasting_value = "0";
+                framing_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                fitting_value = "0";
+                pasting_value = "0";
+                framing_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                fitting_value = "0";
+                pasting_value = "0";
+                transport_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                fitting_value = "0";
+                pasting_value = "0";
+                transport_value = "0";
+                framing_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                transport_value = "0";
+                framing_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                fitting_value = "0";
+                framing_value = "0";
+                install_value = "0";
+
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                transport_value = "0";
+                fitting_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                fitting_value = "0";
+                transport_value = "0";
+                fitting_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                fitting_value = "0";
+                pasting_value = "0";
+                framing_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                install_value = "0";
+                pasting_value = "0";
+                framing_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                install_value = "0";
+                pasting_value = "0";
+                transport_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                framing_value = "0";
+                pasting_value = "0";
+                transport_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                fitting_value = "0";
+                pasting_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                framing_value = "0";
+                pasting_value = "0";
+                fitting_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                transport_value = "0";
+                pasting_value = "0";
+                fitting_value = "0";
+            }
+
+            //3 column
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                transport_value = "0";
+                framing_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                fitting_value = "0";
+                framing_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                fitting_value = "0";
+                transport_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                transport_value = "0";
+                framing_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                pasting_value = "0";
+                framing_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                pasting_value = "0";
+                transport_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                pasting_value = "0";
+                transport_value = "0";
+                framing_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                pasting_value = "0";
+                fitting_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                pasting_value = "0";
+                fitting_value = "0";
+                transport_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                framing_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                transport_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                transport_value = "0";
+                framing_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                install_value = "0";
+                fitting_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                fitting_value = "0";
+                framing_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                fitting_value = "0";
+                transport_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                install_value = "0";
+                pasting_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                framing_value = "0";
+                pasting_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                fitting_value = "0";
+                pasting_value = "0";
+            }
+
+            //4 column
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                framing_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                transport_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                transport_value = "0";
+                framing_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                install_value = "0";
+                pasting_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                framing_value = "0";
+                pasting_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value == '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                fitting_value = "0";
+                pasting_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value == '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                framing_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+                pasting_value = "0";
+            }
+
+            //5 column
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value == '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                install_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value == '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                framing_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value == '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                pasting_value = "0";
+            }
+
+            else if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value == '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+                //dtpvar = "0";
+                //fittingvar = "0";
+                //pastingvar = "0";
+                dtp_value = "0";
+            }
+
+            ////////////////////////
+            if (document.getElementById('<%=Txt_Dtp_charges.ClientID %>').value != '' && document.getElementById('<%=Txt_Fitting.ClientID%>').value != '' && document.getElementById('<%=Txt_Pasting.ClientID%>').value != '' && document.getElementById('<%=Txt_TransportCharges.ClientID %>').value != '' && document.getElementById('<%=Txt_install.ClientID%>').value != '' && document.getElementById('<%=Txt_Framing.ClientID%>').value != '') {
+
+            }
+
 
             var total_dtp_transport = (parseFloat(transport_value) + parseFloat(dtp_value));
 
-            var advance = document.getElementById('<%=Txt_advance.ClientID %>');
+            var total_amount = (parseFloat(subtotal.value) + parseFloat(total_dtp_transport) + parseFloat(fitting_value) + parseFloat(pasting_value) + parseFloat(framing_value) + parseFloat(install_value) );
 
-            var total_amount = (parseFloat(subtotal.value) - parseFloat(discount.value));
-       
-            var balance = (parseFloat(total_amount));
+            var balance = (parseFloat(total_amount) - parseFloat(advance.value) - parseFloat(discount.value));
+            var roundoff = Math.round(balance);
 
-            document.getElementById('<%=lbl_total.ClientID %>').innerHTML = balance;
+            document.getElementById('<%=lbl_total.ClientID %>').innerHTML = roundoff;
             document.getElementById('<%=hide_total.ClientID %>').value = total_amount;
-            document.getElementById('<%=lbl_final.ClientID %>').innerHTML = total_amount;
-        }
+           document.getElementById('<%=lbl_final.ClientID %>').innerHTML = total_amount;
+       }
 
     </script>
+     <script>
+         function JSFunctionValidate() {
+             if (document.getElementById('<%=Dd_customer.ClientID%>').value == "--Select--") {
+                alert("Please Select Customer Name !!!");
+                return false;
+            }
+            if (document.getElementById('<%=drp_designer.ClientID%>').value == "--Show Designer--") {
+                alert("Please Select Designer Name !!!");
+                return false;
+            }
+          <%--  if (document.getElementById('<%=Dd_enter_product.ClientID%>').value == "--Select--") {
+                alert("Please Select Product !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Dd_material.ClientID%>').value == "--Select--") {
+                alert("Please Select Material !!!");
+                return false;
+            }--%>
+            if (document.getElementById('<%=Txt_invoice_date.ClientID%>').value.length == 0) {
+                alert("Please Select Invoice Date !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Txt_due_date.ClientID%>').value.length == 0) {
+                alert("Please Select Due Date !!!");
+                return false;
+            }
+
+            if (document.getElementById('<%=Txt_advance.ClientID%>').value.length == 0) {
+                alert("Please Enter Advance !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Txt_discount.ClientID%>').value.length == 0) {
+                 alert("Please Enter Discount !!!");
+                 return false;
+             }
+             preventMultipleSubmissions();
+             return true;
+         }
+
+   </script>
 
    <%-- <script type="text/javascript">
 	
@@ -809,6 +1492,100 @@
         window.onscroll = disableTextBox;
 		
 </script>--%>
+   <script type="text/javascript">
 
+       function disableTextBox() {
+           document.getElementById('<%=Txt_Dtp_charges.ClientID%>').disabled = true;
+             document.getElementById('<%=Txt_Pasting.ClientID%>').disabled = true;
+             document.getElementById('<%=Txt_Framing.ClientID%>').disabled = true;
+             document.getElementById('<%=Txt_Fitting.ClientID%>').disabled = true;
+             document.getElementById('<%=Txt_install.ClientID%>').disabled = true;
+             document.getElementById('<%=Txt_TransportCharges.ClientID%>').disabled = true;
+           addListeners();
+       }
+
+       function toggleTextBox(e) {
+           checkbox = e.target;
+
+           if (checkbox.checked == true) {
+               if (checkbox.id == "<%=Chk_dtp.ClientID%>") {
+                     document.getElementById('<%=Txt_Dtp_charges.ClientID%>').disabled = false;
+                 }
+                 if (checkbox.id == "<%=Chk_pasting.ClientID%>") {
+                     document.getElementById('<%=Txt_Pasting.ClientID%>').disabled = false;
+                 }
+                 if (checkbox.id == "<%=Chk_framing.ClientID%>") {
+                     document.getElementById('<%=Txt_Framing.ClientID%>').disabled = false;
+                 }
+                 if (checkbox.id == "<%=Chk_fitting.ClientID%>") {
+                     document.getElementById('<%=Txt_Fitting.ClientID%>').disabled = false;
+                 }
+                 if (checkbox.id == "<%=Chk_install.ClientID%>") {
+                     document.getElementById('<%=Txt_install.ClientID%>').disabled = false;
+                 }
+                 if (checkbox.id == "<%=Chk_trans.ClientID%>") {
+                     document.getElementById('<%=Txt_TransportCharges.ClientID%>').disabled = false;
+                 }
+             }
+             else {
+               <%-- document.getElementById('<%=Txt_Dtp_charges.ClientID%>').disabled = true;
+                document.getElementById('<%=Txt_Pasting.ClientID%>').disabled = true;
+                document.getElementById('<%=Txt_Fitting.ClientID%>').disabled = true;
+                document.getElementById('<%=Txt_TransportCharges.ClientID%>').disabled = true;--%>
+                 if (checkbox.id == "<%=Chk_dtp.ClientID%>") {
+                     document.getElementById('<%=Txt_Dtp_charges.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_Dtp_charges.ClientID%>').value = "0";
+                    final_total();
+                }
+                if (checkbox.id == "<%=Chk_pasting.ClientID%>") {
+                    document.getElementById('<%=Txt_Pasting.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_Pasting.ClientID%>').value = "0";
+                    final_total();
+                }
+                if (checkbox.id == "<%=Chk_framing.ClientID%>") {
+                    document.getElementById('<%=Txt_Framing.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_Framing.ClientID%>').value = "0";
+                    final_total();
+                }
+                if (checkbox.id == "<%=Chk_fitting.ClientID%>") {
+                    document.getElementById('<%=Txt_Fitting.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_Fitting.ClientID%>').value = "0";
+                    final_total();
+                }
+                if (checkbox.id == "<%=Chk_install.ClientID%>") {
+                    document.getElementById('<%=Txt_install.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_install.ClientID%>').value = "0";
+                    final_total();
+                }
+                if (checkbox.id == "<%=Chk_trans.ClientID%>") {
+                    document.getElementById('<%=Txt_TransportCharges.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_TransportCharges.ClientID%>').value = "0";
+                    final_total();
+                }
+
+
+            }
+        }
+
+        function addListeners() {
+            check1 = document.getElementById('<%=Chk_dtp.ClientID%>');
+        check2 = document.getElementById('<%=Chk_pasting.ClientID%>');
+        check3 = document.getElementById('<%=Chk_fitting.ClientID%>');
+        check4 = document.getElementById('<%=Chk_trans.ClientID%>');
+        check5 = document.getElementById('<%=Chk_framing.ClientID%>');
+        check6 = document.getElementById('<%=Chk_install.ClientID%>');
+
+           check1.addEventListener('click', toggleTextBox, false);
+           check2.addEventListener('click', toggleTextBox, false);
+           check3.addEventListener('click', toggleTextBox, false);
+           check4.addEventListener('click', toggleTextBox, false);
+           check5.addEventListener('click', toggleTextBox, false);
+           check6.addEventListener('click', toggleTextBox, false);
+
+       }
+       window.onload = disableTextBox;
+       window.onscroll = disableTextBox;
+
+   </script>
 </asp:Content>
 

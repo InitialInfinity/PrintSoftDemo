@@ -30,11 +30,24 @@ public partial class Purchase_roll_payment : System.Web.UI.Page
             Txt_date.Text = DateTime.Today.ToString("yyyy-MM-dd");
             fill();
             FillRepeater();
+            Txt_pay.Text = "0";
+            
 
         }
         else
         {
             Response.Redirect("../login.aspx");
+        }
+        if (Dd_payment_mode.SelectedValue != "Cheque")
+        {
+            // Txt_date.Text = DateTime.Today.ToString("yyyy-MM-dd");
+            Txt_date.ReadOnly = true;
+        }
+        else
+        {
+            // Txt_date.Text = DateTime.Today.ToString("yyyy-MM-dd");
+            Txt_date.ReadOnly = false;
+
         }
     }
     protected void fill()
@@ -137,4 +150,18 @@ public partial class Purchase_roll_payment : System.Web.UI.Page
 
 
 
+
+    protected void Dd_payment_mode_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (Dd_payment_mode.SelectedValue == "Cheque")
+        {
+            Txt_date.ReadOnly = false;
+
+        }
+        else
+        {
+            Txt_date.ReadOnly = true;
+
+        }
+    }
 }

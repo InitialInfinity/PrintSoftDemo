@@ -238,7 +238,7 @@
                 <div class="mail-contnet">
                   <h4 class="text-black m-b-0">Mode of Payment Report</h4>           
                   <ul>
-                      <li><a href="datewise_pymnt_mode.aspx">Date wise</a></li>
+                      <li><a href="datewise_pymnt_mode.aspx">Sales Report - Date wise</a></li>
                   </ul>
                 </div>
               </div>

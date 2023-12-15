@@ -26,6 +26,54 @@
         }
 
     </script>
+    <script type="text/javascript">
+
+        var isSubmitted = false;
+
+        function preventMultipleSubmissions() {
+
+            if (!isSubmitted) {
+
+                $('#<%=Btn_generate_pdf.ClientID %>').val('Submitting.. Plz Wait..');
+
+                isSubmitted = true;
+
+                return true;
+
+            }
+
+            else {
+
+                return false;
+
+            }
+
+        }
+
+
+        function preventMultipleSubmissions1() {
+
+
+            if (!isSubmitted) {
+
+                $('#<%=Btn_submit_payment.ClientID %>').val('Submitting.. Plz Wait..');
+
+                isSubmitted = true;
+
+                return true;
+
+            }
+            else {
+
+                return false;
+
+            }
+
+        }
+
+
+
+    </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <!-- Content Wrapper. Contains page content -->
@@ -61,7 +109,7 @@
                                 <hr />
 
                                 <div class="form-group row">
-                                    <label class="control-label text-right col-md-3">Name</label>
+                                    <label class="control-label text-right col-md-3">Name<span style="color: red;">*</span></label>
                                     <div class="col-md-6">
                                         <asp:TextBox ID="Txt_name" class="form-control" runat="server" TabIndex="2"></asp:TextBox>
 
@@ -69,7 +117,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="control-label text-right col-md-3">Phone</label>
+                                    <label class="control-label text-right col-md-3">Phone<span style="color: red;">*</span></label>
                                     <div class="col-md-6">
                                         <asp:TextBox ID="Txt_phone" class="form-control" runat="server" TabIndex="2"></asp:TextBox>
 
@@ -79,7 +127,7 @@
                                 <div class="form-group row">
 
                                     <div class="col-md-5">
-                                        <asp:Label ID="Label1" runat="server" Text="Product"></asp:Label>
+                                        <asp:Label ID="Label1" runat="server">Product<span style="color:red;">*</span></asp:Label>
                                     </div>
                                     <div class="col-md-6">
                                         <asp:Label ID="Label2" runat="server" Text="Description"></asp:Label>
@@ -126,12 +174,12 @@
                                     <asp:Panel ID="Panel1" runat="server">
                                         <thead>
                                             <tr>
-                                                <th scope="col">Length</th>
-                                                <th scope="col">Height</th>
+                                                <th scope="col">Length<span style="color: red;">*</span></th>
+                                                <th scope="col">Height<span style="color: red;">*</span></th>
                                                 <th scope="col">Size</th>
                                                 <th scope="col">Rate</th>
                                                 <th scope="col">Amount</th>
-                                                <th scope="col">Quantity</th>
+                                                <th scope="col">Quantity<span style="color: red;">*</span></th>
                                                 <th scope="col">Total</th>
                                             </tr>
                                         </thead>
@@ -139,20 +187,20 @@
                                             <tr>
 
                                                 <td>
-                                                    <asp:TextBox ID="txt_width" OnkeyUp="sqrft(); rate();quan_amount(); " onchange="sqrft(); rate();quan_amount();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_width" OnkeyUp="sqrft(); rate();quan_amount(); " onchange="sqrft(); rate();quan_amount();" class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="txt_height" OnkeyUp="sqrft(); rate();quan_amount(); " onchange="sqrft(); rate();quan_amount(); " class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_height" OnkeyUp="sqrft(); rate();quan_amount(); " onchange="sqrft(); rate();quan_amount(); " class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="txt_sqrft" OnkeyUp="sqrft(); rate();quan_amount(); " onchange="sqrft(); rate();quan_amount();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_sqrft" onkeydown="javascript:return false" OnkeyUp="sqrft(); rate();quan_amount(); " onchange="sqrft(); rate();quan_amount();" class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>
                                                 <td>
                                                     <asp:TextBox ID="txt_rate" Onkeyup="sqrft(); rate();quan_amount(); " onchange="sqrft(); rate();quan_amount(); " class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="txt_amount" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_amount" class="form-control" runat="server" onkeydown="javascript:return false" TextMode="Number"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="txt_quantity" OnkeyUp="sqrft(); rate();quan_amount(); " onchange="sqrft(); rate();quan_amount(); " class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_quantity" OnkeyUp="sqrft(); rate();quan_amount(); " onchange="sqrft(); rate();quan_amount(); " class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>
 
                                                 <td>
-                                                    <asp:TextBox ID="txt_total_amt" onchange=" " class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_total_amt" onkeydown="javascript:return false" onchange=" " class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
                                             </tr>
 
                                         </tbody>
@@ -161,12 +209,12 @@
                                         <thead>
                                             <tr>
 
-                                                <th scope="col">Height</th>
-                                                <th scope="col">Width</th>
+                                                <th scope="col">Height<span style="color: red;">*</span></th>
+                                                <th scope="col">Length<span style="color: red;">*</span></th>
                                                 <th scope="col">Size</th>
                                                 <th scope="col">Rate</th>
                                                 <th scope="col">Amount</th>
-                                                <th scope="col">Quantity</th>
+                                                <th scope="col">Quantity<span style="color: red;">*</span></th>
                                                 <th scope="col">Total</th>
                                             </tr>
                                         </thead>
@@ -174,19 +222,19 @@
                                             <tr>
 
                                                 <td>
-                                                    <asp:TextBox ID="txt_height2" disabled="true" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_height2" disabled="true" class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="txt_width2" disabled="true" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_width2" disabled="true" class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="txt_sqrft2" disabled="true" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_sqrft2" onkeydown="javascript:return false" disabled="true" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
                                                 <td>
                                                     <asp:TextBox ID="txt_rate2" Onkeyup="quan_amount2();" onchange="quan_amount2(); " class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="txt_amount2" disabled="true" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_amount2" disabled="true" onkeydown="javascript:return false" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="txt_quantity2" OnkeyUp="quan_amount2(); " onchange="quan_amount2();" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_quantity2" OnkeyUp="quan_amount2(); " onchange="quan_amount2();" class="form-control" runat="server" TextMode="Number" min="0"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="txt_total_amt2" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txt_total_amt2" onkeydown="javascript:return false" class="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
                                             </tr>
 
                                         </tbody>
@@ -351,11 +399,11 @@
 
 
                                                 <td>
-                                                    <asp:TextBox ID="Txt_Dtp_charges" onkeyup="final_total();" class="form-control" runat="server" TabIndex="21"></asp:TextBox></td>
+                                                    <asp:TextBox ID="Txt_Dtp_charges" onkeyup="final_total();" class="form-control" runat="server" TabIndex="21" TextMode="Number" min="0"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="Txt_Pasting" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22"></asp:TextBox></td>
+                                                    <asp:TextBox ID="Txt_Pasting" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" TextMode="Number" min="0"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="Txt_Fitting" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22"></asp:TextBox></td>
+                                                    <asp:TextBox ID="Txt_Fitting" onkeyup="final_total();" class="form-control" runat="server" TabIndex="22" TextMode="Number" min="0"></asp:TextBox></td>
 
 
                                                 <%--<td>
@@ -400,14 +448,14 @@
 
 
                                                 <td>
-                                                    <asp:TextBox ID="Txt_TransportCharges" onkeyup="final_total();" class="form-control" runat="server" TabIndex="23"></asp:TextBox></td>
+                                                    <asp:TextBox ID="Txt_TransportCharges" onkeyup="final_total();" class="form-control" runat="server" TabIndex="23" TextMode="Number" min="0"></asp:TextBox></td>
                                                 <td>
-                                                    <asp:TextBox ID="Txt_advance" onkeyup="final_total();" onchange="final_total();" class="form-control" runat="server" TextMode="Number" TabIndex="24"></asp:TextBox>
+                                                    <asp:TextBox ID="Txt_advance" onkeyup="final_total();" onchange="final_total();" class="form-control" runat="server" TextMode="Number" TabIndex="24" min="0"></asp:TextBox>
                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidatorAdvance" runat="server" ErrorMessage="Please Enter Advance.." ControlToValidate="Txt_advance" Display="Dynamic" ValidationGroup="g1"></asp:RequiredFieldValidator>
                                                 </td>
 
                                                 <td>
-                                                    <asp:TextBox ID="Txt_discount" onkeyup="final_total();" onchange="final_total();" class="form-control" runat="server" TextMode="Number" TabIndex="25"></asp:TextBox>
+                                                    <asp:TextBox ID="Txt_discount" onkeyup="final_total();" onchange="final_total();" class="form-control" runat="server" TextMode="Number" TabIndex="25" min="0"></asp:TextBox>
                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidatorDiscount" runat="server" ErrorMessage="Please Enter Discount.." ControlToValidate="Txt_discount" Display="Dynamic" ValidationGroup="g1"></asp:RequiredFieldValidator></td>
                                                 <td>
                                                     <asp:DropDownList ID="drp_payment" class="form-control" runat="server" TabIndex="26">
@@ -469,10 +517,10 @@
 
                                 <!-- this row will not appear when printing -->
                                 <div class="row no-print">
-                                    <div class="col-lg-12">
+                                    <div class="col-lg-11 py-2">
                                         <asp:Label ID="Lbl_message" runat="server" Text=""></asp:Label>
-                                        <asp:Button ID="Btn_submit_payment" class="btn btn-success pull-right" runat="server" Text="Save & Close" OnClick="Btn_submit_payment_Click" />
-                                        <asp:Button ID="Btn_generate_pdf" class="btn btn-primary pull-right" Style="margin-right: 5px;" runat="server" Text="Save Order" OnClientClick="return JSFunctionValidate();" OnClick="Btn_generate_pdf_Click" />
+                                        <asp:Button ID="Btn_submit_payment" class="btn btn-success pull-right" runat="server" Text="Save & Close" OnClientClick="return JSFunctionValidate00();" OnClick="Btn_submit_payment_Click" />
+                                        <asp:Button ID="Btn_generate_pdf" class="btn btn-primary pull-right" Style="margin-right: 5px;" runat="server" Text="Save Order" OnClientClick="return JSFunctionValidate();" OnClick="Btn_generate_pdf_Click" TabIndex="1" />
 
 
                                     </div>
@@ -498,60 +546,65 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
 
                 </div>
+                 <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+                            <ContentTemplate>
                 <div class="modal-body">
+
                     <div class="form-body">
-                        <div class="form-group row">
-                            <label class="control-label text-right col-md-3">Product Name<span style="color: red;">*</span></label>
-                            <div class="col-md-9">
 
-                                <asp:TextBox ID="Txt_product_name" placeholder="Product Name" class="form-control" runat="server"></asp:TextBox>
-                            </div>
-                        </div>
+                       <%-- <asp:UpdatePanel ID="UpdatePanel4" runat="server">
+                            <ContentTemplate>--%>
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-3">Product Name<span style="color: red;">*</span></label>
+                                    <div class="col-md-9">
 
-                        <div class="form-group row">
-                            <label class="control-label text-right col-md-3">Unit</label>
-                            <div class="col-md-9">
-                                <asp:DropDownList ID="Dd_unit" class="form-control" runat="server">
-                                    <asp:ListItem Value="Sqft">Sqft</asp:ListItem>
-                                    <asp:ListItem Value="Inch">Inch</asp:ListItem>
-                                    <asp:ListItem Value="Pcs">Pcs</asp:ListItem>
-                                    <asp:ListItem Value="Ltr">Ltr</asp:ListItem>
-                                </asp:DropDownList>
-                            </div>
-                        </div>
+                                        <asp:TextBox ID="Txt_product_name" placeholder="Product Name" class="form-control" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
 
-                        <div class="form-group row">
-                            <label class="control-label text-right col-md-3">HSN Code</label>
-                            <div class="col-md-9">
-                                <asp:TextBox ID="Txt_hsn" placeholder="HSN Code" class="form-control" runat="server"></asp:TextBox>
-                            </div>
-                        </div>
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-3">Unit</label>
+                                    <div class="col-md-9">
+                                        <asp:DropDownList ID="Dd_unit" class="form-control" runat="server">
+                                            <asp:ListItem Value="Sqft">Sqft</asp:ListItem>
+                                            <asp:ListItem Value="Inch">Inch</asp:ListItem>
+                                            <asp:ListItem Value="Pcs">Pcs</asp:ListItem>
+                                            <asp:ListItem Value="Ltr">Ltr</asp:ListItem>
+                                        </asp:DropDownList>
+                                    </div>
+                                </div>
 
-                        <div class="form-group row">
-                            <label class="control-label text-right col-md-3">Rate (Rs)<span style="color: red;">*</span></label>
-                            <div class="col-md-9">
-                                <asp:TextBox ID="Txt_ra" placeholder="Rate" class="form-control" runat="server" TextMode="Number"></asp:TextBox>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="control-label text-right col-md-3">Description</label>
-                            <div class="col-md-9">
-                                <asp:TextBox ID="Txt_desc" class="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
-                            </div>
-                        </div>
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-3">HSN Code</label>
+                                    <div class="col-md-9">
+                                        <asp:TextBox ID="Txt_hsn" placeholder="HSN Code" class="form-control" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
 
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-3">Rate (Rs)<span style="color: red;">*</span></label>
+                                    <div class="col-md-9">
+                                        <asp:TextBox ID="Txt_ra" placeholder="Rate" class="form-control" runat="server" TextMode="Number"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label text-right col-md-3">Description</label>
+                                    <div class="col-md-9">
+                                        <asp:TextBox ID="Txt_desc" class="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
+                                    </div>
+                                </div>
 
+                           
                     </div>
                 </div>
-                <asp:UpdatePanel ID="UpdatePanel4" runat="server">
-                    <ContentTemplate>
-                        <div class="modal-footer">
-                            <asp:Label ID="lbl_msg2" runat="server" Text=""></asp:Label>
-                            <asp:Button ID="Button2" class="btn btn-success" runat="server" OnClientClick="return JSFunctionValidate3();" Text="Submit" OnClick="Button2_Click" />
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
-                    </ContentTemplate>
-                </asp:UpdatePanel>
+
+                <div class="modal-footer">
+                    <asp:Label ID="lbl_msg2" runat="server" Text=""></asp:Label>
+                    <asp:Button ID="Button2" class="btn btn-success" runat="server" OnClientClick="return JSFunctionValidate3();" Text="Submit" OnClick="Button2_Click" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+ </ContentTemplate>
+                        </asp:UpdatePanel>
             </div>
 
         </div>
@@ -599,7 +652,7 @@
 
             var total_amount = (parseFloat(amt.value) * parseFloat(quantity.value))
 
-            total.value = total_amount;
+            total.value = total_amount.toFixed(2);
 
         }
         function quan_amount2() {
@@ -609,7 +662,7 @@
 
             var total_amount = (parseFloat(rate.value) * parseFloat(quantity.value))
 
-            total.value = total_amount;
+            total.value = total_amount.toFixed(2);
 
         }
 
@@ -774,18 +827,53 @@
 
             var total_amount = (parseFloat(subtotal.value) + parseFloat(total_dtp_transport) + parseFloat(fitting_value) + parseFloat(pasting_value));
 
-          
 
 
-           
-
-            var balance = (parseFloat(total_amount) - parseFloat(advance.value) - parseFloat(discount.value));
-            var roundoff = Math.round(balance);
 
 
-            document.getElementById('<%=lbl_total.ClientID %>').innerHTML = roundoff;
+
+            //var balance = (parseFloat(total_amount) - parseFloat(advance.value) - parseFloat(discount.value));
+            //var roundoff = Math.round(balance);
+
+
+           <%-- if (advance.value == "0") {
+                var balance = (parseFloat(total_amount))
+                var roundoff = Math.round(balance);
+                document.getElementById('<%=lbl_total.ClientID %>').innerHTML = roundoff
+            }
+
+            else if (discount == "0") {
+                var balance = (parseFloat(total_amount))
+                var roundoff = Math.round(balance);
+                document.getElementById('<%=lbl_total.ClientID %>').innerHTML = roundoff
+            }--%>
+            if (advance.value == "0" && discount == "0") {
+                var balance = (parseFloat(total_amount))
+                var roundoff = Math.round(balance);
+                document.getElementById('<%=lbl_total.ClientID %>').innerHTML = roundoff
+
+             }
+           <%-- else if (advance.value != "0") {
+                var balance = (parseFloat(total_amount) - parseFloat(advance.value))
+                var roundoff = Math.round(balance);
+                document.getElementById('<%=lbl_total.ClientID %>').innerHTML = roundoff
+            }--%>
+
+            <%--else if (discount != "0") {
+                var balance = (parseFloat(total_amount)- parseFloat(discount.value))
+                var roundoff = Math.round(balance);
+                document.getElementById('<%=lbl_total.ClientID %>').innerHTML = roundoff
+            }--%>
+             else if (advance.value != "0" || discount != "0") {
+                 var balance = (parseFloat(total_amount) - parseFloat(advance.value) - parseFloat(discount.value));
+                 var roundoff = Math.round(balance);
+
+                 document.getElementById('<%=lbl_total.ClientID %>').innerHTML = roundoff
+
+            }
+           // document.getElementById('<%=lbl_total.ClientID %>').innerHTML = roundoff;
             document.getElementById('<%=hide_total.ClientID %>').value = total_amount;
-          document.getElementById('<%=lbl_final.ClientID %>').innerHTML = total_amount;
+            document.getElementById('<%=lbl_final.ClientID %>').innerHTML = total_amount;
         }
 
     </script>
@@ -812,48 +900,168 @@
         function JSFunctionValidate() {
 
 
-   <%-- if(document.getElementById('<%=Txt_shipping.ClientID%>').value.length==0)
-{
-alert("Please Enter Shipping Charges !!!");
-return false;
-    }--%>
 
-            if (document.getElementById('<%=txt_height.ClientID%>').value == "0") {
-                alert("Height Should NOT BE 0  !!!");
+            if (document.getElementById('<%=Txt_name.ClientID%>').value.length == 0) {
+                alert("Please Enter Name !!!");
                 return false;
             }
-            if (document.getElementById('<%=txt_width.ClientID%>').value == "0") {
-                alert("Width Height Should NOT BE 0 !!!");
+            if (document.getElementById('<%=Txt_phone.ClientID%>').value.length == 0) {
+                alert("Please Enter Contact No !!!");
                 return false;
             }
-            if (document.getElementById('<%=txt_quantity.ClientID%>').value == "0") {
-                alert("Please Enter Quantity !!!");
-                return false;
+            <%--if (document.getElementById('<%=txt_height.ClientID%>') != null) {
+                if (document.getElementById('<%=txt_height.ClientID%>').value == "0") {
+                    alert("Height should not be 0  !!!");
+                    return false;
+                }
             }
-            if (document.getElementById('<%=txt_quantity2.ClientID%>').value == "0") {
-                alert("Please Enter Quantity !!!");
-                return false;
+            if (document.getElementById('<%=txt_width.ClientID%>') != null) {
+                if (document.getElementById('<%=txt_width.ClientID%>').value == "0") {
+                    alert("Length should  not be 0 !!!");
+                    return false;
+                }
             }
-            if (document.getElementById('<%=Txt_discount.ClientID%>').value.length == 0) {
-                alert("Please Enter Discount !!!");
-                return false;
-            }
-
-            return true;
-        }
-
-        function JSFunctionValidate4() {
-
-            var quant2 = document.getElementById('<%=txt_quantity2.ClientID %>');
-            var quant = document.getElementById('<%=txt_quantity.ClientID %>');
-
-            if (quant2 != "") {
-                if (quant2 == "0") {
+            if (document.getElementById('<%=txt_quantity.ClientID%>') != null) {
+                if (document.getElementById('<%=txt_quantity.ClientID%>').value == "0") {
                     alert("Please Enter Quantity !!!");
                     return false;
                 }
             }
-            if (quant != "") {
+            if (document.getElementById('<%=txt_quantity2.ClientID%>') != null)
+            {
+                if (document.getElementById('<%=txt_quantity2.ClientID%>').value == "0") {
+                    alert("Please Enter Quantity !!!");
+                    return false;
+                }
+            }--%>
+           <%-- if (document.getElementById('<%=Dd_enter_product.ClientID%>').value == "--Select--") {
+                alert("Please Select Product !!!");
+                return false;
+            }--%>
+            if (document.getElementById('<%=Txt_discount.ClientID%>').value.length == 0) {
+                alert("Please Enter Discount !!!");
+                return false;
+            }
+            preventMultipleSubmissions();
+            return true;
+        }
+        function JSFunctionValidate00() {
+
+
+
+            if (document.getElementById('<%=Txt_name.ClientID%>').value.length == 0) {
+                alert("Please Enter Name !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Txt_phone.ClientID%>').value.length == 0) {
+                alert("Please Enter Contact No !!!");
+                return false;
+            }
+            <%--if (document.getElementById('<%=txt_height.ClientID%>') != null) {
+                if (document.getElementById('<%=txt_height.ClientID%>').value == "0") {
+                    alert("Height should not be 0  !!!");
+                    return false;
+                }
+            }
+            if (document.getElementById('<%=txt_width.ClientID%>') != null) {
+                if (document.getElementById('<%=txt_width.ClientID%>').value == "0") {
+                    alert("Length should  not be 0 !!!");
+                    return false;
+                }
+            }
+            if (document.getElementById('<%=txt_quantity.ClientID%>') != null) {
+                if (document.getElementById('<%=txt_quantity.ClientID%>').value == "0") {
+                    alert("Please Enter Quantity !!!");
+                    return false;
+                }
+            }
+            if (document.getElementById('<%=txt_quantity2.ClientID%>') != null)
+            {
+                if (document.getElementById('<%=txt_quantity2.ClientID%>').value == "0") {
+                    alert("Please Enter Quantity !!!");
+                    return false;
+                }
+            }--%>
+            <%--if (document.getElementById('<%=Dd_enter_product.ClientID%>').value == "--Select--") {
+                alert("Please Select Product !!!");
+                return false;
+            }--%>
+            if (document.getElementById('<%=Txt_discount.ClientID%>').value.length == 0) {
+                alert("Please Enter Discount !!!");
+                return false;
+            }
+            preventMultipleSubmissions1();
+            return true;
+        }
+        function JSFunctionValidate4() {
+
+            var quant2 = document.getElementById('<%=txt_quantity2.ClientID %>');
+            var quant = document.getElementById('<%=txt_quantity.ClientID %>');
+            var height = document.getElementById('<%=txt_height.ClientID %>');
+            var height2 = document.getElementById('<%=txt_height2.ClientID %>');
+            var width = document.getElementById('<%=txt_width.ClientID %>');
+            var width2 = document.getElementById('<%=txt_width2.ClientID %>');
+            <%--if (document.getElementById('<%=txt_height.ClientID%>').value == "0") {
+                alert("Height should not be 0  !!!");
+                return false;
+            }
+            if (document.getElementById('<%=txt_width.ClientID%>').value == "0") {
+                alert("Length should  not be 0 !!!");
+                return false;
+            }
+            if (document.getElementById('<%=txt_height2.ClientID%>').value == "0") {
+                alert("Height should not be 0  !!!");
+                return false;
+            }
+            if (document.getElementById('<%=txt_width2.ClientID%>').value == "0") {
+                alert("Length should  not be 0 !!!");
+                return false;
+            }--%>
+
+            if (document.getElementById('<%=Txt_name.ClientID%>').value.length == 0) {
+                alert("Please Enter Name !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Txt_phone.ClientID%>').value.length == 0) {
+                alert("Please Enter Contact No !!!");
+                return false;
+            }
+            if (document.getElementById('<%=Dd_enter_product.ClientID%>').value == "--Select--") {
+                alert("Please Select Product !!!");
+                return false;
+            }
+
+            //if (height2 != null) {
+            //    if (height2.value == "0") {
+            //        alert("Height Should NOT BE 0 !!!");
+            //        return false;
+            //    }
+            //}
+            if (width != null) {
+                if (width.value == "0") {
+                    alert("Length should  not be 0 !!!");
+                    return false;
+                }
+            }
+            if (height != null) {
+                if (height.value == "0") {
+                    alert("Height should not be 0  !!!");
+                    return false;
+                }
+            }
+            //if (width2 != null) {
+            //    if (height2.value == "0") {
+            //        alert("Length should  not be 0 !!!");
+            //        return false;
+            //    }
+            //}
+            if (quant2 != null) {
+                if (quant2.value == "0") {
+                    alert("Please Enter Quantity !!!");
+                    return false;
+                }
+            }
+            if (quant != null) {
                 if (quant.value == "0") {
                     alert("Please Enter Quantity !!!");
                     return false;
@@ -900,10 +1108,42 @@ return false;
                 }
             }
             else {
-                document.getElementById('<%=Txt_Dtp_charges.ClientID%>').disabled = true;
+               <%-- document.getElementById('<%=Txt_Dtp_charges.ClientID%>').disabled = true;
                 document.getElementById('<%=Txt_Pasting.ClientID%>').disabled = true;
                 document.getElementById('<%=Txt_Fitting.ClientID%>').disabled = true;
-                document.getElementById('<%=Txt_TransportCharges.ClientID%>').disabled = true;
+                document.getElementById('<%=Txt_TransportCharges.ClientID%>').disabled = true;--%>
+                if (checkbox.id == "<%=Chk_dtp.ClientID%>") {
+                    document.getElementById('<%=Txt_Dtp_charges.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_Dtp_charges.ClientID%>').value = "0";
+                    final_total();
+                }
+                if (checkbox.id == "<%=Chk_pasting.ClientID%>") {
+                    document.getElementById('<%=Txt_Pasting.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_Pasting.ClientID%>').value = "0";
+                    final_total();
+                }
+                if (checkbox.id == "<%=Chk_framing.ClientID%>") {
+                    document.getElementById('<%=Txt_Pasting.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_Pasting.ClientID%>').value = "0";
+                    final_total();
+                }
+                if (checkbox.id == "<%=Chk_fitting.ClientID%>") {
+                    document.getElementById('<%=Txt_Fitting.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_Fitting.ClientID%>').value = "0";
+                    final_total();
+                }
+                if (checkbox.id == "<%=Chk_install.ClientID%>") {
+                    document.getElementById('<%=Txt_Fitting.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_Fitting.ClientID%>').value = "0";
+                    final_total();
+                }
+                if (checkbox.id == "<%=Chk_trans.ClientID%>") {
+                    document.getElementById('<%=Txt_TransportCharges.ClientID%>').disabled = true;
+                    document.getElementById('<%=Txt_TransportCharges.ClientID%>').value = "0";
+                    final_total();
+                }
+
+
             }
         }
 
@@ -927,5 +1167,6 @@ return false;
         window.onscroll = disableTextBox;
 
     </script>
+    </div>
 </asp:Content>
 

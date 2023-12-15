@@ -74,14 +74,25 @@ public partial class Company_company_details : System.Web.UI.Page
     protected void Btn_submit_Click(object sender, EventArgs e)
     {
 
-        SqlCommand cmd = new SqlCommand("UPDATE tbl_company_details SET com_company_name='" + Txt_company_name.Text + "',com_company_name2='" + Txt_company_name2.Text + "',com_owner_name='" + Txt_owner_name.Text + "',com_address='" + Txt_address.Text + "',com_contact='" + Txt_contact.Text + "',com_gst_no='" + Txt_gst_no.Text + "',com_email='" + Txt_email.Text + "',com_website='" + Txt_website.Text + "',com_bank_name='" + Txt_bank_name.Text + "',com_branch='" + Txt_branch.Text + "',com_acc_no='" + Txt_acc_no.Text + "',com_ifsc='" + Txt_ifsc.Text + "',com_upino='" + txtupino.Text + "' where com_id=1", conn);
+       // cmd4 = new SqlCommand("select * from tbl_company_details where com_gst_no='"+ Txt_gst_no.Text + "' ", conn);
+       //// cmd4.Parameters.Add("@com_gst_no", Txt_gst_no.Text);
+       // adapt4 = new SqlDataAdapter(cmd4);
+       // DataTable dt4 = new DataTable();
+       // adapt4.Fill(dt4);
+       // if (dt4.Rows.Count > 0)
+       // {
+       //     System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('GST No already exist !!!');", true);
+       // }
+       // else
+       // {
+            SqlCommand cmd = new SqlCommand("UPDATE tbl_company_details SET com_company_name='" + Txt_company_name.Text + "',com_company_name2='" + Txt_company_name2.Text + "',com_owner_name='" + Txt_owner_name.Text + "',com_address='" + Txt_address.Text + "',com_contact='" + Txt_contact.Text + "',com_gst_no='" + Txt_gst_no.Text + "',com_email='" + Txt_email.Text + "',com_website='" + Txt_website.Text + "',com_bank_name='" + Txt_bank_name.Text + "',com_branch='" + Txt_branch.Text + "',com_acc_no='" + Txt_acc_no.Text + "',com_ifsc='" + Txt_ifsc.Text + "',com_upino='" + txtupino.Text + "' where com_id=1", conn);
 
-        conn.Open();
-        cmd.ExecuteNonQuery();
-        conn.Close();
-        string redirectScript = " window.location.href = 'company_details.aspx';";
-        System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Company Details Updated Successfully!!!');" + redirectScript, true);
-
+            conn.Open();
+            cmd.ExecuteNonQuery();
+            conn.Close();
+            string redirectScript = " window.location.href = 'company_details.aspx';";
+            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Company Details Updated Successfully!!!');" + redirectScript, true);
+       // }
     }
     protected void update_info(object sender, EventArgs e)
     {
@@ -126,27 +137,41 @@ public partial class Company_company_details : System.Web.UI.Page
     protected void Logo_Update(object sender, EventArgs e)
     {
         string strname = fu_company_logo.FileName.ToString();
-        fu_company_logo.PostedFile.SaveAs(Server.MapPath("Company_Photos/") + strname);
-        SqlCommand cmd = new SqlCommand("UPDATE tbl_company_details SET com_company_logo='" + strname.ToString() + "' where com_id=1", conn);
 
-        conn.Open();
-        cmd.ExecuteNonQuery();
-        conn.Close();
-        string redirectScript = " window.location.href = 'company_details.aspx';";
-        System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Company Logo Updated Successfully!!!');" + redirectScript, true);
+        if (strname == "")
+        {
+            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Please Upload Company Logo!!!');", true);
+        }
+        else
+        {
+            fu_company_logo.PostedFile.SaveAs(Server.MapPath("Company_Photos/") + strname);
+            SqlCommand cmd = new SqlCommand("UPDATE tbl_company_details SET com_company_logo='" + strname.ToString() + "' where com_id=1", conn);
 
+            conn.Open();
+            cmd.ExecuteNonQuery();
+            conn.Close();
+            string redirectScript = " window.location.href = 'company_details.aspx';";
+            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Company Logo Updated Successfully!!!');" + redirectScript, true);
+        }
     }
     protected void Logo_Update2(object sender, EventArgs e)
     {
         string strname = fu_company_logo2.FileName.ToString();
-        fu_company_logo2.PostedFile.SaveAs(Server.MapPath("Company_Photos/") + strname);
-        SqlCommand cmd = new SqlCommand("UPDATE tbl_company_details SET com_company_logo2='" + strname.ToString() + "' where com_id=1", conn);
+        if (strname == "")
+        {
+            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Please Upload Company Logo!!!');", true);
+        }
+        else
+        {
+          
+            fu_company_logo2.PostedFile.SaveAs(Server.MapPath("Company_Photos/") + strname);
+            SqlCommand cmd = new SqlCommand("UPDATE tbl_company_details SET com_company_logo2='" + strname.ToString() + "' where com_id=1", conn);
 
-        conn.Open();
-        cmd.ExecuteNonQuery();
-        conn.Close();
-        string redirectScript = " window.location.href = 'company_details.aspx';";
-        System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Company Logo Updated Successfully!!!');" + redirectScript, true);
-
+            conn.Open();
+            cmd.ExecuteNonQuery();
+            conn.Close();
+            string redirectScript = " window.location.href = 'company_details.aspx';";
+            System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "alert('Company Logo Updated Successfully!!!');" + redirectScript, true);
+        }
     }
 }

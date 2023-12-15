@@ -153,7 +153,7 @@
       <!-- /.row -->
 
         <div class="row" style="margin-bottom:15px;">
-      <div class="col-lg-2 col-md-2 col-sm-12" style="margin-left: 0px;">
+      <div class="col-lg-2 col-md-3 col-sm-12" style="margin-left: 73px;">
         <%--  <a href="add_customer.aspx"><asp:Button ID="Button1" runat="server" Text="New Product" class="btn btn-primary"/></a>--%>
           <asp:LinkButton ID="LinkButton1" runat="server" href="Master/add_product.aspx" class="btn btn-lg btn1">New Product</asp:LinkButton>
       </div>
@@ -308,7 +308,8 @@
                       <h4 class="text-info text-center">Invoices</h4>
                     <h1 class="f-25 text-black text-center"><asp:Label ID="lbl_total_invoice" runat="server" Text=""></asp:Label></h1> <hr/></div>
                    
-                    <div class="text-center"><a href="Sale/sale_invoice.aspx"><i class="fa fa-plus text-info" ></i> Add Invoice</a></div>
+                    <div class="text-center"><a href="Sale/sale_invoice.aspx"><i class="fa fa-plus text-info" ></i> Add Sale</a></div>
+                    <div class="text-center"><a href="Sale/estimate.aspx"><i class="fa fa-plus text-info" ></i> Add Estimate</a></div>
                   </div>
                
                 <!-- /.info-box --> 
@@ -505,13 +506,13 @@
                                         <div class="form-horizontal">
                                             <input type="hidden" id="hdEventID" value="0" />
                                             <div class="form-group">
-                                                <label>Subject</label>
+                                                <label>Subject <span style="color:red;">*</span></label>
                                                 <input type="text" id="txtSubject" class="form-control" />
                                             </div>
                                             <div class="form-group">
-                                                <label>Start</label>
+                                                <label>Start <span style="color:red;">*</span></label>
                                                 <div class="input-group date" id="dtp1">
-                                                    <input type="text" id="txtStart"  class="form-control"/>
+                                                    <input type="date" id="txtStart"  class="form-control"/>
                                                     <%--<asp:TextBox ID="txtStart"  class="form-control" TextMode="Date" runat="server"></asp:TextBox>--%>
                                                     <span class="input-group-addon">
                                                         <span class="glyphicon glyphicon-calendar"></span>
@@ -520,9 +521,9 @@
                                             </div>
                                            
                                             <div class="form-group" id="divEndDate" >
-                                                <label>End</label>
+                                                <label>End <span style="color:red;">*</span></label>
                                                 <div class="input-group date" id="dtp2">
-                                                    <input type="text" id="txtEnd" class="form-control" />
+                                                    <input type="date" id="txtEnd" class="form-control" />
                                                     <span class="input-group-addon">
                                                         <span class="glyphicon glyphicon-calendar"></span>
                                                     </span>
@@ -542,8 +543,8 @@
                                                     <option value="green">Green</option>
                                                 </select>
                                             </div>
-                                            <button type="button" id="btnSave" class="btn btn-success">Save</button>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="button" id="btnSave" class="btn btn-success" style="margin-left:150px">Save</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal"  style="background-color:#92c4d7;">Close</button>
                                         </div>
                                     </div>
                                 </div>
@@ -583,7 +584,7 @@
                 openAddEditForm();
             })
             $('#btnDelete').click(function () {
-                if (selectedEvent != null && confirm('Are you sure?')) {
+                if (selectedEvent != null && confirm('Are you sure want to delete event ?')) {
                     $.ajax({
                         type: 'POST',
                         async: false,
@@ -617,7 +618,7 @@
             $('#btnSave').click(function () {
                 //Validation/
                 if ($('#txtSubject').val().trim() == "") {
-                    alert('Subject required');
+                    alert('Please enter Subject');
                     return;
                 }
                 if ($('#txtStart').val().trim() == "") {

@@ -104,12 +104,12 @@
                                     <thead>
                                         <tr>
 
-                                            <th scope="col">Height</th>
-                                            <th scope="col">Width</th>
+                                            <th scope="col">Height<span style="color:red;">*</span></th>
+                                            <th scope="col">Length<span style="color:red;">*</span></th>
                                             <th scope="col">Size</th>
                                             <th scope="col">Rate</th>
                                             <th scope="col">Amount</th>
-                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Quantity<span style="color:red;">*</span></th>
                                             <th scope="col">Total</th>
                                         </tr>
                                     </thead>
@@ -138,12 +138,12 @@
                                     <thead>
                                         <tr>
 
-                                            <th scope="col">Height</th>
-                                            <th scope="col">Width</th>
+                                            <th scope="col">Height<span style="color:red;">*</span></th>
+                                            <th scope="col">Length<span style="color:red;">*</span></th>
                                             <th scope="col">Size</th>
                                             <th scope="col">Rate</th>
                                             <th scope="col">Amount</th>
-                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Quantity<span style="color:red;">*</span></th>
                                             <th scope="col">Total</th>
                                         </tr>
                                     </thead>

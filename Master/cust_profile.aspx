@@ -210,21 +210,21 @@
     </tr>
     
        <tr>
-      <th scope="col">Contact</th>
+      <th scope="col">Contact<span style="color:red;">*</span></th>
       <td>
-          <asp:TextBox ID="Txt_contact" CssClass="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+          <asp:TextBox ID="Txt_contact" CssClass="form-control" runat="server" oninput="validateInput(this);" MaxLength="10"></asp:TextBox></td>
      
     </tr>
        <tr>
       <th scope="col">Alternate Contact</th>
       <td>
-          <asp:TextBox ID="Txt_contact2" CssClass="form-control" runat="server" TextMode="Number"></asp:TextBox></td>
+          <asp:TextBox ID="Txt_contact2" CssClass="form-control" runat="server" TextMode="Number" MaxLength="10"></asp:TextBox></td>
      
     </tr>
        <tr>
       <th scope="col">GST no</th>
       <td>
-          <asp:TextBox ID="Txt_gst_no" CssClass="form-control" runat="server"></asp:TextBox></td>
+          <asp:TextBox ID="Txt_gst_no" CssClass="form-control" runat="server" MaxLength="15"></asp:TextBox></td>
      
     </tr>
        <tr>
@@ -319,7 +319,7 @@
                 <th>Quotation Date</th>
                   <th>Valid Date</th>
                   <th>Total</th>
-                   
+                    <th>Action</th>
                   
                 </tr>
                 </thead>
@@ -335,7 +335,7 @@
                   <td><asp:Label ID="lbl_date" runat="server" Text='<%# Eval("qu_invoice_date", "{0:dd/MM/yyyy}") %>'></asp:Label></td>
                   <td><asp:Label ID="Label2" runat="server" Text='<%# Eval("qu_due_date", "{0:dd/MM/yyyy}") %>'></asp:Label></td>
                        <td><asp:Label ID="lbl_total" runat="server" Text='<%# Eval("qu_total") %>'></asp:Label></td>
-                 
+                    <td><a href="../Quotation/gst_bill.aspx?invoice=<%# Eval("qu_invoice_no") %>"><i style="padding-left:10px" class="fa fa-eye"></i></i></a></td>
                 </tr>
               </ItemTemplate>
 
@@ -440,7 +440,7 @@
                        <td><asp:Label ID="lbl_balance" runat="server" Text='<%# Eval("est_balance") %>'></asp:Label></td>
                        
                        <td><asp:Label ID="lbl_total" runat="server" Text='<%# Eval("est_total") %>'></asp:Label></td>
-                  <td><a href="../Sale/bill.aspx?invoice=<%# Eval("est_invoice_no") %>"><i style="padding-left:10px" class="fa fa-eye"></i></i></a></td>
+                  <td><a href="../Sale/wgst_bill.aspx?invoice=<%# Eval("est_invoice_no") %>"><i style="padding-left:10px" class="fa fa-eye"></i></i></a></td>
                    </tr>
               </ItemTemplate>
 
@@ -469,7 +469,14 @@
     $(".alert").fadeTo(500, 0).slideUp(500, function(){
         $(this).remove(); 
     });
-}, 4000);
+    }, 4000);
+
+
+    function validateInput(input) {
+        input.value = input.value.replace(/\D/g, '').substring(0, 10);
+    }
+
+
 </script>
 <script>
 function JSFunctionValidate()
@@ -479,7 +486,20 @@ if(document.getElementById('<%=Txt_name.ClientID%>').value.length==0)
 alert("Please Enter Customer's Name !!!");
 return false;
 }
- 
+    if (document.getElementById('<%=Txt_contact.ClientID%>').value.length == 0) {
+        alert("Please Enter Contact Number !!!");
+        return false;
+    } 
+
+
+    if (document.getElementById('<%=Txt_gst_no.ClientID%>').value.length != 0) {
+        //alert("Please Enter Gst Number !!!");
+        //return false;
+        if (document.getElementById('<%=Txt_gst_no.ClientID%>').value.length != 15) {
+            alert("Please Enter Valid Gst Number !!!");
+            return false;
+        }
+    }
    
 return true;
 }

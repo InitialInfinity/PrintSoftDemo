@@ -210,7 +210,7 @@
     </tr>
        <tr>
       <th scope="col">DOB<span style="color:red;">*</span></th>
-      <td><asp:TextBox ID="Txt_dob" class="form-control" runat="server" TextMode="Date"></asp:TextBox></td>
+      <td><asp:TextBox ID="Txt_dob" class="form-control" onblur="validateBirthdate(this.value)" runat="server" TextMode="Date"></asp:TextBox></td>
      
     </tr>
        <tr>
@@ -218,7 +218,9 @@
       <td><asp:DropDownList ID="Dd_gender" class="form-control" runat="server">
                           <asp:ListItem Value="Male"></asp:ListItem>
                           <asp:ListItem Value="Female"></asp:ListItem>
-                        </asp:DropDownList></td>
+                        </asp:DropDownList>
+
+      </td>
      
     </tr>
      
@@ -239,12 +241,12 @@
     </tr>
       <tr>
       <th scope="col">Joining Date<span style="color:red;">*</span></th>
-      <td><asp:TextBox ID="Txt_joining_date" class="form-control" runat="server" TextMode="Date"></asp:TextBox></td>
+      <td><asp:TextBox ID="Txt_joining_date" class="form-control" onblur="check(this.value)" runat="server" TextMode="Date"></asp:TextBox></td>
      
     </tr>
       <tr>
       <th scope="col">Left Date</th>
-      <td><asp:TextBox ID="Txt_left_date" class="form-control" runat="server" TextMode="Date"></asp:TextBox></td>
+      <td><asp:TextBox ID="Txt_left_date" class="form-control" onblur="checkLeftDate(this.value)" runat="server" TextMode="Date"></asp:TextBox></td>
      
     </tr>
       
@@ -352,5 +354,90 @@ function printdiv(dropHere) {
            
         }
     </script>
+     <script>
+
+         function validateBirthdate(dateString) {
+             var dateParts = dateString.split('-');
+             var day = parseInt(dateParts[2]);
+             var month = parseInt(dateParts[1]) - 1; // Months are zero-based
+             var year = parseInt(dateParts[0]);
+
+             var inputDate = new Date(year, month, day);
+             var today = new Date();
+
+
+             // Check if the birthdate is a future date
+
+             // Calculate the age based on the birthdate
+             var age = today.getFullYear() - inputDate.getFullYear();
+             var monthDiff = today.getMonth() - inputDate.getMonth();
+             if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < inputDate.getDate())) {
+                 age--;
+             }
+
+             if (age < 18) {
+                 alert("Please select valid date!");
+                 $("#txtDOB").val('');
+             }
+
+             return true;
+         }
+        </script>
+    <script>
+        function check(joiningDateText) {
+            var dobText = document.getElementById('<%=Txt_dob.ClientID%>').value;
+
+          if (dobText !== "" && joiningDateText !== "") {
+              var dob = new Date(dobText);
+              var joiningDate = new Date(joiningDateText);
+              var currentDate = new Date(); // Get the current date
+
+
+              if (joiningDate <= currentDate && joiningDate > dob) {
+                  var ageDifference = (currentDate - dob) / (1000 * 60 * 60 * 24 * 365.25);
+
+                  if (ageDifference >= 18) {
+                      return true;
+                  } else {
+                      alert("The person should be at least 18 years old.");
+                      document.getElementById('<%=Txt_joining_date.ClientID%>').value = "";
+                return false;
+            }
+        } else {
+            alert("Joining Date must be greater than DOB and should not be a future date.");
+                    document.getElementById('<%=Txt_joining_date.ClientID%>').value = "";
+                    return false;
+                }
+            }
+        }
+
+    </script>
+      <script>
+          function checkLeftDate(LeftDateText) {
+              var dobText = document.getElementById('<%=Txt_dob.ClientID%>').value;
+             var joiningDateText = document.getElementById('<%=Txt_joining_date.ClientID%>').value;
+
+              if (dobText !== "" && joiningDateText !== "" && LeftDateText!="") {
+
+                var dob = new Date(dobText);
+                  var LeftDate = new Date(LeftDateText);
+
+
+                  var ageDifference = (LeftDate - dob) / (1000 * 60 * 60 * 24 * 365.25);
+
+
+                  if (LeftDate > dob && ageDifference >= 18 && LeftDateText > joiningDateText) {
+
+                    return true;
+                } else {
+
+                      alert("Left Date must be greater than DOB and greater than joining date.");
+                     document.getElementById('<%=Txt_left_date.ClientID%>').value = ""; // Clear the Joining Date field
+                     return false;
+                 }
+             }
+
+         }
+      </script>
 </asp:Content>
 

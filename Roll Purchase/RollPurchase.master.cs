@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
 
-public partial class Purchase_Purchase : System.Web.UI.MasterPage
+public partial class Roll_Purchase_RollPurchase : System.Web.UI.MasterPage
 {
     SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["String"].ConnectionString);
     SqlCommand cmd2, cmd3, cmd4;

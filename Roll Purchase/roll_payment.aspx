@@ -91,7 +91,7 @@ return true;
                                             <div class="form-group row">
                                                 <label class="control-label text-right col-md-3">Payment Mode</label>
                                                 <div class="col-md-6">
-                                                    <asp:DropDownList ID="Dd_payment_mode" class="form-control" runat="server" TabIndex="2">
+                                                    <asp:DropDownList ID="Dd_payment_mode" class="form-control" runat="server" TabIndex="2" OnSelectedIndexChanged="Dd_payment_mode_SelectedIndexChanged">
                                                         <asp:ListItem>Cash</asp:ListItem>
                                                         <asp:ListItem>Debit Card</asp:ListItem>
                                                         <asp:ListItem>Credit Card</asp:ListItem>

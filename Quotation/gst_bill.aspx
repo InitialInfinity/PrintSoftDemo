@@ -120,13 +120,13 @@
     <tr>
       <th scope="col">Product</th>
       <th scope="col">HSN</th>
-      <th scope="col">size</th>
+      <th scope="col">Size</th>
       
       <th scope="col">Unit</th>
       <th scope="col">Qty</th>
       
       <th scope="col">Rate</th>
-      <th scope="col">STotal</th>
+      <th scope="col">Total</th>
       <th scope="col">CGST</th>
       
       <th scope="col">SGST</th>
@@ -195,7 +195,7 @@
                     
                   <tbody>
                       <tr>
-                           <th style=" border: 1px solid #000 !important;">Total Before GST:</th>
+                           <th style=" border: 1px solid #000 !important;">Total with GST:</th>
                     <td style="width:20%;border: 1px solid #000 !important;">₹ <asp:Label ID="lbl_subtotal" runat="server" Text=""></asp:Label></td>
 
                            

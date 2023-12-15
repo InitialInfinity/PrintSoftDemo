@@ -34,6 +34,7 @@
   <strong>Success!</strong> User successfully added!
 </div>     
         </asp:Panel>
+        
       <div class="row m-b-3">
         
         <div class="col-md-12">
@@ -41,9 +42,9 @@
             
             <!-- Nav tabs -->
             <ul class="nav nav-tabs customtab" role="tablist">
-              <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#messages2" role="tab"><span class="hidden-sm-up"></span> <span class="hidden-xs-down">Expense</span></a> </li>
-              <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#profile2" role="tab"><span class="hidden-sm-up"></span> <span class="hidden-xs-down">Add Category</span></a> </li>
-              <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#home2" role="tab"><span class="hidden-sm-up"></span> <span class="hidden-xs-down">Add User</span></a> </li>
+              <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#messages2" role="tab" id="exp"><span class="hidden-sm-up"></span> <span class="hidden-xs-down">Expense</span></a> </li>
+              <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#profile2" role="tab" id="addcat"><span class="hidden-sm-up"></span> <span class="hidden-xs-down">Add Category</span></a> </li>
+              <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#home2" role="tab" id="addusr"><span class="hidden-sm-up"></span> <span class="hidden-xs-down">Add User</span></a> </li>
             </ul>
             <!-- Tab panes -->
             <div class="tab-content">
@@ -85,7 +86,7 @@
                           
                           <asp:Button ID="Btn_cencel" class="btn btn-inverse" runat="server" Text="Cancel" TabIndex="5"/>
 
-                        <asp:Label ID="Lbl_message" runat="server" Text=""></asp:Label>
+                        <asp:Label ID="Lbl_message" runat="server" Text="" Style="color: red"></asp:Label>
                         </div>
                       </div>
                     </div>
@@ -170,9 +171,9 @@
                           
                           <asp:Button ID="Button1" class="btn btn-success" runat="server" Text="Submit" OnClientClick="return CatJSFunctionValidate()" OnClick="Button1_Click" TabIndex="8"/>
                           
-                          <asp:Button ID="Button2" class="btn btn-inverse" runat="server" Text="Cancel" TabIndex="9"/>
+                          <asp:Button ID="Button2" class="btn btn-inverse" runat="server" Text="Cancel" TabIndex="9" />
 
-                          <asp:Label ID="Lbl_message2" runat="server" Text=""></asp:Label>
+                          <asp:Label ID="Lbl_message2" runat="server" Text="" Style="color: red"></asp:Label>
                         </div>
                       </div>
                     </div>
@@ -258,7 +259,7 @@
                   <div class="form-group row">
                     <label class="control-label text-right col-md-3">Date<span style="color:red;">*</span></label>
                     <div class="col-md-9">
-                       <asp:TextBox ID="Txt_expense_date"  class="form-control" runat="server" TextMode="Date" TabIndex="13"></asp:TextBox>
+                       <asp:TextBox ID="Txt_expense_date"  class="form-control" runat="server" TextMode="Date" TabIndex="13"  onblur="checkDate(this.value)"></asp:TextBox>
                       </div>
                   </div>  
                    <div class="form-group row">
@@ -277,7 +278,7 @@
                           
                           <asp:Button ID="Button3" class="btn btn-success" runat="server" Text="Submit" OnClientClick="return JSFunctionValidate();" OnClick="Button3_Click" TabIndex="15"/>
                           
-                          <asp:Button ID="Button4" class="btn btn-inverse" runat="server" Text="Cancel" TabIndex="16"/>
+                          <asp:Button ID="Button4" class="btn btn-inverse" runat="server" Text="Cancel" TabIndex="16" OnClick="Button4_Click"/>
 
                           <asp:Label ID="Lbl_message3" runat="server" Text=""></asp:Label>
                         </div>
@@ -419,7 +420,41 @@ return false;
    }
 
 return true;
-}
-        </script>
+          }
+
+        
+          function checkDate(dateString) {
+             // var txtExpenseDate = document.getElementById('<%=Txt_expense_date.ClientID%>');
+              var expenseDate = new Date(dateString); // Parse the input as a Date object
+                 var currentDate = new Date();
+
+                 if (expenseDate > currentDate) {
+                     alert('Expense date cannot be a future date');
+                     txtExpenseDate.value = ''; // Clear the input field
+                 }
+             }
+    
+
+      </script>
+    <script type="text/javascript">
+        // Check if the category creation flag is set
+        var categoryCreated = '<%= Session["CategoryCreated"] %>';
+
+        // Function to switch to the "profile2" tab
+        function switchToProfile2Tab() {
+            $('#myTab a[href="#profile2"]').tab('show');
+        }
+
+        // Check if the category was created and redirect to the tab if necessary
+        if (categoryCreated) {
+            switchToProfile2Tab();
+        }
+        function showcat() {
+            $("#addcat").click();
+        }
+        function showusr() {
+            $("#addusr").click();
+        }
+    </script>
 </asp:Content>
 

@@ -416,6 +416,7 @@ public partial class Purchase_purchase_invoice : System.Web.UI.Page
                 Panel1.Visible = false;
                 Panel2.Visible = true;
                 txt_rate2.Text = rate;
+
             }
             else
             {

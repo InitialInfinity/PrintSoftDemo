@@ -7,14 +7,14 @@ using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
-
+using System.Windows.Forms;
 
 public partial class admin_panel_Purchase_edit_bill : System.Web.UI.Page
 {
     SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["String"].ConnectionString);
-    decimal total_amount = 0, final_total = 0;
-    decimal totalvalue, totalcgst, totalsgst, totaligst, totalgst, totalqty, totaltaxable, Old_total, old_balance, paid, new_balance, new_total, rem;
-    string invoice;
+    decimal total_amount = 0, final_total = 0, quantity1, quantity2, StockQuantity;
+    decimal totalvalue, totalcgst, totalsgst, totaligst, totalgst, totalqty, totaltaxable, Old_total, old_balance, paid, new_balance, new_total, rem,shipp,adjust,discount,totalofshipp, final;
+    string invoice, Productname, Productname2;
     int id;
     string admin_email;
     protected void Page_Load(object sender, EventArgs e)
@@ -34,7 +34,7 @@ public partial class admin_panel_Purchase_edit_bill : System.Web.UI.Page
             }
             if (admin_email.ToString() == Session["a_email"].ToString() || Session["admin_email"] != null)
             {
-                invoice = Request.QueryString["invoice"].ToString();
+                invoice = (Request.QueryString["invoice"]??"").ToString();
             if (!IsPostBack)
             {
                 Panel1.Visible = true;
@@ -204,6 +204,37 @@ public partial class admin_panel_Purchase_edit_bill : System.Web.UI.Page
                 lbl_total_sgst.Value = totalsgst.ToString();
                 lbl_total_igst.Value = totaligst.ToString();
                 lbl_total_taxable.Value = totaltaxable.ToString();
+                shipp = Convert.ToDecimal(Txt_shipping.Text);
+                adjust = Convert.ToDecimal(Txt_adjustment.Text);
+                discount = Convert.ToDecimal(Txt_discount.Text);
+                totalofshipp = shipp + totalvalue;
+                final = totalofshipp - adjust - discount;
+                lbl_total.Text=final.ToString();
+                hide_total.Text= totalofshipp.ToString();
+
+                GridView1.Visible = true;
+                product();
+
+                txt_height.Text = "0";
+                txt_width.Text = "0";
+                txt_sqrft.Text = "0";
+                txt_rate.Text = "0";
+                txt_rate2.Text = "0";
+                txt_height2.Text = "0";
+                txt_width2.Text = "0";
+                txt_sqrft2.Text = "0";
+
+                txt_amount.Text = "0";
+                txt_amount2.Text = "0";
+                txt_quantity.Text = "0";
+                txt_quantity2.Text = "0";
+                txt_total_amt.Text = "0";
+                txt_total_amt2.Text = "0";
+
+                txt_cgst.Text = "0";
+                txt_igst.Text = "0";
+                txt_sgst.Text = "0";
+                txt_final_amt.Text = "0";
 
 
             }
@@ -211,6 +242,60 @@ public partial class admin_panel_Purchase_edit_bill : System.Web.UI.Page
             {
                 GridView1.DataSource = null;
                 GridView1.DataBind();
+                lbl_total.Text = "0";
+                hide_total.Text = "0";
+                lbl_subtotal.Text = "0";
+                lbl_subtotal2.Value = "0";
+                lbl_gst.Text = "0";
+
+                lbl_totalqty.Text = "0";
+                //Dd_enter_product.SelectedValue = "--Slect--";
+                product();
+
+                GridView1.Visible = false;
+                // lbl_product_hsn.Value = "";
+                Txt_description.Text = "";
+                lbl_unit.Value = "";
+
+                txt_height.Text = "0";
+                txt_width.Text = "0";
+                txt_sqrft.Text = "0";
+                txt_rate.Text = "0";
+                txt_rate2.Text = "0";
+                txt_height2.Text = "0";
+                txt_width2.Text = "0";
+                txt_sqrft2.Text = "0";
+
+                txt_amount.Text = "0";
+                txt_amount2.Text = "0";
+                txt_quantity.Text = "0";
+                txt_quantity2.Text = "0";
+                txt_total_amt.Text = "0";
+                txt_total_amt2.Text = "0";
+
+                txt_cgst.Text = "0";
+                txt_igst.Text = "0";
+                txt_sgst.Text = "0";
+                txt_final_amt.Text = "0";
+
+                Txt_shipping.Text = "0";
+
+
+
+
+
+                lbl_subtotal.Text = "0";
+                lbl_subtotal2.Value = "0";
+
+                Txt_adjustment.Text = "0";
+                Txt_discount.Text = "0";
+
+                lbl_gst.Text = "0";
+
+                lbl_total.Text = "0";
+
+                //lbl_final.Text = "0";
+                hide_total.Text = "0";
             }
         }
         catch (Exception ex)
@@ -229,8 +314,8 @@ public partial class admin_panel_Purchase_edit_bill : System.Web.UI.Page
 
     protected void Btn_cart_Click(object sender, EventArgs e)
     {
-
-        GetData();
+        GridView1.Visible = true;
+        // GetData();
         string str = Dd_enter_product.SelectedItem.Text;
 
         string str2 = txt_quantity.Text.Trim();
@@ -370,10 +455,16 @@ public partial class admin_panel_Purchase_edit_bill : System.Web.UI.Page
                 cmd.Parameters.AddWithValue("@s_stotal", Convert.ToDecimal(txt_total_amt.Text));
                 cmd.Parameters.AddWithValue("@s_hsn", Convert.ToString(lbl_product_hsn.Value));
                 cmd.Parameters.AddWithValue("@s_desc", Convert.ToString(Txt_description.Text));
-                cmd.Parameters.AddWithValue("@s_height", Convert.ToDecimal(txt_height.Text));
-                cmd.Parameters.AddWithValue("@s_width", Convert.ToDecimal(txt_width.Text));
-                cmd.Parameters.AddWithValue("@s_size", Convert.ToDecimal(txt_sqrft.Text));
-                cmd.Parameters.AddWithValue("@s_samount", Convert.ToDecimal(txt_amount.Text));
+
+                cmd.Parameters.AddWithValue("@s_height", "");
+                cmd.Parameters.AddWithValue("@s_width", "");
+                cmd.Parameters.AddWithValue("@s_size", "");
+                cmd.Parameters.AddWithValue("@s_samount", "");
+
+                //cmd.Parameters.AddWithValue("@s_height", Convert.ToDecimal(txt_height.Text));
+                //cmd.Parameters.AddWithValue("@s_width", Convert.ToDecimal(txt_width.Text));
+                //cmd.Parameters.AddWithValue("@s_size", Convert.ToDecimal(txt_sqrft.Text));
+                //cmd.Parameters.AddWithValue("@s_samount", Convert.ToDecimal(txt_amount.Text));
                 cmd.Parameters.AddWithValue("@s_total_cgst", Convert.ToDecimal(lbl_total_cgst.Value));
                 cmd.Parameters.AddWithValue("@s_total_sgst", Convert.ToDecimal(lbl_total_sgst.Value));
                 cmd.Parameters.AddWithValue("@s_total_igst", Convert.ToDecimal(lbl_total_igst.Value));
@@ -432,17 +523,66 @@ public partial class admin_panel_Purchase_edit_bill : System.Web.UI.Page
             hsn = dt.Rows[0]["p_hsn_code"].ToString();
             unit = dt.Rows[0]["p_unit"].ToString();
             desc = dt.Rows[0]["p_desc"].ToString();
+            //if (unit == "Pcs")
+            //{
+            //    Panel1.Visible = false;
+            //    Panel2.Visible = true;
+            //    txt_rate2.Text = rate;
+            //}
+            //else
+            //{
+            //    Panel1.Visible = true;
+            //    Panel2.Visible = false;
+            //    txt_rate.Text = rate;
+            //}
             if (unit == "Pcs")
             {
                 Panel1.Visible = false;
                 Panel2.Visible = true;
                 txt_rate2.Text = rate;
+                txt_quantity2.Text = "0";
+                txt_sqrft2.Text = "0";
+            }
+
+            else if (unit == "Running Feet")
+            {
+                Panel1.Visible = false;
+                Panel2.Visible = true;
+                txt_rate2.Text = rate;
+                txt_quantity2.Text = "0";
+                txt_sqrft2.Text = "0";
+            }
+            else if (unit == "Packet")
+            {
+                Panel1.Visible = false;
+                Panel2.Visible = true;
+                txt_rate2.Text = rate;
+                txt_quantity2.Text = "0";
+                txt_sqrft2.Text = "0";
+            }
+            else if (unit == "Copy")
+            {
+                Panel1.Visible = false;
+                Panel2.Visible = true;
+                txt_rate2.Text = rate;
+                txt_quantity2.Text = "0";
+                txt_sqrft2.Text = "0";
+            }
+            else if (unit == "Ltr")
+            {
+                Panel1.Visible = false;
+                Panel2.Visible = true;
+                txt_rate2.Text = rate;
+                txt_quantity2.Text = "0";
+                txt_sqrft2.Text = "0";
             }
             else
             {
                 Panel1.Visible = true;
                 Panel2.Visible = false;
                 txt_rate.Text = rate;
+                txt_quantity.Text = "0";
+
             }
             txt_cgst.Text = cgst;
             txt_sgst.Text = sgst;
@@ -452,6 +592,7 @@ public partial class admin_panel_Purchase_edit_bill : System.Web.UI.Page
 
             lbl_product_hsn.Value = hsn;
             lbl_unit.Value = unit;
+            txt_final_amt.Text = "0";
         }
 
     }
@@ -466,20 +607,122 @@ public partial class admin_panel_Purchase_edit_bill : System.Web.UI.Page
         {
             try
             {
-                SqlCommand cmd4 = new SqlCommand("select * from tbl_purchase_invoice where pc_invoice_no='" + invoice + "'", conn);
-                SqlDataAdapter adapt4 = new SqlDataAdapter(cmd4);
-                DataTable dt4 = new DataTable();
-                adapt4.Fill(dt4);
-                if (dt4.Rows.Count > 0)
+                //SqlCommand cmd4 = new SqlCommand("select * from tbl_purchase_invoice where pc_invoice_no='" + invoice + "'", conn);
+                //SqlDataAdapter adapt4 = new SqlDataAdapter(cmd4);
+                //DataTable dt4 = new DataTable();
+                //adapt4.Fill(dt4);
+                //if (dt4.Rows.Count > 0)
+                //{
+                //    Old_total = Convert.ToDecimal(dt4.Rows[0]["pc_total"]);
+                //    old_balance = Convert.ToDecimal(dt4.Rows[0]["pc_balance"]);
+                //    paid = Old_total - old_balance;
+                //    new_total = Convert.ToDecimal(hide_total.Text);
+                //    new_balance = new_total - paid;
+                //    rem = new_total - Old_total;
+                //}
+
+
+                SqlCommand cmd55 = new SqlCommand("select * FROM tbl_purchase_invoice Where pc_invoice_no='" + invoice + "'", conn);
+                SqlDataAdapter adapt55 = new SqlDataAdapter(cmd55);
+                DataTable dt55 = new DataTable();
+                adapt55.Fill(dt55);
+                int dtRowCount = dt55.Rows.Count;
+                int gridRowCount = GridView1.Rows.Count;
+                if (dt55.Rows.Count > 0)
                 {
-                    Old_total = Convert.ToDecimal(dt4.Rows[0]["pc_total"]);
-                    old_balance = Convert.ToDecimal(dt4.Rows[0]["pc_balance"]);
-                    paid = Old_total - old_balance;
-                    new_total = Convert.ToDecimal(hide_total.Text);
-                    new_balance = new_total - paid;
-                    rem = new_total - Old_total;
+
+
+                    for (int dtRow = 0; dtRow < dt55.Rows.Count; dtRow++)
+                    {
+                        string s_quantity = dt55.Rows[dtRow]["pc_quantity"].ToString();
+                        quantity1 = Convert.ToDecimal(s_quantity);
+                        Productname = dt55.Rows[dtRow]["pc_product_name"].ToString();
+                      
+                        int rowscount1 = GridView1.Rows.Count;
+
+
+                        if (dtRow < rowscount1)
+                        {
+                            Productname2 = Convert.ToString(GridView1.Rows[dtRow].Cells[0].Text);
+                            
+                            quantity2 = Convert.ToDecimal(GridView1.Rows[dtRow].Cells[7].Text);
+
+                            if ( Productname == Productname2)
+                            {
+                                if (quantity1 != quantity2)
+                                {
+                                    if (quantity1 > quantity2)
+                                    {
+                                        StockQuantity = quantity1 - quantity2;
+                                        SqlCommand cmd33 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock=p_stock-('" + StockQuantity + "') WHERE p_name='" + Convert.ToString(GridView1.Rows[dtRow].Cells[0].Text) + "'", conn);
+
+                                        conn.Open();
+                                        cmd33.ExecuteNonQuery();
+                                        conn.Close();
+
+                                       
+
+
+                                    }
+
+                                    else if (quantity1 < quantity2)
+                                    {
+                                        StockQuantity = quantity2 - quantity1;
+
+                                        SqlCommand cmd33 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock=p_stock+('" + StockQuantity + "') WHERE p_name='" + Convert.ToString(GridView1.Rows[dtRow].Cells[0].Text) + "'", conn);
+
+                                        conn.Open();
+                                        cmd33.ExecuteNonQuery();
+                                        conn.Close();
+
+                                      
+
+                                    }
+
+
+
+                                }
+
+
+                            }
+
+                            if (Productname != Productname2)
+                            {
+                                SqlCommand cmd33 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock=p_stock-('" + quantity1 + "') WHERE p_name='" + Productname + "'", conn);
+
+                                conn.Open();
+                                cmd33.ExecuteNonQuery();
+                                conn.Close();
+
+
+                                SqlCommand cmd34 = new SqlCommand("UPDATE tbl_purchase_product SET p_stock=p_stock+('" + quantity2 + "') WHERE p_name='" + Convert.ToString(GridView1.Rows[dtRow].Cells[0].Text) + "'", conn);
+
+                                conn.Open();
+                                cmd34.ExecuteNonQuery();
+                                conn.Close();
+
+
+                            }
+
+
+
+                           
+                        }
+
+
+
+
+
+                    }
+
+
+
+
+
                 }
-                
+
+                final_total = Math.Round(Convert.ToDecimal(hide_total.Text));
+                new_balance = final_total - Convert.ToDecimal(Txt_adjustment.Text) - Convert.ToDecimal(Txt_discount.Text);
 
                 SqlCommand cmd5 = new SqlCommand("DELETE FROM tbl_purchase_invoice Where pc_invoice_no='" + invoice + "'", conn);
                 conn.Open();
@@ -563,7 +806,7 @@ public partial class admin_panel_Purchase_edit_bill : System.Web.UI.Page
 
                 conn.Close();
 
-                Response.Redirect("bill.aspx?invoice=" + Txt_invoice.Text + "&bill_update=success");
+                Response.Redirect("bill.aspx?invoice=" + Txt_invoice.Text + "&bill_update=success",false);
             }
             catch (Exception ex) { }
             

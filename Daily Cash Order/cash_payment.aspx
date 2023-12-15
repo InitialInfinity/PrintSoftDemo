@@ -307,7 +307,24 @@ return true;
          
            var discount = document.getElementById('<%=Txt_discount.ClientID %>');
          
-           var balance = (parseFloat(due.value) - parseFloat(discount.value) - parseFloat(pay.value));
+           var discount1 = discount.value;
+
+           if (discount1 == "") {
+               discount1 = 0;
+               var balance = (parseFloat(due.value) - parseFloat(discount1) - parseFloat(pay.value));
+
+           }
+           else if (discount1 == 0) {
+               discount1 = 0;
+               var balance = (parseFloat(due.value) - parseFloat(discount1) - parseFloat(pay.value));
+
+           }
+
+           else {
+               var balance = (parseFloat(due.value) - parseFloat(discount1) - parseFloat(pay.value));
+
+           }
+
 
            
             document.getElementById('<%=Lbl_total_balance.ClientID %>').value = balance;
