@@ -57,7 +57,7 @@ public partial class Reports_gst_datewise : System.Web.UI.Page
             Repeater1.DataBind();
 
             lbl_total_cgst.Text = dt.Compute("Sum(sl_total_cgst)", string.Empty).ToString();
-            lbl_total_sgst.Text = dt.Compute("count(sl_total_sgst)", string.Empty).ToString();
+            lbl_total_sgst.Text = dt.Compute("Sum(sl_total_sgst)", string.Empty).ToString();
             lbl_total_igst.Text = dt.Compute("Sum(sl_total_igst)", string.Empty).ToString();
             lbl_total_gst.Text = dt.Compute("Sum(sl_total_gst)", string.Empty).ToString();
 
@@ -88,7 +88,7 @@ public partial class Reports_gst_datewise : System.Web.UI.Page
                 Repeater1.DataBind();
 
                 lbl_total_cgst.Text = dt.Compute("Sum(sl_total_cgst)", string.Empty).ToString();
-                lbl_total_sgst.Text = dt.Compute("count(sl_total_sgst)", string.Empty).ToString();
+                lbl_total_sgst.Text = dt.Compute("Sum(sl_total_sgst)", string.Empty).ToString();
                 lbl_total_igst.Text = dt.Compute("Sum(sl_total_igst)", string.Empty).ToString();
                 lbl_total_gst.Text = dt.Compute("Sum(sl_total_gst)", string.Empty).ToString();
 
@@ -116,7 +116,7 @@ public partial class Reports_gst_datewise : System.Web.UI.Page
                 Repeater1.DataBind();
 
                 lbl_total_cgst.Text = dt.Compute("Sum(sl_total_cgst)", string.Empty).ToString();
-                lbl_total_sgst.Text = dt.Compute("count(sl_total_sgst)", string.Empty).ToString();
+                lbl_total_sgst.Text = dt.Compute("Sum(sl_total_sgst)", string.Empty).ToString();
                 lbl_total_igst.Text = dt.Compute("Sum(sl_total_igst)", string.Empty).ToString();
                 lbl_total_gst.Text = dt.Compute("Sum(sl_total_gst)", string.Empty).ToString();
 
@@ -144,7 +144,7 @@ public partial class Reports_gst_datewise : System.Web.UI.Page
                 Repeater1.DataBind();
 
                 lbl_total_cgst.Text = dt.Compute("Sum(sl_total_cgst)", string.Empty).ToString();
-                lbl_total_sgst.Text = dt.Compute("count(sl_total_sgst)", string.Empty).ToString();
+                lbl_total_sgst.Text = dt.Compute("Sum(sl_total_sgst)", string.Empty).ToString();
                 lbl_total_igst.Text = dt.Compute("Sum(sl_total_igst)", string.Empty).ToString();
                 lbl_total_gst.Text = dt.Compute("Sum(sl_total_gst)", string.Empty).ToString();
 

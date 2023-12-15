@@ -169,9 +169,7 @@
                                                         <asp:Panel ID="Panel1" runat="server">
                                                             <td class="no-print" id="tbltextbox" runat="server">
                                                                 <asp:LinkButton ID="LinkButton1" runat="server" OnClientClick="return confirm('Do you want to delete this Sale Invoice?');" OnClick="DeleteSale"><i  class="fa fa-trash-o"></i></asp:LinkButton>
-                                                                <%--   <a href="bill.aspx?invoice=<%# Eval("sl_invoice_no") %>"><i style="padding-left:10px" class="fa fa-eye"></i></a>--%>
 
-                                                                <%--CORRECT<a href="edit_bill.aspx?invoice=<%# Eval("sl_invoice_no") %>" ><i style="padding-left: 10px" class="fa fa-edit"></i></a>--%>
                                                                 <asp:LinkButton ID="LinkButton2" runat="server" PostBackUrl='<%# "edit_bill.aspx?invoice=" + Eval("sl_invoice_no") %>'> <i style="padding-left: 10px" class="fa fa-edit"></i></asp:LinkButton>
 
 

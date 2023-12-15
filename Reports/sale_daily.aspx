@@ -132,7 +132,7 @@
                        <td><a href="../Sale/bill.aspx?invoice=<%# Eval("sl_invoice_no") %>"><asp:Label ID="lbl_total" runat="server" Text='<%# Eval("sl_total") %>'></asp:Label></a></td>
                  <td class="no-print">
                   <asp:LinkButton ID="LinkButton1" runat="server" OnClientClick="return confirm('Do you want to delete this Sale Invoice?');" OnClick="DeleteSale" style="display:none"><i  class="fa fa-trash-o"></i></asp:LinkButton>
-                 <a href="../Sale/bill.aspx?invoice=<%# Eval("sl_invoice_no") %>" style="display:none"><i style="padding-left:10px" class="fa fa-eye"></i></i></a>
+                 <a href="../Sale/bill.aspx?invoice=<%# Eval("sl_invoice_no") %>" ><i style="padding-left:10px" class="fa fa-eye"></i></i></a>
                  <a href="../Sale/edit_bill.aspx?invoice=<%# Eval("sl_invoice_no") %>" style="display:none"> <i style="padding-left:10px" class="fa fa-edit"></i></a>
                      
                   </td>

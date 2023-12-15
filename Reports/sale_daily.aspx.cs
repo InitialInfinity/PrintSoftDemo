@@ -34,7 +34,7 @@ public partial class Reports_sale_daily : System.Web.UI.Page
 
     public void FillRepeater()
     {
-        SqlCommand cmd = new SqlCommand("Select * From tbl_sale inner join tbl_customer on tbl_sale.c_id=tbl_customer.c_id WHERE sl_invoice_date >= DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE()), 0) AND sl_invoice_date <  DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE()) + 1, 0) Order By sl_id desc", conn);
+        SqlCommand cmd = new SqlCommand("Select * From tbl_sale inner join tbl_customer on tbl_sale.c_id=tbl_customer.c_id WHERE sl_invoice_date >= DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE()), 0) AND sl_invoice_date <=  DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE()) + 1, 0) Order By sl_id desc", conn);
         SqlDataAdapter adapt = new SqlDataAdapter(cmd);
         DataTable dt = new DataTable();
         adapt.Fill(dt);
