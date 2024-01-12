@@ -31,6 +31,7 @@
                       <li><a href="sale_monthly.aspx">Monthly</a></li>
                       <li><a href="sale_yearly.aspx">Yearly</a></li>
                       <li><a href="sale_datewise.aspx">Date wise</a></li>
+                      <li><a href="sale_report.aspx">Designer wise </a></li>
                       
                                         <li><b><a href="sale_worksheet.aspx">Sale Worksheet</a></b></li>
                       <%--<li><a href="customer_statement.aspx">Customer Payment Report</a></li>--%>

@@ -143,6 +143,7 @@
             <li><a href="Sale/challan.aspx"><i class="fa fa-angle-right"></i> Challan</a></li>--%>
             <li><a href="Sale/estimate.aspx"><i class="fa fa-angle-right"></i> Estimate</a></li>
             <li><a href="Sale/estimate_report.aspx"><i class="fa fa-angle-right"></i> List of Estimates</a></li>
+                <li><a href="Sale/ListOfEstimate.aspx"><i class="fa fa-angle-right"></i> List of Estimates2</a></li>
               <li><a href="Sale/EstimateBulkPayment.aspx"><i class="fa fa-angle-right"></i>Estimate Bulk Payment</a></li>
             
           </ul>
